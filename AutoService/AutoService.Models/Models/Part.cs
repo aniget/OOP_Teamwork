@@ -6,23 +6,23 @@ namespace AutoService.Models.Models
 {
     class Part : IPart  //, IVendor
     {
-        private string partName;
-        private string partNumber;
-        private decimal partPurchasePrice;
-        private string partOENumbers;
-        private string partProducer;
-        private string partVendor;
-        private decimal partMountTime; //measured in hours, estimation provided by Employee
+        private string name;
+        private string number;
+        private decimal purchasePrice;
+        private string oeNumbers;
+        private string producer;
+        private string vendor;
+        private decimal mountTime; //measured in hours, estimation provided by Employee
 
-        public Part(string partName, string partNumber, decimal partPurchasePrice, string partOENumbers, string partProducer, string partVendor, PartMainCategory partMainCategory, PartSubCategory partSubCategory)
+        public Part(string name, string number, decimal purchasePrice, string oeNumbers, string producer, string vendor, PartMainCategory mainCategory, PartSubCategory subCategory)
         {
-            this.PartName = partName;
-            this.PartNumber = partNumber;
-            this.PartPurchasePrice = partPurchasePrice;
-            this.PartOENumbers = partOENumbers;
-            this.PartProducer = partProducer;
-            this.PartVendor = partVendor;
-            this.PartMainCategory = partMainCategory;
+            this.Name = name;
+            this.Number = number;
+            this.PurchasePrice = purchasePrice;
+            this.OENumbers = oeNumbers;
+            this.Producer = producer;
+            this.Vendor = vendor;
+            this.PartMainCategory = mainCategory;
         }
 
         public Part(string partName, string partNumber, decimal partPurchasePrice, string partOENumbers, string partProducer, string partVendor, PartMainCategory partMainCategory, PartSubCategory partSubCategory, decimal partMountTime)
@@ -35,9 +35,9 @@ namespace AutoService.Models.Models
         public PartMainCategory PartMainCategory { get; }
         public PartSubCategory PartSubCategory { get; }
 
-        public string PartName
+        public string Name
         {
-            get { return this.partName; }
+            get { return this.name; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value) || value == string.Empty)
@@ -48,13 +48,13 @@ namespace AutoService.Models.Models
                 {
                     throw new ArgumentException("Max Length 500 symbols.");
                 }
-                this.partName = value;
+                this.name = value;
             }
         }
 
-        public string PartNumber
+        public string Number
         {
-            get { return this.partNumber; }
+            get { return this.number; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value) || value == string.Empty)
@@ -65,26 +65,26 @@ namespace AutoService.Models.Models
                 {
                     throw new ArgumentException("Max Length 100 symbols.");
                 }
-                this.partNumber = value;
+                this.number = value;
             }
         }
 
-        public decimal PartPurchasePrice
+        public decimal PurchasePrice
         {
-            get { return this.partPurchasePrice; }
+            get { return this.purchasePrice; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentException("Price must be greater than 0.");
                 }
-                this.partPurchasePrice = value;
+                this.purchasePrice = value;
             }
         }
 
-        public string PartOENumbers
+        public string OENumbers
         {
-            get { return this.partOENumbers; }
+            get { return this.oeNumbers; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value) || value == string.Empty)
@@ -95,13 +95,13 @@ namespace AutoService.Models.Models
                 {
                     throw new ArgumentException("Max Length 500 symbols.");
                 }
-                this.partOENumbers = value;
+                this.oeNumbers = value;
             }
         }
 
-        public string PartProducer
+        public string Producer
         {
-            get { return this.partProducer; }
+            get { return this.producer; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value) || value == string.Empty)
@@ -112,13 +112,13 @@ namespace AutoService.Models.Models
                 {
                     throw new ArgumentException("Max Length 200 symbols.");
                 }
-                this.partProducer = value;
+                this.producer = value;
             }
         }
 
-        public string PartVendor
+        public string Vendor
         {
-            get { return this.partVendor; }
+            get { return this.vendor; }
             set
             {
                 if (string.IsNullOrWhiteSpace(value) || value == string.Empty)
@@ -129,20 +129,20 @@ namespace AutoService.Models.Models
                 {
                     throw new ArgumentException("Max Length 200 symbols.");
                 }
-                this.partVendor = value;
+                this.vendor = value;
             }
         }
 
         public decimal PartMountTime
         {
-            get { return this.partMountTime; }
+            get { return this.mountTime; }
             set
             {
                 if (value < 0)
                 {
                     throw new ArgumentException("Time to mount the part must be greater than 0.");
                 }
-                this.partMountTime = value;
+                this.mountTime = value;
             }
         }
 
