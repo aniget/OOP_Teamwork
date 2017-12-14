@@ -9,6 +9,7 @@ namespace AutoService.Models.Models
         private string number;
         private decimal amount;
         private PaymentType paymentType;
+        private decimal paidAmount;
 
         public Invoice(string number, decimal amount, PaymentType paymentType)
         {
@@ -27,8 +28,37 @@ namespace AutoService.Models.Models
             this.paymentType = paymentType;
         }
 
-        public string Number { get { return this.number; } }
-        public decimal Amount { get { return this.amount; } }
-        public PaymentType PaymentType { get { return this.paymentType; } }
+        public string Number => this.number;
+        public decimal Amount => this.amount;
+        public PaymentType PaymentType => this.paymentType;
+
+        public decimal PaidAmount
+        {
+            get => this.paidAmount;
+            private set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Paid amount cannot be negative!");
+                }
+                this.paidAmount = value;
+            }
+        }
+
+        public void IncreasePaidAmount(decimal amount)
+        {
+            if (amount < 0)
+            {
+                throw new ArgumentException("Paid amount cannot be negative!");
+            }
+            decimal paidAmount = this.paidAmount + amount;
+            this.paidAmount = paidAmount;
+        }
+
+        public decimal GetOutstandingBalance()
+        {
+            decimal outstandingAmount = this.amount - this.paidAmount;
+            return outstandingAmount;
+        }
     }
 }
