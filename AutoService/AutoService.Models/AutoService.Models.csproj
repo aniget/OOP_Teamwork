@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IPart.cs" />
+    <Compile Include="Enums\EmploymentType.cs" />
     <Compile Include="Enums\PartMainCategory.cs" />
     <Compile Include="Enums\PartSubCategory.cs" />
     <Compile Include="Contracts\IInvoice.cs" />
@@ -51,7 +52,6 @@
     <Compile Include="Contracts\ICompany.cs" />
     <Compile Include="Contracts\IVendor.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\Vendor.cs" />
