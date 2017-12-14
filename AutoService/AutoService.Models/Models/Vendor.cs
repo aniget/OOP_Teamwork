@@ -11,10 +11,5 @@ namespace AutoService.Models.Models
         public Vendor(string name, string address, string uniqueNumber, decimal creditLimit, string taxNumber) : base(name, address, uniqueNumber, creditLimit, taxNumber)
         {
         }
-
-        public void PayInvoices()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

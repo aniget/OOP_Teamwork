@@ -1,4 +1,5 @@
 ﻿using AutoService.Models.Enums;
+using AutoService.Models.Models;
 
 namespace AutoService.Models.Contracts
 {
@@ -7,12 +8,12 @@ namespace AutoService.Models.Contracts
         string FirstName { get; }
         string LastName { get; }
         decimal Salary { get; }
-        string Position { get; }
+        Position Position { get; }
         EmploymentType EmploymentType { get; }
         bool IsStillHired { get; }
 
         void ChangeSalary(decimal salary);
-        void ChangePosition(string position);
+        void ChangePosition(Position position);
         void FireEmployee();
     }
 }

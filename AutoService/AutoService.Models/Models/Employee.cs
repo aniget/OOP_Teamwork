@@ -10,11 +10,11 @@ namespace AutoService.Models.Models
         private string firstName;
         private string lastName;
         private decimal salary;
-        private string position;
+        private Position position;
         private EmploymentType employmentType;
         private bool isStillHired;
 
-        public Employee(string firstName, string lastName, decimal salary, string position, EmploymentType employmentType)
+        public Employee(string firstName, string lastName, decimal salary, Position position, EmploymentType employmentType)
         {
             this.FirstName = firstName;
             this.LastName = lastName;
@@ -70,20 +70,13 @@ namespace AutoService.Models.Models
                 this.salary = value;
             }
         }
-        public string Position
+        public Position Position
         {
             get
             {
                 return this.position;
             }
-            private set
-            {
-                if (string.IsNullOrWhiteSpace(position))
-                {
-                    throw new ArgumentException("Invalid position!");
-                }
-                this.position = value;
-            }
+            set { this.position = value; }
         }
 
         public EmploymentType EmploymentType
@@ -103,7 +96,7 @@ namespace AutoService.Models.Models
             this.Salary = salary;
         }
 
-        public void ChangePosition(string position)
+        public void ChangePosition(Position position)
         {
             this.Position = position;
         }

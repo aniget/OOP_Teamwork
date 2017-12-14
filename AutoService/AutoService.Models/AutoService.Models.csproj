@@ -55,6 +55,7 @@
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\Position.cs" />
     <Compile Include="Models\Vendor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

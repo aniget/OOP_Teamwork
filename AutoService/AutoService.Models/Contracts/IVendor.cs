@@ -7,6 +7,6 @@ namespace AutoService.Models.Contracts
     {
         //ICollection<Invoice> Invoices { get; }
 
-        void PayInvoices();
+        
     }
 }
