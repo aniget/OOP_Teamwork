@@ -154,27 +154,32 @@ namespace AutoService.Models.Models
         {
             //Contact Vendor and ask for Part by providing PartOENUmber OR PartNumber 
             //Vendor confirms delivery time
+            throw new NotImplementedException();
         }
 
         public void ReceivePart()
         {
             //Add part to the client's "ShoppingCart"
+            throw new NotImplementedException();
         }
 
         public void PayPart()
         {
             //Reduce our Acounts Payable with this Vendor
+            throw new NotImplementedException();
         }
 
         public void MountPart()
         {
             //Move part from "ShoppingCart" to Employee to CAR depending on Mount Time 
+            throw new NotImplementedException();
         }
 
         public void ReturnPartToSupplier()
         {
             //PartNumber orderd <> PartNumber Received
             //Reduce Accounts Payable
+            throw new NotImplementedException();
         }
 
         public decimal GeneratePartSellPrice(decimal partPurchasePrice)

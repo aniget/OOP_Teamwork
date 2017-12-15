@@ -40,13 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\EngineType.cs" />
+    <Compile Include="Contracts\ICar.cs" />
     <Compile Include="Contracts\IEmployee.cs" />
     <Compile Include="Contracts\IPart.cs" />
+    <Compile Include="Enums\BrandType.cs" />
     <Compile Include="Enums\EmploymentType.cs" />
     <Compile Include="Enums\PartMainCategory.cs" />
     <Compile Include="Enums\PartSubCategory.cs" />
     <Compile Include="Contracts\IInvoice.cs" />
     <Compile Include="Enums\PaymentType.cs" />
+    <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Contracts\IClient.cs" />
