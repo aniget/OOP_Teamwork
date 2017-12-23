@@ -11,25 +11,24 @@ namespace AutoService.Models.Models
         private string lastName;
         private decimal salary;
         private Position position;
+        private decimal ratePerMinute;
         private EmploymentType employmentType;
         private bool isStillHired;
 
-        public Employee(string firstName, string lastName, decimal salary, Position position, EmploymentType employmentType)
+        public Employee(string firstName, string lastName, decimal salary, Position position, decimal ratePerMinute, EmploymentType employmentType)
         {
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Salary = salary;
             this.Position = position;
+            this.RatePerMinute = ratePerMinute;
             this.EmploymentType = employmentType;
             this.IsStillHired = true;
         }
 
         public string FirstName
         {
-            get
-            {
-                return this.firstName;
-            }
+            get => this.firstName;
             private set
             {
                 if (string.IsNullOrWhiteSpace(value) || value.Any(char.IsDigit))
@@ -42,10 +41,8 @@ namespace AutoService.Models.Models
 
         public string LastName
         {
-            get
-            {
-                return this.lastName;
-            }
+            get => this.lastName;
+
             private set
             {
                 if (string.IsNullOrWhiteSpace(value) || value.Any(char.IsDigit))
@@ -57,10 +54,8 @@ namespace AutoService.Models.Models
         }
         public decimal Salary
         {
-            get
-            {
-                return this.salary;
-            }
+            get => this.salary;
+            
             private set
             {
                 if (value < 0)
@@ -72,11 +67,14 @@ namespace AutoService.Models.Models
         }
         public Position Position
         {
-            get
-            {
-                return this.position;
-            }
-            set { this.position = value; }
+            get => this.position;
+            private set { this.position = value; }
+        }
+
+        public decimal RatePerMinute
+        {
+            get => this.ratePerMinute;
+            private set { this.ratePerMinute = value; } // Add validation
         }
 
         public EmploymentType EmploymentType
@@ -87,7 +85,7 @@ namespace AutoService.Models.Models
 
         public bool IsStillHired
         {
-            get { return this.isStillHired; }
+            get => this.isStillHired;
             private set { this.isStillHired = value; }
         }
 
@@ -104,6 +102,11 @@ namespace AutoService.Models.Models
         public void FireEmployee()
         {
             this.IsStillHired = false;
+        }
+
+        public void ChangeRate(decimal ratePerMinutes)
+        {
+            this.RatePerMinute = ratePerMinutes;
         }
     }
 }

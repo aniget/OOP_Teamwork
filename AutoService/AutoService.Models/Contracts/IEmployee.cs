@@ -9,11 +9,13 @@ namespace AutoService.Models.Contracts
         string LastName { get; }
         decimal Salary { get; }
         Position Position { get; }
+        decimal RatePerMinute { get; }
         EmploymentType EmploymentType { get; }
         bool IsStillHired { get; }
 
         void ChangeSalary(decimal salary);
         void ChangePosition(Position position);
         void FireEmployee();
+        void ChangeRate(decimal ratePerMinute);
     }
 }

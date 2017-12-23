@@ -18,9 +18,9 @@ namespace AutoService.Models.Models
             }
             private set
             {
-                if (string.IsNullOrWhiteSpace(name))
+                if (string.IsNullOrWhiteSpace(value) || value.Length < 2)
                 {
-                    throw new ArgumentException("Invalid position!");
+                    throw new ArgumentException("Invalid position, must be at least 2 characters!");
                 }
                 this.name = value;
             }

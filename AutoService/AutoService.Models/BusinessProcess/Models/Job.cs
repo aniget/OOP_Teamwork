@@ -6,6 +6,8 @@ namespace AutoService.Models.Models
     {
         public int RequiredTimeInMinutes { get; }
 
+        public bool IsFinished { get; }
+
         public decimal CalculateInternalCost()
         {
             throw new System.NotImplementedException();

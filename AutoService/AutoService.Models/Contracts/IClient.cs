@@ -1,11 +1,13 @@
-﻿namespace AutoService.Models.Contracts
+﻿using System.Collections;
+using System.Collections.Generic;
+using AutoService.Models.BusinessProcess.Contracts;
+
+namespace AutoService.Models.Contracts
 {
-    public interface IClient : ICompany
+    public interface IClient
     {
         int DueDaysAllowed { get; }
 
         void UpdateDueDays(int dueDays);
-
-        void SendReminderForOutstandingInvoice();
     }
 }

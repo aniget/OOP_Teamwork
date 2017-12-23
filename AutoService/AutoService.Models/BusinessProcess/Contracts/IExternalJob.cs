@@ -8,7 +8,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
         Employee Employee { get; }
         IClient Client { get; }
 
-        decimal PricePerMinute { get;}
+        decimal PricePerMinute { get; }
 
         decimal CalculateRevenue(int requiredTimeInMinutes, decimal pricePerMinute);
     }

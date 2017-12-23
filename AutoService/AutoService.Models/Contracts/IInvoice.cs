@@ -6,9 +6,8 @@ namespace AutoService.Models.Contracts
     {
         string Number { get; }
         decimal Amount { get; }
-        PaymentType PaymentType { get; }
         decimal PaidAmount { get; }
-        
+
         void IncreasePaidAmount(decimal amount);
         decimal GetOutstandingBalance();
     }

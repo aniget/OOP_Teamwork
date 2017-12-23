@@ -50,6 +50,7 @@
     <Compile Include="BusinessProcess\Models\ExternalIndividualsJob.cs" />
     <Compile Include="BusinessProcess\Models\ExternalJob.cs" />
     <Compile Include="BusinessProcess\Models\InternalJob.cs" />
+    <Compile Include="Contracts\IIndividual.cs" />
     <Compile Include="Enums\EngineType.cs" />
     <Compile Include="Contracts\ICar.cs" />
     <Compile Include="Contracts\IEmployee.cs" />
@@ -61,17 +62,16 @@
     <Compile Include="Contracts\IInvoice.cs" />
     <Compile Include="Enums\PaymentType.cs" />
     <Compile Include="Models\Car.cs" />
-    <Compile Include="Models\Client.cs" />
-    <Compile Include="Models\Company.cs" />
     <Compile Include="Contracts\IClient.cs" />
-    <Compile Include="Contracts\ICompany.cs" />
-    <Compile Include="Contracts\IVendor.cs" />
+    <Compile Include="Contracts\IBusiness.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\BusinessClient.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\IndividualClient.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="BusinessProcess\Models\Job.cs" />
-    <Compile Include="Models\Vendor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
