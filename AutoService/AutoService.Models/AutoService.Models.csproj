@@ -40,6 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessProcess\Contracts\IExternalBusinessJob.cs" />
+    <Compile Include="BusinessProcess\Contracts\IExternalIndividualsJob.cs" />
+    <Compile Include="BusinessProcess\Contracts\IExternalJob.cs" />
+    <Compile Include="BusinessProcess\Contracts\IInternalJob.cs" />
+    <Compile Include="BusinessProcess\Contracts\IJob.cs" />
+    <Compile Include="BusinessProcess\Enums\DepartmentType.cs" />
+    <Compile Include="BusinessProcess\Models\ExternalBusinessJob.cs" />
+    <Compile Include="BusinessProcess\Models\ExternalIndividualsJob.cs" />
+    <Compile Include="BusinessProcess\Models\ExternalJob.cs" />
+    <Compile Include="BusinessProcess\Models\InternalJob.cs" />
     <Compile Include="Enums\EngineType.cs" />
     <Compile Include="Contracts\ICar.cs" />
     <Compile Include="Contracts\IEmployee.cs" />
@@ -60,6 +70,7 @@
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\Position.cs" />
+    <Compile Include="BusinessProcess\Models\Job.cs" />
     <Compile Include="Models\Vendor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
