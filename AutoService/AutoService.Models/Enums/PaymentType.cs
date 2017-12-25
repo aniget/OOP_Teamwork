@@ -4,6 +4,7 @@
     {
         Bank,
         Cash,
-        Card
+        Card,
+        Credit //check enum CreditTerm
     }
 }

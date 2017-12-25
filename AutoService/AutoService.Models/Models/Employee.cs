@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 
@@ -10,12 +12,12 @@ namespace AutoService.Models.Models
         private string firstName;
         private string lastName;
         private decimal salary;
-        private Position position;
+        private string position;
         private decimal ratePerMinute;
         private EmploymentType employmentType;
         private bool isStillHired;
 
-        public Employee(string firstName, string lastName, decimal salary, Position position, decimal ratePerMinute, EmploymentType employmentType)
+        public Employee(string firstName, string lastName, decimal salary, string position, decimal ratePerMinute, EmploymentType employmentType)
         {
             this.FirstName = firstName;
             this.LastName = lastName;
@@ -65,7 +67,7 @@ namespace AutoService.Models.Models
                 this.salary = value;
             }
         }
-        public Position Position
+        public string Position
         {
             get => this.position;
             private set { this.position = value; }
@@ -83,18 +85,32 @@ namespace AutoService.Models.Models
             set { this.employmentType = value; }
         }
 
+        public DepartmentType Department { get; }
+
         public bool IsStillHired
         {
             get => this.isStillHired;
             private set { this.isStillHired = value; }
         }
 
+        public ICollection<ResponsibilityType> Responsibiities { get; }
+
         public void ChangeSalary(decimal salary)
         {
             this.Salary = salary;
         }
+        
+        public void AddResponsibilities(ICollection<ResponsibilityType> value)
+        {
+            throw new NotImplementedException();
+        }
 
-        public void ChangePosition(Position position)
+        public void RemoveResponsibilities(ICollection<ResponsibilityType> value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangePosition(string position)
         {
             this.Position = position;
         }

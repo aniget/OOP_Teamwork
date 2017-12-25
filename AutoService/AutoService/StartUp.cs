@@ -6,6 +6,7 @@ namespace AutoService.App
     {
         static void Main()
         {
+
             Console.WriteLine();
         }
     }

@@ -2,9 +2,10 @@
 {
     public enum DepartmentType
     {
-        Administration,
+        Management,
         Sales,
         Accounting,
-        ServicesForClients
+        ServicesForClients, //Repairing
+        Warehouse
     }
 }

@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using AutoService.Models.BusinessProcess.Contracts;
+using AutoService.Models.Enums;
 
 namespace AutoService.Models.Contracts
 {
-    public interface IBusiness : IClient
+    public interface ISupplier
     {
+        LegalType SupplierType { get; }
+
         string Name { get; }
 
         string Address { get; }
@@ -13,6 +16,5 @@ namespace AutoService.Models.Contracts
 
         ICollection<IInvoice> Invoices { get; }
 
-        ICollection<IExternalBusinessJob> ServicesProvided { get; }
     }
 }

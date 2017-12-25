@@ -4,7 +4,7 @@ using System;
 
 namespace AutoService.Models.Models
 {
-    class Part : IPart  //, IVendor
+    public class Part : IPart  //, IVendor
     {
         private string name;
         private string number;
@@ -19,7 +19,7 @@ namespace AutoService.Models.Models
             this.Name = name;
             this.Number = number;
             this.PurchasePrice = purchasePrice;
-            this.OENumbers = oeNumbers;
+            this.OeNumbers = oeNumbers;
             this.Producer = producer;
             this.Vendor = vendor;
             this.PartMainCategory = mainCategory;
@@ -82,7 +82,7 @@ namespace AutoService.Models.Models
             }
         }
 
-        public string OENumbers
+        public string OeNumbers
         {
             get { return this.oeNumbers; }
             set
@@ -163,7 +163,7 @@ namespace AutoService.Models.Models
             throw new NotImplementedException();
         }
 
-        public void PayPart()
+        public void PayPartToSupplier()
         {
             //Reduce our Acounts Payable with this Vendor
             throw new NotImplementedException();

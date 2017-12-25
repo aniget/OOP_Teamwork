@@ -40,17 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessProcess\Contracts\IExternalBusinessJob.cs" />
-    <Compile Include="BusinessProcess\Contracts\IExternalIndividualsJob.cs" />
-    <Compile Include="BusinessProcess\Contracts\IExternalJob.cs" />
-    <Compile Include="BusinessProcess\Contracts\IInternalJob.cs" />
-    <Compile Include="BusinessProcess\Contracts\IJob.cs" />
+    <Compile Include="BusinessProcess\Contracts\IOrderService.cs" />
+    <Compile Include="BusinessProcess\Contracts\IOrderPartForClient.cs" />
+    <Compile Include="BusinessProcess\Contracts\IOrderPart.cs" />
+    <Compile Include="BusinessProcess\Contracts\ISellPart.cs" />
+    <Compile Include="BusinessProcess\Contracts\ISellService.cs" />
+    <Compile Include="BusinessProcess\Contracts\IWork.cs" />
+    <Compile Include="BusinessProcess\Contracts\IOrder.cs" />
+    <Compile Include="BusinessProcess\Contracts\IRepairAsset.cs" />
+    <Compile Include="BusinessProcess\Contracts\ISell.cs" />
+    <Compile Include="BusinessProcess\Enums\TypeOfWork.cs" />
     <Compile Include="BusinessProcess\Enums\DepartmentType.cs" />
-    <Compile Include="BusinessProcess\Models\ExternalBusinessJob.cs" />
-    <Compile Include="BusinessProcess\Models\ExternalIndividualsJob.cs" />
-    <Compile Include="BusinessProcess\Models\ExternalJob.cs" />
-    <Compile Include="BusinessProcess\Models\InternalJob.cs" />
-    <Compile Include="Contracts\IIndividual.cs" />
+    <Compile Include="BusinessProcess\Enums\ResponsibilityType.cs" />
+    <Compile Include="BusinessProcess\Models\Buy.cs" />
+    <Compile Include="BusinessProcess\Models\RepairAsset.cs" />
+    <Compile Include="BusinessProcess\Models\SellPart.cs" />
+    <Compile Include="BusinessProcess\Models\Sell.cs" />
+    <Compile Include="BusinessProcess\Models\SellService.cs" />
+    <Compile Include="Contracts\IAsset.cs" />
+    <Compile Include="Contracts\IOrderedService.cs" />
+    <Compile Include="Contracts\ISellableService.cs" />
+    <Compile Include="Enums\CreditTerm.cs" />
+    <Compile Include="Enums\LegalType.cs" />
     <Compile Include="Enums\EngineType.cs" />
     <Compile Include="Contracts\ICar.cs" />
     <Compile Include="Contracts\IEmployee.cs" />
@@ -61,19 +72,23 @@
     <Compile Include="Enums\PartSubCategory.cs" />
     <Compile Include="Contracts\IInvoice.cs" />
     <Compile Include="Enums\PaymentType.cs" />
+    <Compile Include="Enums\CostServiceType.cs" />
+    <Compile Include="Models\Asset.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Contracts\IClient.cs" />
-    <Compile Include="Contracts\IBusiness.cs" />
+    <Compile Include="Contracts\ISupplier.cs" />
     <Compile Include="Models\Client.cs" />
-    <Compile Include="Models\BusinessClient.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\IndividualClient.cs" />
+    <Compile Include="Models\OrderedService.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Invoice.cs" />
-    <Compile Include="Models\Position.cs" />
-    <Compile Include="BusinessProcess\Models\Job.cs" />
+    <Compile Include="BusinessProcess\Models\Work.cs" />
+    <Compile Include="Models\SellableService.cs" />
+    <Compile Include="Models\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
