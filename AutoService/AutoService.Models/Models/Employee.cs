@@ -54,6 +54,9 @@ namespace AutoService.Models.Models
                 this.lastName = value;
             }
         }
+
+        public string Postion { get; }
+
         public decimal Salary
         {
             get => this.salary;

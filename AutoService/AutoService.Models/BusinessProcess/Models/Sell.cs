@@ -13,18 +13,6 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         public IClient Client { get; }
         public Vehicle Vehicle { get; }
-        public ICar Car { get; }
-        public PaymentType Payment { get; }
-        public CreditTerm Credit { get; }
-        public void PrintInvoice()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PrintReceipt()
-        {
-            throw new NotImplementedException();
-        }
 
         public decimal CalculateRevenue(int requiredTimeInMinutes, decimal pricePerMinute)
         {

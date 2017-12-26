@@ -9,9 +9,7 @@ namespace AutoService.Models.Models
 {
     public class Asset : IAsset
     {
-        public int Id { get; }
         public string Name { get; }
         public DateTime RegistrationDate { get; }
-        public decimal PurchasePrice { get; }
     }
 }

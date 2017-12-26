@@ -16,19 +16,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
 
         Vehicle Vehicle { get; }
 
-        //decimal Price { get; }
-
-        //PaymentType Payment { get; } // make it simple - let's delete
-
-        //CreditTerm Credit { get; } // make it simple - let's delete
-
-        //decimal PricePerMinute { get; } //PricePerMinute will come from Employee/s assigned on the job
-
-        //void PrintInvoice();
-
-        //void PrintReceipt();
-
-        decimal CalculateRevenue(int requiredTimeInMinutes, decimal pricePerMinute);
+       decimal CalculateRevenue(int requiredTimeInMinutes, decimal pricePerMinute);
 
     }
 }

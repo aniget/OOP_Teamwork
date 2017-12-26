@@ -12,7 +12,6 @@ namespace AutoService.Models.BusinessProcess.Models
 {
     public class SellPart : Sell, ISellStock
     {
-        public IStock Part { get; }
         public IStock Stock { get; }
     }
 }

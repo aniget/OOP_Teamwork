@@ -16,10 +16,6 @@ namespace AutoService.Models.Contracts
 
         string Vendor { get; }
 
-        //below two are not part of the Interface because they are decided when parts are put in warehouse, not when they are "interfaced" between Vendor and AutoService
-        //PartMainCategory partMainCategory { get; }
-        //PartSubCategory partSubCategory { get; }
-
         void OrderPart();
 
         void ReceivePart();

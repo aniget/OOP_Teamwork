@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessProcess\Contracts\IOrderService.cs" />
+    <Compile Include="BusinessProcess\Contracts\WWW_IOrderService.cs" />
     <Compile Include="BusinessProcess\Contracts\IOrderPartForClient.cs" />
     <Compile Include="BusinessProcess\Contracts\IOrderStock.cs" />
     <Compile Include="BusinessProcess\Contracts\ISellStock.cs" />
@@ -50,8 +50,8 @@
     <Compile Include="BusinessProcess\Contracts\WWW_IRepairAsset.cs" />
     <Compile Include="BusinessProcess\Contracts\ISell.cs" />
     <Compile Include="BusinessProcess\Enums\TypeOfWork.cs" />
-    <Compile Include="BusinessProcess\Enums\DepartmentType.cs" />
-    <Compile Include="BusinessProcess\Enums\ResponsibilityType.cs" />
+    <Compile Include="Enums\DepartmentType.cs" />
+    <Compile Include="Enums\ResponsibilityType.cs" />
     <Compile Include="BusinessProcess\Models\Order.cs" />
     <Compile Include="BusinessProcess\Models\OrderPart.cs" />
     <Compile Include="BusinessProcess\Models\OrderPartForClient.cs" />
@@ -60,7 +60,7 @@
     <Compile Include="BusinessProcess\Models\SellService.cs" />
     <Compile Include="Contracts\IAsset.cs" />
     <Compile Include="Contracts\WWW_IOrderedService.cs" />
-    <Compile Include="Contracts\ISellableService.cs" />
+    <Compile Include="Contracts\WWW_ISellableService.cs" />
     <Compile Include="Enums\WWW_CreditTerm.cs" />
     <Compile Include="Enums\LegalType.cs" />
     <Compile Include="Enums\EngineType.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="BusinessProcess\Models\Work.cs" />
-    <Compile Include="Models\SellableService.cs" />
+    <Compile Include="Models\WWW_SellableService.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

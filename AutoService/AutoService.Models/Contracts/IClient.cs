@@ -18,8 +18,8 @@ namespace AutoService.Models.Contracts
 
         ICollection<IInvoice> Invoices { get; }
 
-        int DueDaysAllowed { get; }
-
+        //int DueDaysAllowed { get; } //optional
+        
         decimal Discount { get; }
 
         void UpdateDueDays(int dueDays);

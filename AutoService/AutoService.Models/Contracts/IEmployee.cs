@@ -10,6 +10,7 @@ namespace AutoService.Models.Contracts
     {
         string FirstName { get; }
         string LastName { get; }
+        string Postion { get; }
         decimal Salary { get; }
         decimal RatePerMinute { get; }
         EmploymentType EmploymentType { get; }
@@ -22,7 +23,6 @@ namespace AutoService.Models.Contracts
         void AddResponsibilities(ICollection<ResponsibilityType> value);
         void RemoveResponsibilities(ICollection<ResponsibilityType> value);
         void ChangeRate(decimal ratePerMinute);
-
         void FireEmployee();
     }
 }

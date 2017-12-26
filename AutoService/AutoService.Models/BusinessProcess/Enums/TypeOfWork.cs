@@ -2,7 +2,7 @@
 {
     public enum TypeOfWork
     {
-        WorkGeneratingRevenue = 1,
-        WorkGeneratingCost  = 2
+        Selling = 1,
+        Ordering  = 2
     }
 }

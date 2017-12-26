@@ -12,7 +12,5 @@ namespace AutoService.Models.Contracts
         string Name { get; }
         DateTime RegistrationDate { get; }
         
-        //int Id { get; } //to be generated
-
-    }
+     }
 }
