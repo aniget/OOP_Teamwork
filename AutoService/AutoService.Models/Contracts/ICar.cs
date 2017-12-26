@@ -12,7 +12,7 @@ namespace AutoService.Models.Contracts
 
         string RegistrationNumber { get; }
 
-        void RepairCar();
+        //void RepairCar();
 
         
 

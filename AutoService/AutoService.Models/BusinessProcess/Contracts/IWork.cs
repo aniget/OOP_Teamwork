@@ -11,13 +11,8 @@ namespace AutoService.Models.Contracts
 
         decimal Price { get; } //both Sell and Order price here
 
-        DateTime StartDateTime { get; } // to be removed
-
-        bool IsFinished { get; } // to be removed?
-
         TypeOfWork Job { get; }
 
-        decimal CalculateInternalCost(); // could be made in calculated property?
-
+        
     }
 }

@@ -6,7 +6,7 @@ namespace AutoService.Models.Contracts
 {
     public interface ISupplier
     {
-        LegalType SupplierType { get; }
+        //LegalType SupplierType { get; }
 
         string Name { get; }
 

@@ -11,5 +11,6 @@ namespace AutoService.Models.BusinessProcess.Models
     class OrderPart : Order, IOrderStock
     {
         public IStock Part { get; }
+        public IStock Stock { get; }
     }
 }

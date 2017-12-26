@@ -4,7 +4,7 @@ using System;
 
 namespace AutoService.Models.Models
 {
-    public class Part : IStock  //, IVendor
+    public class Stock : IStock  //, IVendor
     {
         private string name;
         private string number;
@@ -14,7 +14,7 @@ namespace AutoService.Models.Models
         private string vendor;
         private decimal mountTime; //measured in hours, estimation provided by Employee
 
-        public Part(string name, string number, decimal purchasePrice, string oeNumbers, string producer, string vendor, PartMainCategory mainCategory, PartSubCategory subCategory)
+        public Stock(string name, string number, decimal purchasePrice, string oeNumbers, string producer, string vendor, WWW_PartMainCategory mainCategory, WWW_PartSubCategory subCategory)
         {
             this.Name = name;
             this.Number = number;
@@ -25,15 +25,15 @@ namespace AutoService.Models.Models
             this.PartMainCategory = mainCategory;
         }
 
-        public Part(string partName, string partNumber, decimal partPurchasePrice, string partOENumbers, string partProducer, string partVendor, PartMainCategory partMainCategory, PartSubCategory partSubCategory, decimal partMountTime)
+        public Stock(string partName, string partNumber, decimal partPurchasePrice, string partOENumbers, string partProducer, string partVendor, WWW_PartMainCategory partMainCategory, WWW_PartSubCategory partSubCategory, decimal partMountTime)
             : this(partName, partNumber, partPurchasePrice, partOENumbers, partProducer, partVendor, partMainCategory, partSubCategory)
         {
             this.PartMountTime = partMountTime;
         }
 
 
-        public PartMainCategory PartMainCategory { get; }
-        public PartSubCategory PartSubCategory { get; }
+        public WWW_PartMainCategory PartMainCategory { get; }
+        public WWW_PartSubCategory PartSubCategory { get; }
 
         public string Name
         {
@@ -51,6 +51,8 @@ namespace AutoService.Models.Models
                 this.name = value;
             }
         }
+
+        public DateTime RegistrationDate { get; }
 
         public string Number
         {

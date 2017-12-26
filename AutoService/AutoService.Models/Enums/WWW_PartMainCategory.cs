@@ -1,7 +1,7 @@
 ﻿
 namespace AutoService.Models.Enums
 {
-    public enum PartMainCategory
+    public enum WWW_PartMainCategory
     {
         Body_and_main_part,
         Electrical_and_electronics,

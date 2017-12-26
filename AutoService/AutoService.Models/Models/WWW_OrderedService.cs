@@ -9,7 +9,7 @@ using AutoService.Models.Enums;
 
 namespace AutoService.Models.Models
 {
-    public class OrderedService : WWW_IOrderedService
+    public class WWW_OrderedService : WWW_IOrderedService
     {
         public CostServiceType CostService { get; }
         public DateTime PeriodStart { get; }

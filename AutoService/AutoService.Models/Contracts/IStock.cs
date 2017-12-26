@@ -2,10 +2,8 @@
 
 namespace AutoService.Models.Contracts
 {
-    public interface IStock
+    public interface IStock : IAsset
     {
-        string Name { get; }
-
         //type is string because some numbers may start with 0
         string Number { get; }
 

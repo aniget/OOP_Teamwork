@@ -9,10 +9,9 @@ namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface ISellService : ISell
     {
-        ISellableService Service { get; }
-
-        DateTime StartDateTime { get; }
-
-        bool IsFinished { get; } // let's remove
+        string Name { get; }
+        
+        int DurationInMinutes { get; }
+        
     }
 }

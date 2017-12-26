@@ -8,11 +8,11 @@ namespace AutoService.Models.Contracts
 {
     public interface IAsset
     {
-        int Id { get; }
+        
         string Name { get; }
         DateTime RegistrationDate { get; }
-        decimal PurchasePrice { get; }
-
+        
+        //int Id { get; } //to be generated
 
     }
 }

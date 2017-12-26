@@ -10,7 +10,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface IOrderService : IOrder
     {
-        IOrderedService Service { get; }
+        WWW_IOrderedService Service { get; }
 
         bool ServiceIsDelivered { get; }
 

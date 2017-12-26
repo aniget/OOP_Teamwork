@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 
@@ -44,6 +46,8 @@ namespace AutoService.Models.Models
                 this.paidAmount = value;
             }
         }
+
+        public ICollection<ISell> InvoiceItem { get; }
 
         public void IncreasePaidAmount(decimal amount)
         {

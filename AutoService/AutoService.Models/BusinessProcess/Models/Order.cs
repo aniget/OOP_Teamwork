@@ -13,7 +13,6 @@ namespace AutoService.Models.BusinessProcess.Models
     public class Order: Work, IOrder
     {
         public ISupplier Supplier { get; }
-        public decimal Price { get; }
         public PaymentType Payment { get; }
         public CreditTerm Credit { get; }
     }

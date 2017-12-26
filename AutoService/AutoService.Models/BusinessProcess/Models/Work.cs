@@ -7,6 +7,7 @@ namespace AutoService.Models.Models
     public abstract class Work : IWork
     {
         public Contracts.IEmployee ResponsibleEmployee { get; }
+        public decimal Price { get; }
         public DateTime StartDateTime { get; }
         public bool IsFinished { get; }
         public TypeOfWork Job { get; }

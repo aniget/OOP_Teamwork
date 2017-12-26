@@ -11,5 +11,7 @@ namespace AutoService.Models.BusinessProcess.Models
     class SellService : Sell, ISellService
     {
         public ISellableService Service { get; }
+        public string Name { get; }
+        public int DurationInMinutes { get; }
     }
 }

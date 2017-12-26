@@ -1,6 +1,6 @@
 ﻿namespace AutoService.Models.Enums
 {
-    public enum PartSubCategory
+    public enum WWW_PartSubCategory
     {
         Doors,
         Windows,

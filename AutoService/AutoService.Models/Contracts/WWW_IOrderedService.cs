@@ -10,7 +10,7 @@ using AutoService.Models.Enums;
 
 namespace AutoService.Models.Contracts
 {
-    public interface IOrderedService
+    public interface WWW_IOrderedService
     {
         CostServiceType CostService { get; }
         DateTime PeriodStart { get; }

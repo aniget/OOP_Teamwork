@@ -1,4 +1,6 @@
-﻿using AutoService.Models.Enums;
+﻿using System.Collections.Generic;
+using AutoService.Models.BusinessProcess.Contracts;
+using AutoService.Models.Enums;
 
 namespace AutoService.Models.Contracts
 {
@@ -7,6 +9,8 @@ namespace AutoService.Models.Contracts
         string Number { get; }
         decimal Amount { get; }
         decimal PaidAmount { get; }
+
+        ICollection<ISell> InvoiceItem { get; }
 
         void IncreasePaidAmount(decimal amount);
         decimal GetOutstandingBalance();
