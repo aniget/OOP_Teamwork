@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Dynamic;
 using AutoService.Models.BusinessProcess.Enums;
 
@@ -13,11 +13,11 @@ namespace AutoService.Models.Contracts
 
         DateTime StartDateTime { get; }
 
-        bool IsFinished { get; }
+        bool IsFinished { get; } // better to leave it here, in order to use the implementation in future classes. Will be true for each order
 
         TypeOfWork Job { get; }
 
-        decimal CalculateInternalCost();
+        decimal CalculateInternalCost(); // any idea for implementation? How to calculate? Maybe predefined internal cost?
 
     }
 }

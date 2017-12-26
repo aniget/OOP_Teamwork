@@ -88,6 +88,10 @@
     <Compile Include="Models\SellableService.cs" />
     <Compile Include="Models\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vehicles\Enums\VehicleType.cs" />
+    <Compile Include="Vehicles\Models\Bicycle.cs" />
+    <Compile Include="Vehicles\Models\Car.cs" />
+    <Compile Include="Vehicles\Models\Vehicle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
