@@ -9,7 +9,7 @@ using AutoService.Models.Models;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
-    public class RepairAsset: Work, IRepairAsset
+    public class RepairAsset: Work, WWW_IRepairAsset
     {
         public IAsset Asset { get; }
         public int EstimatedTimeInMinutes { get; }
