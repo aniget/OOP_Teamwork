@@ -7,7 +7,7 @@ namespace AutoService.Models.Vehicles.Models
     {
         public Bicycle(string model, string make, VehicleType vehicleType, IClient owner) : base(model, make, vehicleType, owner)
         {
-            this.vehicleType = VehicleType.TwoWheel;
+            this.VehicleType = VehicleType.TwoWheel;
         }
     }
 }

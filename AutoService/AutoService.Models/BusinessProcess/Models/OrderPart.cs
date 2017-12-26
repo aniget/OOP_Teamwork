@@ -8,8 +8,8 @@ using AutoService.Models.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
-    class OrderPart : Order, IOrderPart
+    class OrderPart : Order, IOrderStock
     {
-        public IPart Part { get; }
+        public IStock Part { get; }
     }
 }

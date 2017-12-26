@@ -12,14 +12,14 @@ namespace AutoService.Models.Models
 {
     public static class Warehouse
     {
-        public static ICollection<IPart> Parts { get; }
+        public static ICollection<IStock> Stocks { get; }
 
-        public static void AddPartToWarehouse(IPart part, IEmployee employee)
+        public static void AddPartToWarehouse(IStock stock, IEmployee employee)
         {
             //only employees with right (Responsibility) to SELL can perform this work
             if (employee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse))
             {
-                Parts.Add(part);
+                Stocks.Add(stock);
             }
             else
             {
@@ -28,12 +28,12 @@ namespace AutoService.Models.Models
 
         }
 
-        public static void SellPartToClient(IPart part, IEmployee employee, ICar car)
+        public static void SellPartToClient(IStock stock, IEmployee employee, ICar car)
         {
             //only employees with right (Responsibility) to SELL can perform this work
             if (employee.Responsibiities.Contains(ResponsibilityType.Sell))
             {
-                Parts.Remove(part);
+                Stocks.Remove(stock);
 
                 //Part sold may be 
             }

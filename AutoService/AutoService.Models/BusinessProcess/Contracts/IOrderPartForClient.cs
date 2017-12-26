@@ -8,8 +8,9 @@ using AutoService.Models.Enums;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {
-    public interface IOrderPartForClient : IOrderPart
+    public interface IOrderPartForClient : IOrderStock
     {
+
         void BuyPartForClientCar(ICar car);
     }
 }

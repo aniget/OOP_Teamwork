@@ -14,8 +14,8 @@ namespace AutoService.Models.BusinessProcess.Contracts
 
         decimal Price { get; }
 
-        PaymentType Payment { get; }
+        PaymentType Payment { get; } // let's remove to keep simple
 
-        CreditTerm Credit { get; }
+        CreditTerm Credit { get; } // let's remove to keep simple
     }
 }

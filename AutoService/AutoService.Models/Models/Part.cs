@@ -4,7 +4,7 @@ using System;
 
 namespace AutoService.Models.Models
 {
-    public class Part : IPart  //, IVendor
+    public class Part : IStock  //, IVendor
     {
         private string name;
         private string number;

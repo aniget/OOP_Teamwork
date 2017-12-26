@@ -42,8 +42,8 @@
   <ItemGroup>
     <Compile Include="BusinessProcess\Contracts\IOrderService.cs" />
     <Compile Include="BusinessProcess\Contracts\IOrderPartForClient.cs" />
-    <Compile Include="BusinessProcess\Contracts\IOrderPart.cs" />
-    <Compile Include="BusinessProcess\Contracts\ISellPart.cs" />
+    <Compile Include="BusinessProcess\Contracts\IOrderStock.cs" />
+    <Compile Include="BusinessProcess\Contracts\ISellStock.cs" />
     <Compile Include="BusinessProcess\Contracts\ISellService.cs" />
     <Compile Include="BusinessProcess\Contracts\IWork.cs" />
     <Compile Include="BusinessProcess\Contracts\IOrder.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Enums\EngineType.cs" />
     <Compile Include="Contracts\ICar.cs" />
     <Compile Include="Contracts\IEmployee.cs" />
-    <Compile Include="Contracts\IPart.cs" />
+    <Compile Include="Contracts\IStock.cs" />
     <Compile Include="Enums\BrandType.cs" />
     <Compile Include="Enums\EmploymentType.cs" />
     <Compile Include="Enums\PartMainCategory.cs" />

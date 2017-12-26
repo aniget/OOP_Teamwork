@@ -13,6 +13,6 @@ namespace AutoService.Models.BusinessProcess.Contracts
 
         DateTime StartDateTime { get; }
 
-        bool IsFinished { get; }
+        bool IsFinished { get; } // let's remove
     }
 }

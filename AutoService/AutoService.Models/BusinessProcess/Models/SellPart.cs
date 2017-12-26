@@ -10,8 +10,8 @@ using AutoService.Models.Enums;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
-    public class SellPart : Sell, ISellPart
+    public class SellPart : Sell, ISellStock
     {
-        public IPart Part { get; }
+        public IStock Part { get; }
     }
 }

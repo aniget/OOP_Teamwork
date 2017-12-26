@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
-using AutoService.Models.Models;
-using IEmployee = AutoService.Models.Contracts.IEmployee;
+using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {
@@ -15,13 +14,13 @@ namespace AutoService.Models.BusinessProcess.Contracts
     {
         IClient Client { get; }
 
-        ICar Car { get; }
+        Vehicle Vehicle { get; }
 
         decimal Price { get; }
 
-        PaymentType Payment { get; }
+        PaymentType Payment { get; } // make it simple - let's delete
 
-        CreditTerm Credit { get; }
+        CreditTerm Credit { get; } // make it simple - let's delete
 
         //decimal PricePerMinute { get; } //PricePerMinute will come from Employee/s assigned on the job
 

@@ -11,13 +11,13 @@ namespace AutoService.Models.Contracts
 
         decimal Price { get; } //both Sell and Order price here
 
-        DateTime StartDateTime { get; }
+        DateTime StartDateTime { get; } // to be removed
 
-        bool IsFinished { get; } // better to leave it here, in order to use the implementation in future classes. Will be true for each order
+        bool IsFinished { get; } // to be removed?
 
         TypeOfWork Job { get; }
 
-        decimal CalculateInternalCost(); // any idea for implementation? How to calculate? Maybe predefined internal cost?
+        decimal CalculateInternalCost(); // could be made in calculated property?
 
     }
 }

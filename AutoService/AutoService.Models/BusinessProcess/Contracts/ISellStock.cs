@@ -7,9 +7,9 @@ using AutoService.Models.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {
-    public interface ISellPart: ISell
+    public interface ISellStock: ISell
     {
-        IPart Part { get; }
+        IStock Stock { get; }
 
 
     }

@@ -7,7 +7,7 @@ namespace AutoService.Models.Vehicles.Models
     {
         private readonly string model;
         private readonly string make;
-        private readonly VehicleType vehicleType;
+        private VehicleType vehicleType;
         private readonly IClient owner;
 
         public Vehicle(string model, string make, VehicleType vehicleType, IClient owner)
@@ -32,6 +32,7 @@ namespace AutoService.Models.Vehicles.Models
         public VehicleType VehicleType
         {
             get => this.vehicleType;
+            protected set { this.vehicleType = value; }
         }
 
         public IClient Owner

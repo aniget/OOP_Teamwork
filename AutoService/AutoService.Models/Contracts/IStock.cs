@@ -2,7 +2,7 @@
 
 namespace AutoService.Models.Contracts
 {
-    public interface IPart
+    public interface IStock
     {
         string Name { get; }
 
