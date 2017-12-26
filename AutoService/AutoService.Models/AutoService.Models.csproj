@@ -52,7 +52,9 @@
     <Compile Include="BusinessProcess\Enums\TypeOfWork.cs" />
     <Compile Include="BusinessProcess\Enums\DepartmentType.cs" />
     <Compile Include="BusinessProcess\Enums\ResponsibilityType.cs" />
-    <Compile Include="BusinessProcess\Models\Buy.cs" />
+    <Compile Include="BusinessProcess\Models\Order.cs" />
+    <Compile Include="BusinessProcess\Models\OrderPart.cs" />
+    <Compile Include="BusinessProcess\Models\OrderPartForClient.cs" />
     <Compile Include="BusinessProcess\Models\RepairAsset.cs" />
     <Compile Include="BusinessProcess\Models\SellPart.cs" />
     <Compile Include="BusinessProcess\Models\Sell.cs" />

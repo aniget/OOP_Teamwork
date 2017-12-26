@@ -10,7 +10,7 @@ using AutoService.Models.Models;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
-    public class Buy: Work, IOrder
+    public class Order: Work, IOrder
     {
         public ISupplier Supplier { get; }
         public decimal Price { get; }

@@ -16,18 +16,18 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="AutoService.Models.BusinessProcess.Models.Buy">
+  <Class Name="AutoService.Models.BusinessProcess.Models.Order">
     <Position X="2.75" Y="3.5" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAQAAAIABAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>BusinessProcess\Models\Buy.cs</FileName>
+      <FileName>BusinessProcess\Models\Order.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AutoService.Models.BusinessProcess.Models.Sell">
     <Position X="5" Y="3.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAQQAAAABAIAAAJAACAAAAAAAAAAAAAAEAAQ=</HashCode>
+      <HashCode>AAAAAAAAAQQAAAABAIAAAJAAAAAAAAAAAAAAAAAEAAQ=</HashCode>
       <FileName>BusinessProcess\Models\Sell.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

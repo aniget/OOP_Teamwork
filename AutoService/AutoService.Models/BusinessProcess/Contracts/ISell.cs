@@ -13,8 +13,6 @@ namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface ISell : IWork
     {
-        IEmployee Employee { get; }
-
         IClient Client { get; }
 
         ICar Car { get; }

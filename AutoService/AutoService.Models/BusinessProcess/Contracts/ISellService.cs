@@ -11,5 +11,8 @@ namespace AutoService.Models.BusinessProcess.Contracts
     {
         ISellableService Service { get; }
 
+        DateTime StartDateTime { get; }
+
+        bool IsFinished { get; }
     }
 }

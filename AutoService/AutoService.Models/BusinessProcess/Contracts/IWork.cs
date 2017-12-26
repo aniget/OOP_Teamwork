@@ -9,6 +9,8 @@ namespace AutoService.Models.Contracts
         //even when job is performed by external party there is someone from the AutoService who is responsible for the completion
         IEmployee ResponsibleEmployee { get; }
 
+        decimal Price { get; } //both Sell and Order price here
+
         DateTime StartDateTime { get; }
 
         bool IsFinished { get; }

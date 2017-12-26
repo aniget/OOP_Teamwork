@@ -10,7 +10,6 @@ namespace AutoService.Models.BusinessProcess.Models
 {
     public abstract class Sell : Work, ISell
     {
-        public IEmployee Employee { get; }
         public IClient Client { get; }
         public ICar Car { get; }
         public decimal Price { get; }
