@@ -16,7 +16,7 @@ namespace AutoService.Models.Vehicles.Models
         private readonly string year;
         private readonly EngineType engine;
 
-        public Vehicle(string model, string make, VehicleType vehicleType, IClient owner, string registrationNumber,
+        public Vehicle(string model, string make, IClient owner, string registrationNumber,
             string year, EngineType engine)
         {
             if (string.IsNullOrWhiteSpace(model))
@@ -46,43 +46,25 @@ namespace AutoService.Models.Vehicles.Models
 
             this.model = model;
             this.make = make;
-            this.vehicleType = vehicleType;
             this.owner = owner;
+            this.registrationNumber = registrationNumber;
             this.year = year;
             this.engine = engine;
         }
 
-        public string Model
-        {
-            get => this.model;
-        }
+        public string Model { get => this.model; }
 
-        public string Make
-        {
-            get => this.make;
-        }
+        public string Make { get => this.make; }
 
-        public VehicleType VehicleType
-        {
-            get => this.vehicleType;
+        public VehicleType VehicleType { get => this.vehicleType; protected set { this.vehicleType = value; }}
 
-        }
-
-        public IClient Owner
-        {
-            get => this.owner;
-        }
+        public IClient Owner { get => this.owner; }
 
         public string RegistrationNumber { get => this.registrationNumber;}
 
-        public string Year
-        {
-            get => this.year;
-        }
-        public EngineType Engine
-        {
-            get => this.engine;
-        }
+        public string Year { get => this.year; }
+
+        public EngineType Engine { get => this.engine; }
 
         public override string ToString()
         {

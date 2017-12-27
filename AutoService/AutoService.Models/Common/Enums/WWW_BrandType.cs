@@ -1,6 +1,6 @@
 ﻿namespace AutoService.Models.Enums
 {
-    public enum BrandType
+    public enum WWW_BrandType
     {
         ALFAROMEO,
         AUDI,

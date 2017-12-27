@@ -4,14 +4,14 @@ using System;
 
 namespace AutoService.Models.Models
 {
-    class Car : ICar  //, IClient
+    class WWW_Car //: ICar  //, IClient
     {
-        private BrandType brand;
+        private WWW_BrandType brand;
         private string year;
         private string registrationNumber;
         private EngineType engine;
 
-        protected Car(BrandType brand, string year, EngineType engine, string registrationNumber)
+        protected WWW_Car(WWW_BrandType brand, string year, EngineType engine, string registrationNumber)
         {
             //validation
             if (string.IsNullOrWhiteSpace(year) || string.Empty == year || year.Length != 4)
@@ -32,7 +32,7 @@ namespace AutoService.Models.Models
 
         }
 
-        public BrandType Brand => this.brand;
+        public WWW_BrandType Brand => this.brand;
 
         public string Year => this.year;
 

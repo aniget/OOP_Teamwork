@@ -6,21 +6,12 @@ using AutoService.Models.Enums;
 
 namespace AutoService.Models.Contracts
 {
-    public interface IClient
+    public interface IClient : ICounterparty
     {
-        string Name { get; }
-
-        string Address { get; }
-
-        string UniqueNumber { get; }
-
-        ICollection<IInvoice> Invoices { get; }
-
         int DueDaysAllowed { get; }
         
         decimal Discount { get; }
 
         void UpdateDueDays(int dueDays); //optional
-
     }
 }

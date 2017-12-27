@@ -18,7 +18,7 @@ namespace AutoService.Models.BusinessProcess.Models
         {
         }
 
-        public ISupplier Supplier { get; }
+        public ICounterparty Supplier { get; }
 
     }
 }

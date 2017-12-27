@@ -5,7 +5,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface IOrder: IWork
     {
-        ISupplier Supplier { get; }
+        ICounterparty Supplier { get; }
 
         //PaymentType Payment { get; } // let's remove to keep simple
 

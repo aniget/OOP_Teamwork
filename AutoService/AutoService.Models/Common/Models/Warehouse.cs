@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.Models
 {
@@ -28,7 +24,7 @@ namespace AutoService.Models.Models
 
         }
 
-        public static void SellPartToClient(IStock stock, IEmployee employee, ICar car)
+        public static void SellPartToClient(IStock stock, IEmployee employee, Vehicle car)
         {
             //only employees with right (Responsibility) to SELL can perform this work
             if (employee.Responsibiities.Contains(ResponsibilityType.Sell))

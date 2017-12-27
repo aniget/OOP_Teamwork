@@ -4,7 +4,7 @@ using AutoService.Models.Enums;
 
 namespace AutoService.Models.Contracts
 {
-    public interface ISupplier
+    public interface ICounterparty
     {
         string Name { get; }
 

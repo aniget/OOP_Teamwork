@@ -9,9 +9,10 @@ namespace AutoService.Models.Vehicles.Models
     {
         private int weightAllowedInKilograms;
 
-        public Truck(string model, string make, IClient owner, int weightAllowedInKilograms, string registrationNumber, string year, EngineType engine) : base(model, make, VehicleType.Truck, owner, registrationNumber, year, engine)
+        public Truck(string model, string make, IClient owner, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms) : base(model, make, owner, registrationNumber, year, engine)
         {
-           this.WeightAllowedInKilograms = weightAllowedInKilograms;
+            this.WeightAllowedInKilograms = weightAllowedInKilograms;
+            this.VehicleType = VehicleType.Truck;
         }
 
         public virtual int WeightAllowedInKilograms
@@ -19,9 +20,9 @@ namespace AutoService.Models.Vehicles.Models
             get => this.weightAllowedInKilograms;
             protected set
             {
-                if (value <= 3500)
+                if (value < 0)
                 {
-                    throw new ArgumentException("Weight cannot be less than 3500 kilograms for trucks!");
+                    throw new ArgumentException("Invalid weight!!");
                 }
                 this.weightAllowedInKilograms = value;
             }
@@ -29,8 +30,8 @@ namespace AutoService.Models.Vehicles.Models
 
         public override string ToString()
         {
-            return base.ToString() + Environment.NewLine + 
-                $"Maximum WeightCapacity: {this.WeightAllowedInKilograms} kgs";
+            return base.ToString() + Environment.NewLine +
+                $"-- Maximum WeightCapacity: {this.WeightAllowedInKilograms} kgs";
         }
     }
 }
