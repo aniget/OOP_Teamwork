@@ -1,4 +1,7 @@
-﻿using AutoService.Models.Contracts;
+﻿using System;
+using System.Linq;
+using AutoService.Models.Contracts;
+using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Vehicles.Models
@@ -9,14 +12,44 @@ namespace AutoService.Models.Vehicles.Models
         private readonly string make;
         private VehicleType vehicleType;
         private readonly IClient owner;
+        private readonly string registrationNumber;
+        private readonly string year;
+        private readonly EngineType engine;
 
-        public Vehicle(string model, string make, VehicleType vehicleType, IClient owner)
+        public Vehicle(string model, string make, VehicleType vehicleType, IClient owner, string registrationNumber,
+            string year, EngineType engine)
         {
-            //TODO Add validations in this constructor and fields readonly, because each vehicle will be only once assigned in our system. Even if a new owner buys it we will add it with another owner in order to keep history of previous ownership.
+            if (string.IsNullOrWhiteSpace(model))
+            {
+                throw new ArgumentException("Please provide a valid model!");
+            }
+
+            if (string.IsNullOrWhiteSpace(make))
+            {
+                throw new ArgumentException("Please provide a valid model!");
+            }
+
+            if (owner == null)
+            {
+                throw new ArgumentException("Invalid owner!");
+            }
+
+            if (string.IsNullOrWhiteSpace(registrationNumber) || registrationNumber.Length < 6)
+            {
+                throw new ArgumentException("Invalid registration number. Must be at least 6 characters!");
+            }
+
+            if (string.IsNullOrWhiteSpace(year) || year.Any(a => !char.IsDigit(a)) || int.Parse(year) < 1900)
+            {
+                throw new ArgumentException("Invalid year!");
+            }
+
             this.model = model;
             this.make = make;
             this.vehicleType = vehicleType;
             this.owner = owner;
+            this.year = year;
+            this.engine = engine;
         }
 
         public string Model
@@ -32,12 +65,35 @@ namespace AutoService.Models.Vehicles.Models
         public VehicleType VehicleType
         {
             get => this.vehicleType;
-            protected set { this.vehicleType = value; }
+
         }
 
         public IClient Owner
         {
             get => this.owner;
+        }
+
+        public string RegistrationNumber { get => this.registrationNumber;}
+
+        public string Year
+        {
+            get => this.year;
+        }
+        public EngineType Engine
+        {
+            get => this.engine;
+        }
+
+        public override string ToString()
+        {
+            return $"Vehicle: {this.GetType().Name}" + Environment.NewLine +
+                   $"-- Make: {this.Make}" + Environment.NewLine +
+                   $"-- Model: {this.Model}" + Environment.NewLine +
+                   $"-- Year: {this.Year}" + Environment.NewLine + 
+                   $"-- Engine: {this.Engine}" + Environment.NewLine +
+                   $"-- Number of tires: {(int)this.VehicleType}" + Environment.NewLine +
+                   $"-- Registration number: {this.RegistrationNumber}" + Environment.NewLine +
+                   $"-- Owner: {this.Owner.Name}";
         }
     }
 }

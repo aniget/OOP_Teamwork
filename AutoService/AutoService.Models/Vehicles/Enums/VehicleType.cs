@@ -2,7 +2,8 @@
 {
     public enum VehicleType
     {
-        TwoWheel = 2,
-        FourWheel = 4
+        Car = 4,
+        SmallTruck = 6,
+        Truck = 10
     }
 }

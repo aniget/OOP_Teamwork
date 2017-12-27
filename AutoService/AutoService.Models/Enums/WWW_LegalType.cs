@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoService.Models.Enums
 {
-    public enum LegalType
+    public enum WWW_LegalType
     {
         Company = 1,
         Individual = 2

@@ -10,6 +10,7 @@ namespace AutoService.Models.Models
     public class Asset : IAsset
     {
         public string Name { get; }
+        public IEmployee ResponsibleEmployee { get; }
         public DateTime RegistrationDate { get; }
     }
 }

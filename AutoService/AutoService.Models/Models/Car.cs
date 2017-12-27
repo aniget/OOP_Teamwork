@@ -4,7 +4,7 @@ using System;
 
 namespace AutoService.Models.Models
 {
-    class Car: ICar  //, IClient
+    class Car : ICar  //, IClient
     {
         private BrandType brand;
         private string year;
@@ -14,7 +14,7 @@ namespace AutoService.Models.Models
         protected Car(BrandType brand, string year, EngineType engine, string registrationNumber)
         {
             //validation
-            if (string.IsNullOrWhiteSpace(year) || string.Empty == year || year.Length != 4 )
+            if (string.IsNullOrWhiteSpace(year) || string.Empty == year || year.Length != 4)
             {
                 throw new ArgumentException("Null or Invalid year, must be of format YYYY");
             }
@@ -23,7 +23,7 @@ namespace AutoService.Models.Models
             {
                 throw new ArgumentException("Null or Invalid Registration Number, must be up to 10 char long");
             }
-            
+
             //inicialization
             this.brand = brand;
             this.year = year;
@@ -41,30 +41,5 @@ namespace AutoService.Models.Models
         public string RegistrationNumber => this.registrationNumber;
 
 
-        //methods
-
-        public void AssignCarToEmployee()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RegisterCarProblems()
-        {
-            /*based on discussion with client*/
-            throw new NotImplementedException();
-        }
-
-        public void ExamineCar()
-        {
-            //may change the problems stated by client
-            throw new NotImplementedException();
-        }
-
-        public void RepairCar()
-        {
-            throw new NotImplementedException();
-        }
-
-        
     }
 }

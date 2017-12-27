@@ -14,19 +14,19 @@ namespace AutoService.Models.Contracts
 
         string Producer { get; }
 
-        string Vendor { get; }
+        ISupplier Vendor { get; }
 
-        void OrderPart();
+        //void OrderPart();
 
-        void ReceivePart();
+        //void ReceivePart();
 
-        void PayPartToSupplier();
+        //void PayPartToSupplier();
 
-        void MountPart();
+        //void MountPart();
 
-        void ReturnPartToSupplier();
+        //void ReturnPartToSupplier();
 
-        decimal GeneratePartSellPrice(decimal partPurchasePrice);
+        //decimal GeneratePartSellPrice(decimal partPurchasePrice);
 
     }
 }

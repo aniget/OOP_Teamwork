@@ -11,10 +11,5 @@ namespace AutoService.Models.Contracts
         EngineType Engine { get; }
 
         string RegistrationNumber { get; }
-
-        //void RepairCar();
-
-        
-
     }
 }

@@ -8,8 +8,6 @@ namespace AutoService.Models.Contracts
 {
     public interface IClient
     {
-        LegalType Legal { get; }
-
         string Name { get; }
 
         string Address { get; }
@@ -18,11 +16,11 @@ namespace AutoService.Models.Contracts
 
         ICollection<IInvoice> Invoices { get; }
 
-        //int DueDaysAllowed { get; } //optional
+        int DueDaysAllowed { get; }
         
         decimal Discount { get; }
 
-        void UpdateDueDays(int dueDays);
+        void UpdateDueDays(int dueDays); //optional
 
     }
 }

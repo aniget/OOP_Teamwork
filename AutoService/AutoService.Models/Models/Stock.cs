@@ -13,6 +13,7 @@ namespace AutoService.Models.Models
         private string producer;
         private string vendor;
         private decimal mountTime; //measured in hours, estimation provided by Employee
+        private ISupplier _vendor;
 
         public Stock(string name, string number, decimal purchasePrice, string oeNumbers, string producer, string vendor, WWW_PartMainCategory mainCategory, WWW_PartSubCategory subCategory)
         {
@@ -51,6 +52,8 @@ namespace AutoService.Models.Models
                 this.name = value;
             }
         }
+
+        public IEmployee ResponsibleEmployee { get; }
 
         public DateTime RegistrationDate { get; }
 
@@ -116,6 +119,11 @@ namespace AutoService.Models.Models
                 }
                 this.producer = value;
             }
+        }
+
+        ISupplier IStock.Vendor
+        {
+            get { return _vendor; }
         }
 
         public string Vendor

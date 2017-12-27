@@ -7,12 +7,12 @@ namespace AutoService.Models.Contracts
     public interface IInvoice
     {
         string Number { get; }
-        decimal Amount { get; }
+        decimal Amount { get; } // Calculated property based on invoiceItems
         decimal PaidAmount { get; }
 
-        ICollection<ISell> InvoiceItem { get; }
+        ICollection<ISell> InvoiceItems { get; }
 
         void IncreasePaidAmount(decimal amount);
-        decimal GetOutstandingBalance();
+        decimal GetOutstandingBalance(); // Calculated property Amount - PaidAmount
     }
 }

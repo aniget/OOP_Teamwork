@@ -1,6 +1,6 @@
 ﻿namespace AutoService.Models.Enums
 {
-    public enum PaymentType
+    public enum WWW_PaymentType
     {
         Bank,
         Cash,

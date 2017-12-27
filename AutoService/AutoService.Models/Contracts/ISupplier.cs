@@ -6,8 +6,6 @@ namespace AutoService.Models.Contracts
 {
     public interface ISupplier
     {
-        //LegalType SupplierType { get; }
-
         string Name { get; }
 
         string Address { get; }
@@ -15,6 +13,5 @@ namespace AutoService.Models.Contracts
         string UniqueNumber { get; }
 
         ICollection<IInvoice> Invoices { get; }
-
     }
 }
