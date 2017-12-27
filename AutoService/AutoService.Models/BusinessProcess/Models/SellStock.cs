@@ -12,6 +12,12 @@ namespace AutoService.Models.BusinessProcess.Models
 {
     public class SellPart : Sell, ISellStock
     {
+        
+        public SellPart(IEmployee responsibleEmployee, decimal price, TypeOfWork job) : base(responsibleEmployee, price, job)
+        {
+        }
+
         public IStock Stock { get; }
+
     }
 }

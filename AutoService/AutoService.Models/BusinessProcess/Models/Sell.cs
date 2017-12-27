@@ -11,6 +11,13 @@ namespace AutoService.Models.BusinessProcess.Models
 {
     public abstract class Sell : Work, ISell
     {
+        //TODO: change type of vehicle from Vehicle to IVehicle once clarify with Alex what's going on
+        protected Sell(IEmployee responsibleEmployee, decimal price, TypeOfWork job, IClient client, Vehicle vehicle) : base(responsibleEmployee, price, job)
+        {
+            Client = client;
+            Vehicle = vehicle;
+        }
+
         public IClient Client { get; }
         public Vehicle Vehicle { get; }
 
@@ -18,5 +25,6 @@ namespace AutoService.Models.BusinessProcess.Models
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -9,7 +9,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface ISellService : ISell
     {
-        string Name { get; }
+        string ServiceName { get; }
         
         int DurationInMinutes { get; }
         
