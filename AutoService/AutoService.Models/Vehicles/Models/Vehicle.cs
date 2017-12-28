@@ -2,11 +2,12 @@
 using System.Linq;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Vehicles.Models
 {
-    public abstract class Vehicle
+    public abstract class Vehicle : IVehicle
     {
         private readonly string model;
         private readonly string make;

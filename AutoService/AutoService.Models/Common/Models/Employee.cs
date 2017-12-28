@@ -14,7 +14,7 @@ namespace AutoService.Models.Assets
         private decimal salary;
         private decimal ratePerMinute;
         private DepartmentType department;
-        private bool isStillHired;
+        private bool isHired;
         private List<ResponsibilityType> responsibilities;
 
         public Employee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
@@ -26,7 +26,7 @@ namespace AutoService.Models.Assets
             this.Salary = salary;
             this.RatePerMinute = ratePerMinute;
             this.Department = department;
-            this.IsStillHired = true;
+            this.isHired = true;
             this.responsibilities = new List<ResponsibilityType>();
         }
 
@@ -102,10 +102,10 @@ namespace AutoService.Models.Assets
             set { this.department = value; }
         }
 
-        public bool IsStillHired
+        public bool IsHired
         {
-            get => this.isStillHired;
-            private set { this.isStillHired = value; }
+            get => this.isHired;
+            private set { this.isHired = value; }
         }
 
         public List<ResponsibilityType> Responsibiities
@@ -145,9 +145,9 @@ namespace AutoService.Models.Assets
 
         public void FireEmployee()
         {
-            if (IsStillHired)
+            if (IsHired)
             {
-                this.IsStillHired = false;
+                this.IsHired = false;
             }
             else
             {
@@ -158,11 +158,6 @@ namespace AutoService.Models.Assets
         public void ChangeRate(decimal ratePerMinutes)
         {
             this.RatePerMinute = ratePerMinutes;
-        }
-
-        public IEmployee HireEmployee()
-        {
-            return new Employee(this.FirstName, this.LastName, this.Position, this.Salary, this.RatePerMinute, this.Department);
         }
 
         public override string ToString()

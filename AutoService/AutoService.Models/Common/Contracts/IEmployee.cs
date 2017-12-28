@@ -11,7 +11,7 @@ namespace AutoService.Models.Contracts
         decimal Salary { get; }
         decimal RatePerMinute { get; }
         DepartmentType Department { get; }
-        bool IsStillHired { get; }
+        bool IsHired { get; }
         List<ResponsibilityType> Responsibiities { get; }
 
         void ChangeSalary(decimal salary);

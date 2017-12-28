@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Text;
-using System.Threading.Tasks;
 using AutoService.Models.Assets;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
@@ -54,7 +49,7 @@ namespace AutoService.Models.BusinessProcess.Models
                 throw new ArgumentException("Please enter employee!");
             }
 
-            if (responsibleEmployee.IsStillHired == false)
+            if (responsibleEmployee.IsHired == false)
             {
                 throw new ArgumentException($"Employee {responsibleEmployee} is no longer working for the AutoService!");
             }
