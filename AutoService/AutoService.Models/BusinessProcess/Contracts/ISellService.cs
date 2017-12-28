@@ -10,6 +10,5 @@ namespace AutoService.Models.BusinessProcess.Contracts
         
         int DurationInMinutes { get; }
         
-
     }
 }

@@ -10,6 +10,10 @@ namespace AutoService.Models.BusinessProcess.Contracts
         ICounterparty Client { get; }
 
         Vehicle Vehicle { get; }
-        
+
+        void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string invoiceNumber,
+            ISell sell);
+
+
     }
 }
