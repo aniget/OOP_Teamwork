@@ -10,8 +10,11 @@ namespace AutoService.Models.Assets
         
         public Work(IEmployee responsibleEmployee, decimal price, TypeOfWork job)
         {
-            //Employees are validated when they are hired, so no validation here
-            ResponsibleEmployee = responsibleEmployee;
+            if (responsibleEmployee == null)
+            {
+                throw new ArgumentException("Invalid employee provided!");
+            }
+            this.ResponsibleEmployee = responsibleEmployee;
 
             if (price < 0 || price > 1000000)
             {

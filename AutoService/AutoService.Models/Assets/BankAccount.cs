@@ -11,9 +11,8 @@ namespace AutoService.Models.Assets
 
         public BankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate) : base(name, responsibleEmployee)
         {
-            this.balance = 0;
-            this.registrationDate = DateTime.TryParse(registrationDate.ToString(), out this.registrationDate) ? DateTime.Parse(registrationDate.ToString()) 
-                : throw new ArgumentException("Please, enter valid Date in format DD.MM.YYYY!");
+            this.Balance = 0;
+            this.RegistrationDate = registrationDate;
         }
 
         public decimal Balance

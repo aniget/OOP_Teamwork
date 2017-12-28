@@ -10,7 +10,7 @@ namespace AutoService.Models.Assets
         private readonly decimal purchasePrice;
         private ICounterparty vendor;
 
-        public Stock(string name, IEmployee responsibleEmployee, DateTime registrationDate, decimal purchasePrice, ICounterparty vendor) : base(name, responsibleEmployee)
+        public Stock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty vendor) : base(name, responsibleEmployee)
         {
             if (purchasePrice < 0)
             {
@@ -47,6 +47,13 @@ namespace AutoService.Models.Assets
             {
                 throw new ArgumentException($"Employee cannot be responsible for asset {this.GetType().Name}");
             }
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + Environment.NewLine +
+                   $"  - Purchase price: {this.PurchasePrice}" + Environment.NewLine +
+                   $"  - Purchased from: {this.Vendor.Name}" + Environment.NewLine;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoService.Models.Common.Models;
 using AutoService.Models.Contracts;
+using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.Assets
 {
@@ -8,11 +10,13 @@ namespace AutoService.Models.Assets
     {
         private int dueDaysAllowed;
         private decimal discount;
+        private IList<Vehicle> vehicles;
 
         public Client(string name, string address, string uniqueNumber) : base(name, address, uniqueNumber)
         {
             this.dueDaysAllowed = 5;
             this.discount = 0;
+            this.vehicles = new List<Vehicle>();
         }
 
         public int DueDaysAllowed
@@ -39,6 +43,29 @@ namespace AutoService.Models.Assets
                 }
                 this.discount = value;
             }
+        }
+
+        public IList<Vehicle> Vehicles
+        {
+            get => this.vehicles;
+        }
+
+        public void AddVehicle(Vehicle vehicle)
+        {
+            if (vehicle == null)
+            {
+                throw new ArgumentException("Please provide valid vehicle!");
+            }
+            this.vehicles.Add(vehicle);
+        }
+
+        public void RemoveVehicle(Vehicle vehicle)
+        {
+            if (vehicle == null)
+            {
+                throw new ArgumentException("Please provide valid vehicle!");
+            }
+            this.vehicles.Remove(vehicle);
         }
 
         public void UpdateDueDays(int dueDays)
