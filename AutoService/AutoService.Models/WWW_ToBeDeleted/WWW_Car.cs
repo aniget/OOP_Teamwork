@@ -2,7 +2,7 @@
 using AutoService.Models.Enums;
 using System;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     class WWW_Car //: ICar  //, IClient
     {

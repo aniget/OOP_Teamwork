@@ -4,6 +4,7 @@
     {
         Manage, //Manager Adds and Removes Responsibilities; only Manager can Rent and Lease for now
         Sell,
+        SellService, //only mechanics can perform repairs (SellService) 
         Repair,
         BuyPartForClient,
         BuyPartForWarehouse,

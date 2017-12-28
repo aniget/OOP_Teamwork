@@ -2,7 +2,7 @@
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public abstract class Work : IWork
     {
@@ -30,6 +30,10 @@ namespace AutoService.Models.Models
 
         public TypeOfWork Job { get; }
 
-
+        public decimal GetEmployeeRatePerMinute()
+        {
+            //TODO: Have to complete it once there is a List Of Employees created by Engine or elsewhere
+            return 0;
+        }
     }
 }

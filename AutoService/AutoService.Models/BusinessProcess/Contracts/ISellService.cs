@@ -1,4 +1,6 @@
-﻿using AutoService.Models.Contracts;
+﻿using AutoService.Models.Assets;
+using AutoService.Models.Contracts;
+using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {
@@ -7,5 +9,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
         string ServiceName { get; }
         
         int DurationInMinutes { get; }
+        
+
     }
 }

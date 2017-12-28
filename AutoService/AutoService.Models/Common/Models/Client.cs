@@ -2,7 +2,7 @@
 using AutoService.Models.Common.Models;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public class Client : CounterParty, IClient
     {

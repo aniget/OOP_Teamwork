@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoService.Models.BusinessProcess.Enums;
+﻿using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.BusinessProcess.Contracts
+namespace AutoService.Models.WWW_ToBeDeleted
 {
     public interface IRepairAsset: IWork
     {

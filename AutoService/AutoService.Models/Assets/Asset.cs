@@ -1,19 +1,18 @@
 ﻿using System;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public abstract class Asset : IAsset
     {
         private string name;
         private IEmployee responsibleEmployee;
-        private DateTime registrationDate;
 
-        public Asset(string name, IEmployee responsibleEmployee, DateTime registrationDate)
+        public Asset(string name, IEmployee responsibleEmployee)
         {
             this.Name = name;
             this.ResponsibleEmployee = responsibleEmployee;
-            this.RegistrationDate = registrationDate;
         }
 
         public string Name
@@ -39,11 +38,6 @@ namespace AutoService.Models.Models
                 }
                 this.responsibleEmployee = value;
             }
-        }
-        public DateTime RegistrationDate
-        {
-            get => this.registrationDate;
-            set { this.registrationDate = value; }
         }
 
         protected abstract void ChangeResponsibleEmployee(IEmployee employee);

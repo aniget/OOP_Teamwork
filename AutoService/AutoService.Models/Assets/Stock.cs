@@ -1,15 +1,16 @@
 ﻿using System;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public class Stock : Asset,  IStock
     {
         private readonly decimal purchasePrice;
         private ICounterparty vendor;
 
-        public Stock(string name, IEmployee responsibleEmployee, DateTime registrationDate, decimal purchasePrice, ICounterparty vendor) : base(name, responsibleEmployee, registrationDate)
+        public Stock(string name, IEmployee responsibleEmployee, DateTime registrationDate, decimal purchasePrice, ICounterparty vendor) : base(name, responsibleEmployee)
         {
             if (purchasePrice < 0)
             {

@@ -7,10 +7,9 @@ namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface ISell : IWork
     {
-        IClient Client { get; }
+        ICounterparty Client { get; }
 
         Vehicle Vehicle { get; }
-
-       decimal CalculateRevenue(int requiredTimeInMinutes, decimal pricePerMinute);
+        
     }
 }

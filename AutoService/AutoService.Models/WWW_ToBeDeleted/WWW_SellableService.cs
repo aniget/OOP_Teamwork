@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public class SellableService : ISellableService
     {

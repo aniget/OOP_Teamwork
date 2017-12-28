@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Vehicles.Models;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Common.Models
 {
     public static class Warehouse
     {

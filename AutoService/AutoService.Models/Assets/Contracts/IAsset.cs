@@ -1,6 +1,6 @@
-﻿using System;
+﻿using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Contracts
+namespace AutoService.Models.Assets.Contracts
 {
     public interface IAsset
     {
@@ -8,6 +8,5 @@ namespace AutoService.Models.Contracts
 
         IEmployee ResponsibleEmployee { get; }
 
-        DateTime RegistrationDate { get; }
     }
 }

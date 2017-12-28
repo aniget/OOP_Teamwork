@@ -1,4 +1,4 @@
-﻿using AutoService.Models.Contracts;
+﻿using AutoService.Models.Assets.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {

@@ -1,12 +1,15 @@
-﻿using AutoService.Models.Enums;
+﻿using System;
+using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Contracts
+namespace AutoService.Models.Assets.Contracts
 {
     public interface IStock : IAsset
     {
         decimal PurchasePrice { get; }
 
         ICounterparty Vendor { get; }
+
+    
 
         //void OrderPart();
 

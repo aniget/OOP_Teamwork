@@ -7,7 +7,7 @@ using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public class WWW_OrderedService : WWW_IOrderedService
     {

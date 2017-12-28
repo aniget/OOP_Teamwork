@@ -4,7 +4,7 @@ using System.Linq;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public class Employee : IEmployee
     {
@@ -158,6 +158,11 @@ namespace AutoService.Models.Models
         public void ChangeRate(decimal ratePerMinutes)
         {
             this.RatePerMinute = ratePerMinutes;
+        }
+
+        public IEmployee HireEmployee()
+        {
+            return new Employee(this.FirstName, this.LastName, this.Position, this.Salary, this.RatePerMinute, this.Department);
         }
 
         public override string ToString()

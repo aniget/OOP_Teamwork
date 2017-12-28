@@ -9,6 +9,7 @@ namespace AutoService.Models.Contracts
         string Number { get; }
         decimal Amount { get; } // Calculated property based on invoiceItems
         decimal PaidAmount { get; }
+        IClient Client { get; }
 
         ICollection<ISell> InvoiceItems { get; }
 

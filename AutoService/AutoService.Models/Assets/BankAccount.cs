@@ -2,15 +2,18 @@
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public class BankAccount : Asset
     {
         private decimal balance;
+        private DateTime registrationDate;
 
-        public BankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate) : base(name, responsibleEmployee, registrationDate)
+        public BankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate) : base(name, responsibleEmployee)
         {
             this.balance = 0;
+            this.registrationDate = DateTime.TryParse(registrationDate.ToString(), out this.registrationDate) ? DateTime.Parse(registrationDate.ToString()) 
+                : throw new ArgumentException("Please, enter valid Date in format DD.MM.YYYY!");
         }
 
         public decimal Balance
@@ -20,6 +23,12 @@ namespace AutoService.Models.Models
             {
                 this.balance = value;
             }
+        }
+
+        public DateTime RegistrationDate
+        {
+            get => this.registrationDate;
+            set { this.registrationDate = value; }
         }
 
         protected override void ChangeResponsibleEmployee(IEmployee employee)
@@ -37,7 +46,7 @@ namespace AutoService.Models.Models
                 throw new ArgumentException($"Employee cannot be responsible for asset {this.GetType().Name}");
             }
         }
-
+        
         public void DepositFunds(decimal amount)
         {
             if (amount < 0 )

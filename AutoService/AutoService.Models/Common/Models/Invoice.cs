@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Contracts;
 
-namespace AutoService.Models.Models
+namespace AutoService.Models.Assets
 {
     public class Invoice : IInvoice
     {
@@ -13,14 +14,17 @@ namespace AutoService.Models.Models
         private decimal amount;
         private decimal paidAmount;
         private ICollection<ISell> invoiceItems;
+        private IClient client;
 
-        public Invoice(string number)
+        public Invoice(string number, IClient client)
         {
             if (string.IsNullOrWhiteSpace(number))
             {
                 throw new ArgumentException("Invoice number cannot be null!");
             }
+            
             this.number = number;
+            this.client = client ?? throw new ArgumentException("Client cannot be null");
             this.invoiceItems = new List<ISell>();
         }
 
@@ -52,7 +56,13 @@ namespace AutoService.Models.Models
             }
         }
 
-        public ICollection<ISell> InvoiceItems { get => this.invoiceItems; }
+        public IClient Client => this.client;
+
+        public ICollection<ISell> InvoiceItems
+        {
+            get => this.invoiceItems;
+            set => this.invoiceItems = value;
+        }
 
         public void IncreasePaidAmount(decimal amount)
         {
@@ -74,7 +84,7 @@ namespace AutoService.Models.Models
             var sb = new StringBuilder();
 
             sb.AppendLine($"Invoice amount: {this.Amount} $");
-            sb.AppendLine($"Outstanding mount: {this.GetOutstandingBalance()} $");
+            sb.AppendLine($"Outstanding amount: {this.GetOutstandingBalance()} $");
             sb.AppendLine("Invoiced items:");
 
             foreach (var item in InvoiceItems)
