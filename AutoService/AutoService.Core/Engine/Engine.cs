@@ -8,7 +8,7 @@ using AutoService.Models.Vehicles.Contracts;
 
 namespace AutoService.Core
 {
-    public class Engine
+    public sealed class Engine : IEngine
     {
         private readonly ICollection<IInvoice> invoices;
         private readonly ICollection<IEmployee> employees;
@@ -17,7 +17,9 @@ namespace AutoService.Core
         private readonly ICollection<ICounterparty> clients;
         private readonly ICollection<ICounterparty> vendors;
 
-        public Engine()
+        private static readonly IEngine SingleInstance = new Engine();
+
+        private Engine()
         {
             this.invoices = new List<IInvoice>();
             this.employees = new List<IEmployee>();
@@ -25,6 +27,14 @@ namespace AutoService.Core
             this.assets = new List<IAsset>();
             this.clients = new List<ICounterparty>();
             this.vendors = new List<ICounterparty>();
+        }
+
+        public static IEngine Instance
+        {
+            get
+            {
+                return SingleInstance;
+            }
         }
 
         public void Run()

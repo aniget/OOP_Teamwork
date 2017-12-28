@@ -4,8 +4,7 @@
     {
         static void Main()
         {
-            var engine = new AutoService.Core.Engine();
-            engine.Run();
+            AutoService.Core.Engine.Instance.Run();
         }
     }
 }
