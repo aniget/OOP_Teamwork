@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using AutoService.Core.Factory;
 using AutoService.Models.Assets;
@@ -17,12 +18,13 @@ namespace AutoService.Core
         //TODO CHECK WHOLE DOCUMENT FOR REPETITIVE CODE
 
         private readonly IList<IEmployee> employees;
-        private readonly ICollection<IAsset> bankAccounts;
+        private readonly IList<BankAccount> bankAccounts;
         private readonly ICollection<ICounterparty> clients;
         private readonly ICollection<ICounterparty> vendors;
         private readonly IDictionary<IClient, List<ISell>> notInvoicedSells;
 
         private DateTime lastInvoiceDate = DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        private DateTime lastAssetDate = DateTime.ParseExact("2017-01-30", "yyyy-MM-dd", CultureInfo.InvariantCulture);
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
@@ -33,7 +35,7 @@ namespace AutoService.Core
         {
             this.factory = new AutoServiceFactory();
             this.employees = new List<IEmployee>();
-            this.bankAccounts = new List<IAsset>();
+            this.bankAccounts = new List<BankAccount>();
             this.clients = new List<ICounterparty>();
             this.vendors = new List<ICounterparty>();
             this.notInvoicedSells = new Dictionary<IClient, List<ISell>>();
@@ -47,7 +49,7 @@ namespace AutoService.Core
             }
         }
 
-      
+
         public void Run()
         {
             var command = ReadCommand();
@@ -62,7 +64,7 @@ namespace AutoService.Core
                 }
                 catch (NotSupportedException e)
                 {
-                    Console.Write(e.Message);
+                    Console.WriteLine(e.Message);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -72,6 +74,7 @@ namespace AutoService.Core
                 {
                     Console.WriteLine(e.Message);
                 }
+                Console.WriteLine("<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>");
                 command = ReadCommand();
             }
         }
@@ -91,9 +94,10 @@ namespace AutoService.Core
             var commandType = commandParameters[0];
             int employeeId;
             decimal ratePerMinute;
-            IEmployee employee = null;
+            IEmployee employee;
             string position;
             DepartmentType department;
+            string assetName;
 
             switch (commandType)
             {
@@ -105,12 +109,11 @@ namespace AutoService.Core
                     }
                     this.ShowEmployees();
                     break;
+
                 case "hireEmployee":
-                    if (commandParameters.Length != 7)
-                    {
-                        throw new NotSupportedException(
-                            "Employee constructor with less or more than 6 parameters not supported.");
-                    }
+
+                    ValidateExactParameterLength(commandParameters, 7);
+
                     var firstName = commandParameters[1];
                     var lastName = commandParameters[2];
                     position = commandParameters[3];
@@ -129,12 +132,10 @@ namespace AutoService.Core
 
                     this.AddEmployee(firstName, lastName, position, salary, ratePerMinute, department);
                     break;
+
                 case "fireEmployee":
-                    if (commandParameters.Length != 2)
-                    {
-                        throw new NotSupportedException(
-                            "Fire employee command must be with only 2 parameters!");
-                    }
+
+                    ValidateExactParameterLength(commandParameters, 2);
 
                     if (this.employees.Count == 0)
                     {
@@ -149,18 +150,16 @@ namespace AutoService.Core
                     {
                         throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
-                    
-                 employee = this.employees.Count >= employeeId
-                        ? this.employees[employeeId - 1]
-                        : throw new ArgumentException("This employee does not exist!");
+
+                    employee = this.employees.Count >= employeeId
+                           ? this.employees[employeeId - 1]
+                           : throw new ArgumentException("This employee does not exist!");
                     this.FireEmployee(employee);
                     break;
+
                 case "changeEmployeeRate":
-                    if (commandParameters.Length != 3)
-                    {
-                        throw new NotSupportedException(
-                            "Change employer rate command must be with only 3 parameters!");
-                    }
+
+                    ValidateExactParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -179,7 +178,7 @@ namespace AutoService.Core
                     ratePerMinute = decimal.TryParse(commandParameters[2], out ratePerMinute)
                         ? ratePerMinute
                         : throw new ArgumentException("Please provide a valid decimal value for rate per minute!");
-                    
+
                     employee = this.employees.Count >= employeeId
                         ? this.employees[employeeId - 1]
                         : throw new ArgumentException("This employee does not exist!");
@@ -188,15 +187,14 @@ namespace AutoService.Core
                     break;
 
                 case "issueInvoices":
+                    ValidateExactParameterLength(commandParameters, 1);
+
                     this.IssueInvoices();
                     break;
 
                 case "showAllEmployeesAtDepartment":
-                    if (commandParameters.Length != 2)
-                    {
-                        throw new NotSupportedException(
-                            "Show Employees At Department command must be with only 2 parameters!");
-                    }
+
+                    ValidateExactParameterLength(commandParameters, 2);
 
                     if (!Enum.TryParse(commandParameters[1], out department))
                     {
@@ -207,11 +205,8 @@ namespace AutoService.Core
                     break;
 
                 case "changeEmployeePosition":
-                    if (commandParameters.Length != 3)
-                    {
-                        throw new NotSupportedException(
-                            "Change employer position command must be with only 3 parameters!");
-                    }
+                    ValidateExactParameterLength(commandParameters, 3);
+
 
                     if (this.employees.Count == 0)
                     {
@@ -235,13 +230,9 @@ namespace AutoService.Core
                     this.ChangePositionOfEmployee(employee, position);
                     break;
 
-                case "addEmpoloyeeResponsibility":
+                case "addEmployeeResponsibility":
 
-                    if (commandParameters.Length < 3)
-                    {
-                        throw new NotSupportedException(
-                            "Add responsibility command must be at least 3 parameters!");
-                    }
+                    ValidateMinimumParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -261,18 +252,14 @@ namespace AutoService.Core
                         ? this.employees[employeeId - 1]
                         : throw new ArgumentException("This employee does not exist!");
 
-                   var responsibilitiesToAdd = commandParameters.Skip(2).ToArray();
+                    var responsibilitiesToAdd = commandParameters.Skip(2).ToArray();
                     this.AddResponsibilitiesToEmployee(employee, responsibilitiesToAdd);
 
                     break;
 
                 case "removeEmpoloyeeResponsibility":
 
-                    if (commandParameters.Length < 3)
-                    {
-                        throw new NotSupportedException(
-                            "Remove responsibility command must be at least 3 parameters!");
-                    }
+                    ValidateMinimumParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -297,9 +284,89 @@ namespace AutoService.Core
 
                     break;
 
+                case "createBankAccount":
+
+                    ValidateExactParameterLength(commandParameters, 3);
+
+                    if (this.employees.Count == 0)
+                    {
+                        throw new InvalidOperationException("No employees currently in the service! You need to hire one then open the bank account :)");
+                    }
+
+                    employeeId = int.TryParse(commandParameters[1], out employeeId)
+                        ? employeeId
+                        : throw new ArgumentException("Please provide a valid integer value for employee Id!");
+
+                    if (employeeId <= 0)
+                    {
+                        throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
+                    }
+
+                    employee = this.employees.Count >= employeeId
+                        ? this.employees[employeeId - 1]
+                        : throw new ArgumentException("This employee does not exist!");
+
+                    assetName = commandParameters[2];
+
+                    DateTime currentAssetDate = this.lastAssetDate.AddDays(5);
+
+                    this.CreateBankAccount(employee, assetName, currentAssetDate);
+                    break;
+
+                case "depositCashInBank":
+
+                    ValidateExactParameterLength(commandParameters, 3);
+
+                    if (this.bankAccounts.Count == 0)
+                    {
+                        throw new InvalidOperationException("No bank accounts currently opened! You need to open one then deposit the cash.");
+                    }
+
+                    int bankAccountId = int.TryParse(commandParameters[1], out bankAccountId)
+                        ? bankAccountId
+                        : throw new ArgumentException("Please provide a valid integer value for bankAccount Id!");
+
+                    if (bankAccountId <= 0)
+                    {
+                        throw new ArgumentException($"Please provide a valid bankAccount Id, i.e. between 1 and {this.bankAccounts.Count}!");
+                    }
+
+                    var bankAccount = this.bankAccounts.Count >= bankAccountId
+                        ? this.bankAccounts[bankAccountId - 1]
+                        : throw new ArgumentException("This bank account does not exist!");
+
+                    decimal depositAmount = decimal.TryParse(commandParameters[2], out depositAmount)
+                        ? depositAmount
+                        : throw new ArgumentException("Please provide a valid decimal value for depositAmount!");
+
+                    this.DepositCashInBankAccount(bankAccount, depositAmount);
+                    break;
+
                 default:
                     throw new InvalidOperationException();
             }
+        }
+
+        private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
+        {
+            bankAccount.DepositFunds(depositAmount);
+            Console.WriteLine($"{depositAmount} $ were successfully added to bank account {bankAccount.Name}");
+        }
+
+        private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate)
+        {
+            if (employee.Responsibiities.Contains(ResponsibilityType.Account) || employee.Responsibiities.Contains(ResponsibilityType.Manage))
+            {
+                BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, currentAssetDate);
+
+                this.bankAccounts.Add(bankAccountToAdd);
+                Console.WriteLine($"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
+            }
+            else
+            {
+                throw new ArgumentException($"Employee {employee.FirstName} {employee.LastName} does not have the required repsonsibilities to register asset {assetName}");
+            }
+
         }
 
         private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
@@ -372,11 +439,37 @@ namespace AutoService.Core
 
         private void ShowEmployees()
         {
-            int counter = 1;
-            foreach (var currentEmployee in this.employees)
-            {   
-                Console.WriteLine(counter + ". " +  currentEmployee.ToString());
-                counter++;
+            int hiredCounter = 1;
+            if (this.employees.Where(e => e.IsHired).Count() > 0)
+            {
+                Console.WriteLine("Current active employees:");
+                foreach (var currentEmployee in this.employees.Where(e => e.IsHired))
+                {
+
+                    Console.WriteLine(hiredCounter + ". " + currentEmployee);
+                    hiredCounter++;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No active employees!");
+            }
+
+            int firedCounter = 1;
+
+            if (this.employees.Where(e => !e.IsHired).Count() > 0)
+            {
+                Console.WriteLine("Current fired employees:");
+                foreach (var currentEmployee in this.employees.Where(e => !e.IsHired))
+                {
+
+                    Console.WriteLine(firedCounter + ". " + currentEmployee.ToString());
+                    firedCounter++;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No fired employees!");
             }
         }
 
@@ -419,6 +512,22 @@ namespace AutoService.Core
             this.employees.Add(employee);
             Console.WriteLine(employee);
             Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
+        }
+
+        private void ValidateExactParameterLength(string[] parameters, int length)
+        {
+            if (parameters.Length != length)
+            {
+                throw new ArgumentException($"Parameter length for command {parameters[0]} must be exactly {length}");
+            }
+        }
+
+        private void ValidateMinimumParameterLength(string[] parameters, int length)
+        {
+            if (parameters.Length < length)
+            {
+                throw new ArgumentException($"Parameter length for command {parameters[0]} must be more than {length}");
+            }
         }
     }
 }

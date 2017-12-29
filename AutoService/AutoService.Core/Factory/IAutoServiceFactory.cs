@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
@@ -20,7 +20,7 @@ namespace AutoService.Core.Factory
 
         IInvoice CreateInvoice(string number, DateTime date, IClient client);
 
-        IAsset CreateBankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate);
+        BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate);
 
         IAsset CreateStock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty vendor);
 

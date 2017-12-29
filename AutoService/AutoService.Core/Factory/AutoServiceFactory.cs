@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
@@ -32,9 +33,9 @@ namespace AutoService.Core.Factory
             throw new NotImplementedException();
         }
 
-        public IAsset CreateBankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate)
+        public BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate)
         {
-            throw new NotImplementedException();
+            return new BankAccount(name, responsibleEmployee, registrationDate);
         }
 
         public IAsset CreateStock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty vendor)
