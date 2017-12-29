@@ -22,12 +22,12 @@ namespace AutoService.Models.BusinessProcess.Models
         private string serviceName;
         private ICollection<IInvoice> invoices;
 
-        public SellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ICollection<IInvoice> invoices, string serviceName, int durationInMinutes)
-            : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute ,TypeOfWork.Selling, client, vehicle, invoices)
+        public SellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IDictionary<IClient, ISell> notInvoicedSells, string serviceName, int durationInMinutes)
+            : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute ,TypeOfWork.Selling, client, vehicle, notInvoicedSells)
         {
 
             //validation of serviceName
-            if (string.IsNullOrWhiteSpace(serviceName) || string.Empty == serviceName) { throw new ArgumentException("ServiceName cannot be null, empty or whitespace!"); }
+            if (string.IsNullOrWhiteSpace(serviceName)) { throw new ArgumentException("ServiceName cannot be null, empty or whitespace!"); }
             if (serviceName.Length < 5 || serviceName.Length < 500) { throw new ArgumentException("ServiceName should be between 5 and 500 characters long"); }
 
             //validation of durationInMinutes
@@ -45,16 +45,15 @@ namespace AutoService.Models.BusinessProcess.Models
         public string ServiceName => this.serviceName;
         public int DurationInMinutes => this.durationInMinutes;
 
-        public override void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string invoiceNumber,
-            ISell sell)
+        public override void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ISell sell)
         {
-            base.SellToClientVehicle(responsibleEmployee, client, vehicle, invoiceNumber, this);
+            base.SellToClientVehicle(responsibleEmployee, client, vehicle, this);
         }
 
 
         public override string AdditionalInfo_ServiceOrPart() { return "service";}
 
-        public override decimal CalculateRevenue() { return this.durationInMinutes * GetEmployeeRatePerMinute(ResponsibleEmployee);}
+        //public override decimal CalculateRevenue() { return this.durationInMinutes * GetEmployeeRatePerMinute(ResponsibleEmployee);}
 
         public override string ToString()
         {

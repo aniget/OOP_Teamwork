@@ -46,6 +46,7 @@ namespace AutoService.Core
             }
         }
 
+      
         public void Run()
         {
             var command = ReadCommand();

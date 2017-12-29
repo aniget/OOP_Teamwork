@@ -11,9 +11,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
 
         Vehicle Vehicle { get; }
 
-        void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string invoiceNumber,
-            ISell sell);
-
-
+        void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ISell sell);
+        
     }
 }
