@@ -12,6 +12,7 @@ using AutoService.Models.Contracts;
 
 namespace AutoService.Core
 {
+
     public sealed class Engine : IEngine
     {
         //TODO CHECK WHOLE DOCUMENT FOR REPETITIVE CODE
@@ -83,7 +84,7 @@ namespace AutoService.Core
 
         private string[] ParseCommand(string command)
         {
-            return command.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            return command.Split(new string[] { ";", "," }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private void ExecuteSingleCommand(string[] commandParameters)
