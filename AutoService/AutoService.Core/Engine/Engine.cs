@@ -311,6 +311,7 @@ namespace AutoService.Core
                 if (!Enum.TryParse(responsibility, out currentResponsibility))
                 {
                     throw new ArgumentException($"Responsibility {responsibility} not valid!");
+
                 }
                 responsibilitesToAdd.Add(currentResponsibility);
             }
