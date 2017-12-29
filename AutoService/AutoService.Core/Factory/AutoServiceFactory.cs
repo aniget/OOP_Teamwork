@@ -4,6 +4,7 @@ using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 
@@ -59,21 +60,27 @@ namespace AutoService.Core.Factory
         }
 
         public IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber,
-            string year, string engine)
+            string year, EngineType engine)
         {
-            throw new NotImplementedException();
+            var newCar = new Car(model, make, passengerCapacity, registrationNumber, year, engine);
+            return newCar;
+            //throw new NotImplementedException();
         }
 
         public IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year,
-            string engine, int weightAllowedInKilograms)
+            EngineType engine, int weightAllowedInKilograms)
         {
-            throw new NotImplementedException();
+            var newSmallTruck = new SmallTruck(model, make, registrationNumber, year, engine, weightAllowedInKilograms);
+            return newSmallTruck;
+            //throw new NotImplementedException();
         }
 
-        public IVehicle CreateTruck(string model, string make, string registrationNumber, string year, string engine,
+        public IVehicle CreateTruck(string model, string make, string registrationNumber, string year, EngineType engine,
             int weightAllowedInKilograms)
         {
-            throw new NotImplementedException();
+            var newTruck = new Truck(model, make, registrationNumber, year, engine, weightAllowedInKilograms);
+            return newTruck;
+            //throw new NotImplementedException();
         }
     }
 }
