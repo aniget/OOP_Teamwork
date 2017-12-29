@@ -12,8 +12,8 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         private readonly IStock stock;
 
-        public SellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IDictionary<IClient, ISell> notInvoicedSells, IStock stock) 
-            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, TypeOfWork.Selling, client, vehicle, notInvoicedSells)
+        public SellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, /*IDictionary<IClient, ISell> notInvoicedSells, */IStock stock) 
+            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, TypeOfWork.Selling, client, vehicle/*, notInvoicedSells*/)
         {
             this.stock = stock ?? throw new ArgumentException("Stock cannot be null");
         }
@@ -23,11 +23,6 @@ namespace AutoService.Models.BusinessProcess.Models
         public override string AdditionalInfo_ServiceOrPart() { return "autoparts"; }
 
         //public override decimal CalculateRevenue() { return Stock.PurchasePrice * 1.5m;}
-
-        public void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string invoiceNumber)
-        {
-            throw new NotImplementedException();
-        }
 
         public override void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ISell sell)
         {

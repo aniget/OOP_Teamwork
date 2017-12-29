@@ -7,6 +7,7 @@ using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 using AutoService.Models.Assets;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 using IEmployee = AutoService.Models.Contracts.IEmployee;
 
@@ -15,18 +16,18 @@ namespace AutoService.Models.BusinessProcess.Models
     public abstract class Sell : Work, ISell
     {
 
-        private IDictionary<IClient, ISell> notInvoicedSells;
+        //private IDictionary<IClient, ISell> notInvoicedSells;
 
-        protected Sell(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty client, Vehicle vehicle, IDictionary<IClient, ISell> notInvoicedSells)
+        protected Sell(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty client, Vehicle vehicle/*, IDictionary<IClient, ISell> notInvoicedSells*/)
             : base(responsibleEmployee, price, job)
         {
             Client = client ?? throw new ArgumentException("Client cannot be null");
             Vehicle = vehicle ?? throw new ArgumentException("Vehicle cannot be null");
-            this.notInvoicedSells = notInvoicedSells;
+            //this.notInvoicedSells = notInvoicedSells;
         }
 
-        public ICounterparty Client { get; }
-        public Vehicle Vehicle { get; }
+        public ICounterparty Client { get; protected set; }
+        public Vehicle Vehicle { get; protected set; }
 
         public virtual void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ISell sell)
         {
@@ -37,14 +38,33 @@ namespace AutoService.Models.BusinessProcess.Models
             if (client == null) { throw new ArgumentException("Client cannot be null!"); }
             if (vehicle == null) { throw new ArgumentException("Vehicle cannot be null!"); }
 
-            notInvoicedSells.Add(client, sell);
+            this.Client = client;
+            this.Vehicle = vehicle;
+            this.ResponsibleEmployee = responsibleEmployee;
+
+            //notInvoicedSells.Add(client, sell);
         }
-        
+
+        private string SellToClientWithoutCar(IVehicle currentVehicle)
+        {
+            string vehicleMake = "";
+
+            if (Vehicle == null)
+            {
+                vehicleMake = "";
+            }
+            else
+            {
+                vehicleMake = Vehicle.Make + " " + Vehicle.Model;
+            }
+            return "for vehicle " + vehicleMake;
+        }
+
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.AppendLine(string.Format("Information about sale of {0} to client {1} for vehicle {2}" + Environment.NewLine + "Performed by: {3}",
-                AdditionalInfo_ServiceOrPart(), Client.Name, Vehicle.Make + " " + Vehicle.Model, base.ResponsibleEmployee));
+            builder.AppendLine(string.Format("Information about sale of {0} to client {1} {2}" + Environment.NewLine + "Performed by: {3}",
+                AdditionalInfo_ServiceOrPart(), Client.Name, SellToClientWithoutCar(Vehicle), base.ResponsibleEmployee));
             return builder.ToString();
         }
 
