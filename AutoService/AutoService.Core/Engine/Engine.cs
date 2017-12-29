@@ -38,6 +38,7 @@ namespace AutoService.Core
 
         private Engine()
         {
+            
             this.factory = new AutoServiceFactory();
             this.employees = new List<IEmployee>();
             this.bankAccounts = new List<BankAccount>();
@@ -311,7 +312,8 @@ namespace AutoService.Core
                     }
                     var additionalParams = commandParameters[8];
                 
-                    var currClient = this.clients.FirstOrDefault(x => x.UniqueNumber == uniaqueNumbre);
+                    var currClient = (Client)this.clients.FirstOrDefault(x => x.UniqueNumber == uniaqueNumbre);
+                    
                     if (currClient == null)
                     {
                         throw new ArgumentException($"The are no client with this {uniaqueNumbre}.");
@@ -320,7 +322,9 @@ namespace AutoService.Core
                     {
                         throw new ArgumentException($"This client already has a vehicle with this registration number: {registrationNumber}.");
                     }
-
+                    var curcar = CreateVehicle(vehicleType, vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
+                    currClient.Vehicles.Add((Vehicle)curcar);
+                    break;
                 case "createBankAccount":
 
                     ValidateExactParameterLength(commandParameters, 3);
@@ -379,9 +383,6 @@ namespace AutoService.Core
                     this.DepositCashInBankAccount(bankAccount, depositAmount);
                     break;
 
-                    var curcar = CreateVehicle(vehicleType, vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
-                    currClient.Vehicles.Add((Vehicle)curcar);
-                    break;
                 default:
                     throw new InvalidOperationException();
             }
