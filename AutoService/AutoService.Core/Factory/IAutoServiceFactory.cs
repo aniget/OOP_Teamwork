@@ -15,8 +15,8 @@ namespace AutoService.Core.Factory
 
         ICounterparty CreateSupplier(string name, string address, string uniqueNumber);
 
-        IEmployee CreatEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
-            string department);
+        IEmployee CreateEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
+            DepartmentType department);
 
         IInvoice CreateInvoice(string number, DateTime date, IClient client);
 

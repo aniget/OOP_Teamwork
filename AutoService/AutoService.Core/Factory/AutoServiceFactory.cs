@@ -1,6 +1,8 @@
 ﻿using System;
+using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
+using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
@@ -19,10 +21,10 @@ namespace AutoService.Core.Factory
             throw new NotImplementedException();
         }
 
-        public IEmployee CreatEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
-            string department)
+        public IEmployee CreateEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
+            DepartmentType department)
         {
-            throw new NotImplementedException();
+            return new Employee(firstName, lastName, position, salary, ratePerMinute, department);
         }
 
         public IInvoice CreateInvoice(string number, DateTime date, IClient client)

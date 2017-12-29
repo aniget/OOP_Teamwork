@@ -18,7 +18,7 @@ namespace AutoService.Models.Assets
 
         public Invoice(string number, DateTime date, IClient client)
         {
-            if (string.IsNullOrWhiteSpace(number))
+            if (string.IsNullOrWhiteSpace(number) || number.Length < 10)
             {
                 throw new ArgumentException("Invoice number cannot be null!");
             }

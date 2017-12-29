@@ -9,7 +9,7 @@ namespace AutoService.Models.Common.Models
 {
     public static class Warehouse
     {
-        public static ICollection<IStock> Stocks { get; }
+        public static ICollection<IStock> Stocks { get; private set; }
 
         public static void AddPartToWarehouse(IStock stock, IEmployee employee)
         {
