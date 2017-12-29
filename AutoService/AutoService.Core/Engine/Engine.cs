@@ -120,6 +120,11 @@ namespace AutoService.Core
                             "Fire employee command must be with only 2 parameters!");
                     }
 
+                    if (this.employees.Count == 0)
+                    {
+                        throw new InvalidOperationException("No employees currently in the service!");
+                    }
+
                     int employeeId = int.TryParse(commandParameters[1], out employeeId)
                         ? employeeId
                         : throw new ArgumentException("Please provide a valid integer value!");
