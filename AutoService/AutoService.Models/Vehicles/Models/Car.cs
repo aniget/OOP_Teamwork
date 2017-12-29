@@ -1,15 +1,17 @@
 ﻿using System;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Vehicles.Models
 {
-    public class Car : Vehicle
+    public class Car : Vehicle, IVehicle
     {
         private readonly int passengerCapacity;
 
-        public Car(string model, string make, int passengerCapacity, string registrationNumber, string year, EngineType engine) : base(model, make, registrationNumber, year, engine)
+        public Car(string model, string make, int passengerCapacity, string registrationNumber, string year, EngineType engine) 
+            : base(model, make, registrationNumber, year, engine)
         {
             if (passengerCapacity < 1 || passengerCapacity > 9)
             {

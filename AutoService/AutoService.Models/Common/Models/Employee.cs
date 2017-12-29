@@ -130,7 +130,7 @@ namespace AutoService.Models.Assets
                     this.responsibilities.Add(resp);
                     result.Add(resp);
                 }
-                if (responsibilities.Contains(resp))
+                else
                 {
                     hasResp.Add(resp);
                 }
@@ -150,17 +150,20 @@ namespace AutoService.Models.Assets
 
         public void RemoveResponsibilities(List<ResponsibilityType> value)
         {
+            List<ResponsibilityType> removedResponsibilities = new List<ResponsibilityType>();
             foreach (var responsibility in value)
             {
                 if (this.responsibilities.Contains(responsibility))
                 {
                     this.responsibilities.Remove(responsibility);
+                    removedResponsibilities.Add(responsibility);
                 }
                 else
                 {
                     throw new ArgumentException("Employee does not have this responsibility!");
                 }
             }
+            Console.WriteLine($"Employee {this.FirstName} {this.LastName} were succesfuly declined and removed responsibilities {string.Join(", ", removedResponsibilities)}");
         }
 
         public void ChangePosition(string position)

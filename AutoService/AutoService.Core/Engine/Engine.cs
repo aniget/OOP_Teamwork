@@ -9,6 +9,10 @@ using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Contracts;
+using AutoService.Models.Vehicles.Enums;
+using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Core
 {
@@ -19,7 +23,7 @@ namespace AutoService.Core
 
         private readonly IList<IEmployee> employees;
         private readonly ICollection<IAsset> bankAccounts;
-        private readonly ICollection<ICounterparty> clients;
+        private readonly IList<IClient> clients;
         private readonly ICollection<ICounterparty> vendors;
         private readonly IDictionary<IClient, List<ISell>> notInvoicedSells;
 
@@ -35,7 +39,7 @@ namespace AutoService.Core
             this.factory = new AutoServiceFactory();
             this.employees = new List<IEmployee>();
             this.bankAccounts = new List<IAsset>();
-            this.clients = new List<ICounterparty>();
+            this.clients = new List<IClient>();
             this.vendors = new List<ICounterparty>();
             this.notInvoicedSells = new Dictionary<IClient, List<ISell>>();
         }
@@ -95,7 +99,8 @@ namespace AutoService.Core
             IEmployee employee = null;
             string position;
             DepartmentType department;
-
+            VehicleType vehicleType;
+            EngineType engineType;
             switch (commandType)
             {
                 case "showEmployees":
@@ -297,10 +302,62 @@ namespace AutoService.Core
                     this.RemoveResponsibilitiesToEmployee(employee, responsibilitiesToRemove);
 
                     break;
+                case "addClientsCar":
+                    if (commandParameters.Length < 8)
+                    {
+                        throw new NotSupportedException(
+                            "Add car to client  command must be at least 8 parameters!");
+                    }
+                    var uniaqueNumbre = commandParameters[1];
+                    var vehicleMake = commandParameters[2];
+                    var vehicleModel = commandParameters[3];
+                    if (!Enum.TryParse(commandParameters[4], out vehicleType))
+                    {
+                        throw new ArgumentException("Vehicle Type not valid!");
+                    }
+                    var registrationNumber = commandParameters[5];
+                    var vehicleYear = commandParameters[6];
+                    if (!Enum.TryParse(commandParameters[7], out engineType))
+                    {
+                        throw new ArgumentException("EngineType Type not valid!");
+                    }
+                    var additionalParams = commandParameters[8];
+                
+                    var currClient = this.clients.FirstOrDefault(x => x.UniqueNumber == uniaqueNumbre);
+                    if (currClient == null)
+                    {
+                        throw new ArgumentException($"The are no client with this {uniaqueNumbre}.");
+                    }
+                    if (currClient.Vehicles.Any(x => x.RegistrationNumber == registrationNumber))
+                    {
+                        throw new ArgumentException($"This client already has a vehicle with this registration number: {registrationNumber}.");
+                    }
 
+                    var curcar = CreateVehicle(vehicleType, vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
+                    currClient.Vehicles.Add((Vehicle)curcar);
+                    break;
                 default:
                     throw new InvalidOperationException();
             }
+        }
+
+        private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleModel, string vehicleMake, string registrationNumber, string vehicleYear, EngineType engineType, string additionalParams)
+        {
+            IVehicle vehicle = null;
+
+            if (vehicleType == VehicleType.Car)
+            {
+                vehicle = (IVehicle)this.factory.CreateCar(vehicleModel, vehicleMake, int.Parse(additionalParams), registrationNumber, vehicleYear, engineType);
+            }
+            else if (vehicleType == VehicleType.SmallTruck)
+            {
+                vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, int.Parse(additionalParams));
+            }
+            else if (vehicleType == VehicleType.Truck)
+            {
+                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear,engineType,int.Parse(additionalParams));
+            }
+            return vehicle;
         }
 
         private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
