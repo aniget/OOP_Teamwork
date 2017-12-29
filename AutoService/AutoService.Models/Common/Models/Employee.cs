@@ -120,7 +120,32 @@ namespace AutoService.Models.Assets
 
         public void AddResponsibilities(List<ResponsibilityType> value)
         {
-            this.responsibilities.AddRange(value);
+            List<ResponsibilityType> result = new List<ResponsibilityType>();
+            List<ResponsibilityType> hasResp = new List<ResponsibilityType>();
+
+            foreach (var resp in value)
+            {
+                if (!responsibilities.Contains(resp))
+                {
+                    this.responsibilities.Add(resp);
+                    result.Add(resp);
+                }
+                if (responsibilities.Contains(resp))
+                {
+                    hasResp.Add(resp);
+                }
+
+            }
+            if (result.Count > 0)
+            {
+                Console.WriteLine($"To Employee {this.FirstName} {this.LastName} were succesfuly added responsibilities {string.Join(", ", result)}");
+            }
+            if (hasResp.Count > 0)
+
+            {
+                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has this responsibilities: {string.Join(", ", hasResp)} ");
+            }
+
         }
 
         public void RemoveResponsibilities(List<ResponsibilityType> value)

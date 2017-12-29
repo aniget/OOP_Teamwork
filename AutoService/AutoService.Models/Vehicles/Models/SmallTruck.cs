@@ -7,7 +7,7 @@ namespace AutoService.Models.Vehicles.Models
 {
     public class SmallTruck : Truck
     {
-        public SmallTruck(string model, string make, IClient owner, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms) : base(model, make, owner, registrationNumber, year, engine, weightAllowedInKilograms)
+        public SmallTruck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms) : base(model, make, registrationNumber, year, engine, weightAllowedInKilograms)
         {
             this.VehicleType = VehicleType.SmallTruck;
             this.WeightAllowedInKilograms = weightAllowedInKilograms;

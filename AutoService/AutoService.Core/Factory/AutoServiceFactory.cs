@@ -58,19 +58,19 @@ namespace AutoService.Core.Factory
             throw new NotImplementedException();
         }
 
-        public IVehicle CreateCar(string model, string make, IClient owner, int passengerCapacity, string registrationNumber,
+        public IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber,
             string year, string engine)
         {
             throw new NotImplementedException();
         }
 
-        public IVehicle CreateSmallTruck(string model, string make, IClient owner, string registrationNumber, string year,
+        public IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year,
             string engine, int weightAllowedInKilograms)
         {
             throw new NotImplementedException();
         }
 
-        public IVehicle CreateTruck(string model, string make, IClient owner, string registrationNumber, string year, string engine,
+        public IVehicle CreateTruck(string model, string make, string registrationNumber, string year, string engine,
             int weightAllowedInKilograms)
         {
             throw new NotImplementedException();

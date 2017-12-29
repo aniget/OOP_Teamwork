@@ -1,9 +1,11 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using AutoService.Core.Factory;
+using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
@@ -21,8 +23,8 @@ namespace AutoService.Core
         private readonly ICollection<ICounterparty> vendors;
         private readonly IDictionary<IClient, List<ISell>> notInvoicedSells;
 
-        private DateTime lastInvoiceDate;
-        private int lastInvoiceNumber;
+        private DateTime lastInvoiceDate = DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
 
@@ -90,7 +92,15 @@ namespace AutoService.Core
             var commandType = commandParameters[0];
             switch (commandType)
             {
-                case "addEmployee":
+                case "showEmployees":
+
+                    if (this.employees.Count == 0)
+                    {
+                        throw new ArgumentException("There are no employees! Hire them!");
+                    }
+                    this.ShowEmployees();
+                    break;
+                case "hireEmployee":
                     if (commandParameters.Length != 7)
                     {
                         throw new NotSupportedException(
@@ -101,10 +111,10 @@ namespace AutoService.Core
                     var position = commandParameters[3];
                     decimal salary = decimal.TryParse(commandParameters[4], out salary)
                         ? salary
-                        : throw new ArgumentException("Please provide a valid decimal value!");
-                    decimal ratePerMinute = decimal.TryParse(commandParameters[4], out ratePerMinute)
+                        : throw new ArgumentException("Please provide a valid decimal value for salary!");
+                    decimal ratePerMinute = decimal.TryParse(commandParameters[5], out ratePerMinute)
                         ? ratePerMinute
-                        : throw new ArgumentException("Please provide a valid decimal value!");
+                        : throw new ArgumentException("Please provide a valid decimal value for rate per minute!");
                     ;
                     DepartmentType department;
                     if (!Enum.TryParse(commandParameters[6], out department))
@@ -140,9 +150,62 @@ namespace AutoService.Core
                         : throw new ArgumentException("This employee does not exist!");
                     this.FireEmployee(employee);
                     break;
+                case "changeEmployeesRate":
+                    firstName = commandParameters[1];
+                    lastName = commandParameters[2];
+                    var rate = decimal.Parse(commandParameters[3]);
+                    if (employees.Any(x => x.FirstName != firstName && x.LastName != lastName))
+                    {
+                        throw new ArgumentException("The are no employee with this name!");
+                    }
+                    foreach (var employe in employees)
+                    {
+                        if (employee.FirstName == firstName && employee.LastName == lastName)
+                        {
+                            employee.ChangeRate(rate);
+                            Console.WriteLine($"Employee {employee.FirstName.ToString()}{employee.LastName.ToString()} rate were changed to {rate}!");
+                        }
+                    }
+                    break;
+                case "issueInvoices":
+                    this.IssueInvoices();
+                    break;
                 default:
                     throw new InvalidOperationException();
             }
+        }
+
+        private void ShowEmployees()
+        {
+            int counter = 1;
+            foreach (var currentEmployee in this.employees)
+            {   
+                Console.WriteLine(counter + ". " +  currentEmployee.ToString());
+                counter++;
+            }
+        }
+
+        private void IssueInvoices()
+        {
+            int invoiceCount = 0;
+            foreach (var client in this.notInvoicedSells.OrderBy(o => o.Key.Name))
+            {
+                this.lastInvoiceNumber++;
+                invoiceCount++;
+                string invoiceNumber = this.lastInvoiceNumber.ToString().PadLeft(10, '0');
+                this.lastInvoiceDate.AddDays(1);
+                IInvoice invoice = new Invoice(invoiceNumber, this.lastInvoiceDate, client.Key);
+
+                foreach (var sell in client.Value)
+                {
+                    invoice.InvoiceItems.Add(sell);
+                }
+                var clientToAddInvoice = this.clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
+                clientToAddInvoice.Invoices.Add(invoice);
+            }
+
+            this.notInvoicedSells.Clear();
+            Console.WriteLine($"{invoiceCount} invoices were successfully issued!");
         }
 
         private void FireEmployee(IEmployee employee)

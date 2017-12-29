@@ -12,7 +12,7 @@ namespace AutoService.Models.Vehicles.Contracts
 
         VehicleType VehicleType { get; }
 
-        IClient Owner { get; }
+        //IClient Owner { get; }
 
         string RegistrationNumber { get; }
 

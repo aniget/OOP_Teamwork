@@ -12,12 +12,12 @@ namespace AutoService.Models.Vehicles.Models
         private readonly string model;
         private readonly string make;
         private VehicleType vehicleType;
-        private readonly IClient owner;
+        //private readonly IClient owner;
         private readonly string registrationNumber;
         private readonly string year;
         private readonly EngineType engine;
 
-        public Vehicle(string model, string make, IClient owner, string registrationNumber,
+        public Vehicle(string model, string make, string registrationNumber,
             string year, EngineType engine)
         {
             if (string.IsNullOrWhiteSpace(model))
@@ -30,10 +30,10 @@ namespace AutoService.Models.Vehicles.Models
                 throw new ArgumentException("Please provide a valid model!");
             }
 
-            if (owner == null)
-            {
-                throw new ArgumentException("Invalid owner!");
-            }
+            //if (owner == null)
+            //{
+            //    throw new ArgumentException("Invalid owner!");
+            //}
 
             if (string.IsNullOrWhiteSpace(registrationNumber) || registrationNumber.Length < 6)
             {
@@ -47,7 +47,7 @@ namespace AutoService.Models.Vehicles.Models
 
             this.model = model;
             this.make = make;
-            this.owner = owner;
+            //this.owner = owner;
             this.registrationNumber = registrationNumber;
             this.year = year;
             this.engine = engine;
@@ -59,7 +59,7 @@ namespace AutoService.Models.Vehicles.Models
 
         public VehicleType VehicleType { get => this.vehicleType; protected set { this.vehicleType = value; }}
 
-        public IClient Owner { get => this.owner; }
+        //public IClient Owner { get => this.owner; }
 
         public string RegistrationNumber { get => this.registrationNumber;}
 
@@ -72,11 +72,11 @@ namespace AutoService.Models.Vehicles.Models
             return $"Vehicle: {this.GetType().Name}" + Environment.NewLine +
                    $"-- Make: {this.Make}" + Environment.NewLine +
                    $"-- Model: {this.Model}" + Environment.NewLine +
-                   $"-- Year: {this.Year}" + Environment.NewLine + 
+                   $"-- Year: {this.Year}" + Environment.NewLine +
                    $"-- Engine: {this.Engine}" + Environment.NewLine +
-                   $"-- Number of tires: {(int)this.VehicleType}" + Environment.NewLine +
-                   $"-- Registration number: {this.RegistrationNumber}" + Environment.NewLine +
-                   $"-- Owner: {this.Owner.Name}";
+                   $"-- Number of tires: {(int) this.VehicleType}" + Environment.NewLine +
+                   $"-- Registration number: {this.RegistrationNumber}" + Environment.NewLine;
+            //$"-- Owner: {this.Owner.Name}";
         }
     }
 }

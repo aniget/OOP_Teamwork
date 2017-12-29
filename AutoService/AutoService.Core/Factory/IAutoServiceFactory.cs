@@ -30,10 +30,10 @@ namespace AutoService.Core.Factory
 
         IOrder CreateOrderStock();
 
-        IVehicle CreateCar(string model, string make, IClient owner, int passengerCapacity, string registrationNumber, string year, string engine);
+        IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber, string year, string engine);
 
-        IVehicle CreateSmallTruck(string model, string make, IClient owner, string registrationNumber, string year, string engine, int weightAllowedInKilograms);
+        IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year, string engine, int weightAllowedInKilograms);
 
-        IVehicle CreateTruck(string model, string make, IClient owner, string registrationNumber, string year, string engine, int weightAllowedInKilograms);
+        IVehicle CreateTruck(string model, string make, string registrationNumber, string year, string engine, int weightAllowedInKilograms);
     }
 }
