@@ -17,6 +17,8 @@ namespace AutoService.Core
         private readonly ICollection<ICounterparty> clients;
         private readonly ICollection<ICounterparty> vendors;
 
+        private DateTime lastInvoiceDate;
+
         private static readonly IEngine SingleInstance = new Engine();
 
         private Engine()

@@ -22,8 +22,8 @@ namespace AutoService.Models.BusinessProcess.Models
         private string serviceName;
         private ICollection<IInvoice> invoices;
 
-        public SellService(IEmployee responsibleEmployee, decimal price, TypeOfWork job, IClient client, Vehicle vehicle, ICollection<IInvoice> invoices, string serviceName, int durationInMinutes)
-            : base(responsibleEmployee, price, job, client, vehicle, invoices)
+        public SellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ICollection<IInvoice> invoices, string serviceName, int durationInMinutes)
+            : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute ,TypeOfWork.Selling, client, vehicle, invoices)
         {
 
             //validation of serviceName

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Enums;
 
@@ -7,6 +8,7 @@ namespace AutoService.Models.Contracts
     public interface IInvoice
     {
         string Number { get; }
+        DateTime Date { get; }
         decimal Amount { get; } // Calculated property based on invoiceItems
         decimal PaidAmount { get; }
         IClient Client { get; }

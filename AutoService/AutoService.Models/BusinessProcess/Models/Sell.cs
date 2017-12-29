@@ -42,9 +42,9 @@ namespace AutoService.Models.BusinessProcess.Models
             if (string.IsNullOrWhiteSpace(invoiceNumber) || string.Empty == invoiceNumber) //is the invoice number null or empty
             {
                 //create the invoice and add the sold service item to it
-                IInvoice invoice = new Invoice(invoiceNumber, client);
-                invoices.Add(invoice);
-                invoice.InvoiceItems.Add(this);
+                //IInvoice invoice = new Invoice(invoiceNumber, client);
+                //invoices.Add(invoice);
+                //invoice.InvoiceItems.Add(this);
             }
             else //does the invoiceNumber not exist inside invoice collection
             {

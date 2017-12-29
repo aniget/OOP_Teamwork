@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Contracts;
@@ -11,12 +10,13 @@ namespace AutoService.Models.Assets
     public class Invoice : IInvoice
     {
         private readonly string number;
+        private readonly DateTime date;
+        private readonly IClient client;
         private decimal amount;
         private decimal paidAmount;
         private ICollection<ISell> invoiceItems;
-        private IClient client;
 
-        public Invoice(string number, IClient client)
+        public Invoice(string number, DateTime date, IClient client)
         {
             if (string.IsNullOrWhiteSpace(number))
             {
@@ -24,11 +24,22 @@ namespace AutoService.Models.Assets
             }
             
             this.number = number;
-            this.client = client ?? throw new ArgumentException("Client cannot be null");
+
+            if (client == null)
+            {
+                throw new ArgumentException("Client cannot be null!");
+            }
+
+            this.client = client;
+
+            this.date = date;
+
             this.invoiceItems = new List<ISell>();
         }
 
         public string Number { get => this.number; }
+
+        public DateTime Date { get => this.date; }
 
         public decimal Amount
         {
@@ -56,12 +67,14 @@ namespace AutoService.Models.Assets
             }
         }
 
-        public IClient Client => this.client;
+        public IClient Client
+        {
+            get => this.client;
+        }
 
         public ICollection<ISell> InvoiceItems
         {
             get => this.invoiceItems;
-            set => this.invoiceItems = value;
         }
 
         public void IncreasePaidAmount(decimal amount)
@@ -90,7 +103,7 @@ namespace AutoService.Models.Assets
             foreach (var item in InvoiceItems)
             {
                 ;
-                sb.AppendLine("===" + Environment.NewLine + item + "===");
+                sb.AppendLine("===" + Environment.NewLine + item + Environment.NewLine + "===");
             }
 
             return sb.ToString();

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
@@ -15,8 +12,8 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         private readonly IStock stock;
 
-        public SellStock(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty client, Vehicle vehicle, ICollection<IInvoice> invoices, IStock stock) 
-            : base(responsibleEmployee, price, job, client, vehicle, invoices)
+        public SellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ICollection<IInvoice> invoices, IStock stock) 
+            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, TypeOfWork.Selling, client, vehicle, invoices)
         {
             this.stock = stock ?? throw new ArgumentException("Stock cannot be null");
 
