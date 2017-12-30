@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
@@ -61,10 +60,10 @@ namespace AutoService.Core.Factory
             return new OrderStock(responsibleEmployee, price, job, supplier, stock);
         }
 
-        public IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber,
-            string year, EngineType engine)
+        public IVehicle CreateCar(string model, string make, string registrationNumber,
+            string year, EngineType engine, int passengerCapacity)
         {
-            IVehicle newCar = new Car(model, make, passengerCapacity, registrationNumber, year, engine);
+            IVehicle newCar = new Car(model, make, registrationNumber, year, engine, passengerCapacity);
             return newCar;
         }
 

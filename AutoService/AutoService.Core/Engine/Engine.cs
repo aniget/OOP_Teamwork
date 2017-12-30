@@ -23,8 +23,8 @@ namespace AutoService.Core
 
         private readonly IList<IEmployee> employees;
         private readonly IList<BankAccount> bankAccounts;
-        private readonly ICollection<ICounterparty> clients;
-        private readonly ICollection<ICounterparty> suppliers;
+        private readonly IList<ICounterparty> clients;
+        private readonly IList<ICounterparty> suppliers;
         private readonly IDictionary<IClient, List<ISell>> notInvoicedSells;
 
         private DateTime lastInvoiceDate =
@@ -99,7 +99,7 @@ namespace AutoService.Core
 
         private void ExecuteSingleCommand(string[] commandParameters)
         {
-            string commandType = "";
+            string commandType = string.Empty;
 
             try
             {
@@ -151,18 +151,10 @@ namespace AutoService.Core
 
                     ratePerMinute = Validator.Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
 
-                    if (!Enum.TryParse(commandParameters[6], out department))
-                    {
-                        string[] ListOfDepartments = Enum.GetNames(typeof(DepartmentType));
-                        StringBuilder builder = new StringBuilder();
-                        foreach (var dept in ListOfDepartments)
-                        {
-                            builder.AppendLine(dept);
-                        }
-                        throw new ArgumentException("Department is not valid!" + Environment.NewLine + "List of departments to choose from:" + Environment.NewLine + builder);
-                    }
+                    department = Validator.Validate.DepartmentTypeFromString(commandParameters[6], "department");
 
                     this.AddEmployee(firstName, lastName, position, salary, ratePerMinute, department);
+
                     break;
 
                 case "fireEmployee":
@@ -203,10 +195,7 @@ namespace AutoService.Core
 
                     Validator.Validate.ExactParameterLength(commandParameters, 2);
 
-                    if (!Enum.TryParse(commandParameters[1], out department))
-                    {
-                        throw new ArgumentException("Department not valid!");
-                    }
+                    department = Validator.Validate.DepartmentTypeFromString(commandParameters[1], "department");
 
                     this.ListEmployeesAtDepartment(department);
                     break;
@@ -252,42 +241,34 @@ namespace AutoService.Core
                     employee = Validator.Validate.EmployeeById(this.employees, employeeId);
 
                     var responsibilitiesToRemove = commandParameters.Skip(2).ToArray();
+
                     this.RemoveResponsibilitiesToEmployee(employee, responsibilitiesToRemove);
 
                     break;
 
-                case "addClientsCar":
+                case "addVehicleToClient":
+                    //addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;1
+                    Validator.Validate.ExactParameterLength(commandParameters, 9);
 
-                    Validator.Validate.MinimumParameterLength(commandParameters, 8);
-
-                    var uniqueNumbre = commandParameters[1];
+                    vehicleType = Validator.Validate.VehicleTypeFromString(commandParameters[1], "vehicle type");
                     vehicleMake = commandParameters[2];
                     vehicleModel = commandParameters[3];
-                    if (!Enum.TryParse(commandParameters[4], out vehicleType))
-                    {
-                        throw new ArgumentException("Vehicle Type not valid!");
-                    }
-                    registrationNumber = commandParameters[5];
-                    var vehicleYear = commandParameters[6];
-                    if (!Enum.TryParse(commandParameters[7], out engineType))
-                    {
-                        throw new ArgumentException("EngineType Type not valid!");
-                    }
-                    var additionalParams = commandParameters[8];
+                    registrationNumber = commandParameters[4];
+                    string vehicleYear = commandParameters[5];
+                    engineType = Validator.Validate.EngineTypeFromString(commandParameters[6], "engine type");
+                    var additionalParams = Validator.Validate.IntFromString(commandParameters[7], "additional parameters");
+                    var clientId = Validator.Validate.IntFromString(commandParameters[8], "clientId");
+                    var client = (Client)Validator.Validate.ClientById(this.clients, clientId);
 
-                    var currClient = (Client)this.clients.FirstOrDefault(x => x.UniqueNumber == uniqueNumbre);
-
-                    if (currClient == null)
-                    {
-                        throw new ArgumentException($"The are no client with this {uniqueNumbre}.");
-                    }
-                    if (currClient.Vehicles.Any(x => x.RegistrationNumber == registrationNumber))
+                    if (client.Vehicles.Any(x => x.RegistrationNumber == registrationNumber))
                     {
                         throw new ArgumentException($"This client already has a vehicle with this registration number: {registrationNumber}.");
                     }
-                    var curcar = CreateVehicle(vehicleType, vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
-                    currClient.Vehicles.Add((Vehicle)curcar);
+                    var newVehicle = CreateVehicle(vehicleType, vehicleMake, vehicleModel, registrationNumber, vehicleYear, engineType, additionalParams);
+                    client.Vehicles.Add((Vehicle)newVehicle);
+
                     break;
+
                 case "createBankAccount":
 
                     Validator.Validate.ExactParameterLength(commandParameters, 3);
@@ -304,7 +285,7 @@ namespace AutoService.Core
 
                     assetName = commandParameters[2];
 
-                    DateTime currentAssetDate = this.lastAssetDate.AddDays(5);
+                    DateTime currentAssetDate = this.lastAssetDate.AddDays(5); //fixed date in order to check zero tests
 
                     this.CreateBankAccount(employee, assetName, currentAssetDate);
                     break;
@@ -440,21 +421,24 @@ namespace AutoService.Core
 
         }
 
-        private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleModel, string vehicleMake, string registrationNumber, string vehicleYear, EngineType engineType, string additionalParams)
+        private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleModel, string vehicleMake, string registrationNumber, string vehicleYear, EngineType engineType, int additionalParams)
+        //vehicleType, vehicleMake, vehicleModel, registrationNumber, vehicleYear, engineType, additionalParams
+
         {
             IVehicle vehicle = null;
 
             if (vehicleType == VehicleType.Car)
             {
-                vehicle = (IVehicle)this.factory.CreateCar(vehicleModel, vehicleMake, int.Parse(additionalParams), registrationNumber, vehicleYear, engineType);
+                vehicle = (IVehicle)this.factory.CreateCar(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
             }
+
             else if (vehicleType == VehicleType.SmallTruck)
             {
-                vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, int.Parse(additionalParams));
+                vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
             }
             else if (vehicleType == VehicleType.Truck)
             {
-                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, int.Parse(additionalParams));
+                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
             }
             return vehicle;
         }
@@ -546,7 +530,7 @@ namespace AutoService.Core
 
             Console.WriteLine($"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
-        
+
         //private void SellStockToClient(IStock stock)
         //{
         //    if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||

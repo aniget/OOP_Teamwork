@@ -10,7 +10,7 @@ namespace AutoService.Models.Vehicles.Models
     {
         private readonly int passengerCapacity;
 
-        public Car(string model, string make, int passengerCapacity, string registrationNumber, string year, EngineType engine) 
+        public Car(string model, string make, string registrationNumber, string year, EngineType engine, int passengerCapacity) 
             : base(model, make, registrationNumber, year, engine)
         {
             if (passengerCapacity < 1 || passengerCapacity > 9)
