@@ -17,7 +17,6 @@ using AutoService.Core.CustomExceptions;
 
 namespace AutoService.Core
 {
-
     public sealed class Engine : IEngine
     {
         //TODO CHECK WHOLE DOCUMENT FOR REPETITIVE CODE
@@ -81,7 +80,9 @@ namespace AutoService.Core
                 {
                     Console.WriteLine(e.Message);
                 }
-                Console.WriteLine(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
+                Console.WriteLine(Environment.NewLine +
+                                  "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
+                                  Environment.NewLine);
                 command = ReadCommand();
             }
         }
@@ -94,7 +95,6 @@ namespace AutoService.Core
         private string[] ParseCommand(string command)
         {
             return command.Split(new string[] {";"}, StringSplitOptions.RemoveEmptyEntries);
-            return command.Split(new string[] { ";"/*, "," */}, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private void ExecuteSingleCommand(string[] commandParameters)
@@ -113,6 +113,7 @@ namespace AutoService.Core
             decimal ratePerMinute;
             IEmployee employee;
             ICounterparty supplier;
+            decimal salary;
             //IOrderStock orderStock;
             IStock stock;
             string position;
@@ -126,35 +127,25 @@ namespace AutoService.Core
 
             switch (commandType)
             {
-                #region showEmployees
-
                 case "showEmployees":
 
-                    if (this.employees.Count == 0)
-                    {
-                        throw new ArgumentException("There are no employees! Hire them!");
-                    }
+                    Validator.Validate.EmployeeCount(this.employees.Count);
+                   
                     this.ShowEmployees();
                     break;
 
-
-                #endregion
-
                 case "hireEmployee":
 
-                    ValidateExactParameterLength(commandParameters, 7);
-
+                    Validator.Validate.ExactParameterLength(commandParameters, 7);
+                    
                     var firstName = commandParameters[1];
                     var lastName = commandParameters[2];
                     position = commandParameters[3];
 
-                    decimal salary = Validator.Validate.ValidateDecimalFromString(commandParameters[4]);
+                    salary = Validator.Validate.DecimalFromString(commandParameters[4], "salary");
                     
-                    ratePerMinute = decimal.TryParse(commandParameters[5], out ratePerMinute)
-                        ? ratePerMinute
-                        : throw new ArgumentException("Please provide a valid decimal value for rate per minute!");
-                    ;
-
+                    ratePerMinute = Validator.Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
+                    
                     if (!Enum.TryParse(commandParameters[6], out department))
                     {
                         string[] ListOfDepartments = Enum.GetNames(typeof(DepartmentType));
@@ -171,8 +162,7 @@ namespace AutoService.Core
 
                 case "fireEmployee":
 
-                    ValidateExactParameterLength(commandParameters, 2);
-
+                    Validator.Validate.ExactParameterLength(commandParameters, 2);
                     if (this.employees.Count == 0)
                     {
                         throw new InvalidOperationException("No employees currently in the service!");
@@ -196,7 +186,7 @@ namespace AutoService.Core
 
                 case "changeEmployeeRate":
 
-                    ValidateExactParameterLength(commandParameters, 3);
+                    Validator.Validate.ExactParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -213,9 +203,7 @@ namespace AutoService.Core
                             $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
-                    ratePerMinute = decimal.TryParse(commandParameters[2], out ratePerMinute)
-                        ? ratePerMinute
-                        : throw new ArgumentException("Please provide a valid decimal value for rate per minute!");
+                    ratePerMinute = Validator.Validate.DecimalFromString(commandParameters[2], "ratePerMinute");
 
                     employee = this.employees.Count >= employeeId
                         ? this.employees[employeeId - 1]
@@ -225,14 +213,14 @@ namespace AutoService.Core
                     break;
 
                 case "issueInvoices":
-                    ValidateExactParameterLength(commandParameters, 1);
+                    Validator.Validate.ExactParameterLength(commandParameters, 1);
 
                     this.IssueInvoices();
                     break;
 
                 case "showAllEmployeesAtDepartment":
 
-                    ValidateExactParameterLength(commandParameters, 2);
+                    Validator.Validate.ExactParameterLength(commandParameters, 2);
 
                     if (!Enum.TryParse(commandParameters[1], out department))
                     {
@@ -243,8 +231,8 @@ namespace AutoService.Core
                     break;
 
                 case "changeEmployeePosition":
-                    ValidateExactParameterLength(commandParameters, 3);
 
+                    Validator.Validate.ExactParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -271,7 +259,7 @@ namespace AutoService.Core
 
                 case "addEmployeeResponsibility":
 
-                    ValidateMinimumParameterLength(commandParameters, 3);
+                    Validator.Validate.MinimumParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -299,7 +287,7 @@ namespace AutoService.Core
 
                 case "removeEmpoloyeeResponsibility":
 
-                    ValidateMinimumParameterLength(commandParameters, 3);
+                    Validator.Validate.MinimumParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -360,7 +348,7 @@ namespace AutoService.Core
                     break;
                 case "createBankAccount":
 
-                    ValidateExactParameterLength(commandParameters, 3);
+                    Validator.Validate.ExactParameterLength(commandParameters, 3);
 
                     if (this.employees.Count == 0)
                     {
@@ -391,7 +379,7 @@ namespace AutoService.Core
 
                 case "depositCashInBank":
 
-                    ValidateExactParameterLength(commandParameters, 3);
+                    Validator.Validate.ExactParameterLength(commandParameters, 3);
 
                     if (this.bankAccounts.Count == 0)
                     {
@@ -422,7 +410,7 @@ namespace AutoService.Core
 
                 case "orderStockToWarehouse":
 
-                    ValidateEitherOrParameterLength(commandParameters, 5, 7);
+                    Validator.Validate.EitherOrParameterLength(commandParameters, 5, 7);
 
                     var emplFN = commandParameters[1];
                     var supplN = commandParameters[2];
@@ -450,8 +438,6 @@ namespace AutoService.Core
                         employee = this.employees.Single(x => x.FirstName == emplFN);
                     }
 
-                    
-
                     if (this.suppliers.Select(x => x.Name == supplN).Count() > 1)
                     {
                         throw new ArgumentException("More than one registered supplier with same name, please provide unique number INSTEAD of name");
@@ -473,7 +459,7 @@ namespace AutoService.Core
 
                 case "registerSupplier":
 
-                    //ValidateMinimumParameterLength(commandParameters, 2); //validation is made in the class
+                    Validator.Validate.ExactParameterLength(commandParameters, 4);
 
                     supplierName = commandParameters[1];
                     supplierAddress = commandParameters[2];
@@ -484,7 +470,7 @@ namespace AutoService.Core
 
                 case "removeSupplier":
 
-                    ValidateMinimumParameterLength(commandParameters, 2);
+                    Validator.Validate.ExactParameterLength(commandParameters, 2);
 
                     supplierName = commandParameters[1];
 
@@ -503,15 +489,6 @@ namespace AutoService.Core
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
         }
-
-        //private decimal ValidateDecimal(string commandParameter)
-        //{
-        //    decimal salary = decimal.TryParse(commandParameter, out salary)
-        //        ? salary
-        //        : throw new ArgumentException("Please provide a valid decimal value for salary!");
-
-        //    return salary;
-        //}
 
         private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
         {
@@ -770,45 +747,6 @@ namespace AutoService.Core
             this.suppliers.Remove(supplierToBeRemoved);
             Console.WriteLine(supplierToBeRemoved);
             Console.WriteLine($"Supplier {name} removed successfully!");
-        }
-
-        private void ValidateExactParameterLength(string[] parameters, int length)
-        {
-            if (parameters.Length != length)
-            {
-                throw new ArgumentException(
-                    $"Parameter length for command {parameters[0]} must be exactly {length}");
-            }
-        }
-
-        private void ValidateMinimumParameterLength(string[] parameters, int length)
-        {
-            if (parameters.Length < length)
-            {
-                throw new ArgumentException(
-                    $"Parameter length for command {parameters[0]} must be more than {length}");
-            }
-        }
-
-        private void ValidateBetweenParameterLength(string[] parameters, int minLength, int maxLength)
-        {
-            if (parameters.Length < minLength || parameters.Length > maxLength)
-            {
-                throw new ArgumentException(
-                $"Parameter length for command {parameters[0]} must be between {minLength} and {maxLength}");
-            }
-
-        }
-
-
-        private void ValidateEitherOrParameterLength(string[] parameters, int length1, int length2)
-        {
-            if (parameters.Length == Math.Min(length1, length2) && parameters.Length == Math.Max(length1, length2))
-            {
-                throw new ArgumentException(
-                    $"Parameter length for command {parameters[0]} must be either {length1} or {length2}");
-            }
-
         }
     }
 }
