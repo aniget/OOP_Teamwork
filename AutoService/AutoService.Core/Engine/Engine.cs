@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using AutoService.Core.Factory;
-﻿using AutoService.Core.Factory;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
@@ -14,11 +13,7 @@ using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 using AutoService.Models.Vehicles.Models;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+using AutoService.Core.CustomExceptions;
 
 namespace AutoService.Core
 {
@@ -45,7 +40,6 @@ namespace AutoService.Core
         //constructor
         private Engine()
         {
-
             this.factory = new AutoServiceFactory();
             this.employees = new List<IEmployee>();
             this.bankAccounts = new List<BankAccount>();
@@ -76,6 +70,10 @@ namespace AutoService.Core
                     Console.WriteLine(e.Message);
                 }
                 catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                catch (InvalidIdException e)
                 {
                     Console.WriteLine(e.Message);
                 }
@@ -149,9 +147,9 @@ namespace AutoService.Core
                     var firstName = commandParameters[1];
                     var lastName = commandParameters[2];
                     position = commandParameters[3];
-                    decimal salary = decimal.TryParse(commandParameters[4], out salary)
-                        ? salary
-                        : throw new ArgumentException("Please provide a valid decimal value for salary!");
+
+                    decimal salary = Validator.Validate.ValidateDecimalFromString(commandParameters[4]);
+                    
                     ratePerMinute = decimal.TryParse(commandParameters[5], out ratePerMinute)
                         ? ratePerMinute
                         : throw new ArgumentException("Please provide a valid decimal value for rate per minute!");
@@ -186,7 +184,7 @@ namespace AutoService.Core
 
                     if (employeeId <= 0)
                     {
-                        throw new ArgumentException(
+                        throw new InvalidIdException(
                             $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
@@ -505,6 +503,15 @@ namespace AutoService.Core
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
         }
+
+        //private decimal ValidateDecimal(string commandParameter)
+        //{
+        //    decimal salary = decimal.TryParse(commandParameter, out salary)
+        //        ? salary
+        //        : throw new ArgumentException("Please provide a valid decimal value for salary!");
+
+        //    return salary;
+        //}
 
         private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
         {
