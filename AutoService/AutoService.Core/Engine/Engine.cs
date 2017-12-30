@@ -1,3 +1,9 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using AutoService.Core.Factory;
 ﻿using AutoService.Core.Factory;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
@@ -34,7 +40,6 @@ namespace AutoService.Core
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
-
         private static readonly IEngine SingleInstance = new Engine();
 
         //constructor
@@ -53,7 +58,6 @@ namespace AutoService.Core
         {
             get { return SingleInstance; }
         }
-
 
         public void Run()
         {
@@ -79,7 +83,7 @@ namespace AutoService.Core
                 {
                     Console.WriteLine(e.Message);
                 }
-                Console.WriteLine("<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>");
+                Console.WriteLine(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
                 command = ReadCommand();
             }
         }
@@ -91,6 +95,7 @@ namespace AutoService.Core
 
         private string[] ParseCommand(string command)
         {
+            return command.Split(new string[] {";"}, StringSplitOptions.RemoveEmptyEntries);
             return command.Split(new string[] { ";"/*, "," */}, StringSplitOptions.RemoveEmptyEntries);
         }
 
@@ -497,8 +502,7 @@ namespace AutoService.Core
                     break;
 
                 default:
-                    //throw new InvalidOperationException();
-                    throw new ArgumentException("Unknown command!");
+                    throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
         }
 
