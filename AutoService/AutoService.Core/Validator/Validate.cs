@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoService.Core.CustomExceptions;
 using AutoService.Models.Assets;
 using AutoService.Models.Contracts;
@@ -108,6 +109,39 @@ namespace AutoService.Core.Validator
                 : throw new ArgumentException("This bank account does not exist!");
 
             return bankAccount;
+        }
+
+
+        public static void EmployeeExist(IList<IEmployee> employees, string employeeFirstName)
+        {
+            if (!employees.Any(x => x.FirstName == employeeFirstName))
+            {
+                throw new ArgumentException($"There is no employee called {employeeFirstName} in the AutoService");
+            }
+        }
+
+        public static  IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNemaIndex, int maxLength)
+        {
+            IEmployee employee;
+
+            var employeeFirstName = commandParameters[employeeFirstNemaIndex];
+
+            if (commandParameters.Length == maxLength) //employeeFirstName + employeeLastName + employeeDepartment
+            {
+                var employeeLastName = commandParameters[maxLength-2];
+                var employeeDepartment = commandParameters[maxLength-1];
+                return employee = employees.Single(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment);
+            }
+            else
+            {
+                if (employees.Select(x => x.FirstName == employeeFirstName).Count() > 1)
+                {
+                    throw new ArgumentException("More than one emplyee with same name, please provide first name, last name and department");
+                }
+
+                return employee = employees.Single(x => x.FirstName == employeeFirstName);
+            }
+
         }
     }
 }

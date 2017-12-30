@@ -324,13 +324,24 @@ namespace AutoService.Core
                     this.DepositCashInBankAccount(bankAccount, depositAmount);
                     break;
 
-                //case "sellToClientVehicle":
-                //    //sellToClientVehicles;empl;cl;veh;sell
-                //    employeeFirstName = commandParameters[1];
-                //    clientName = commandParameters[2];
-                //    vehicleMake = commandParameters[3];
-                //    vehicleModel = commandParameters[4];
-                //    registrationNumber = commandParameters[5];
+                case "sellToClientVehicle":
+                    //sellToClientVehicles;empl;cl;veh;sell
+                    employeeFirstName = commandParameters[1];
+                    clientName = commandParameters[2];
+                    vehicleMake = commandParameters[3];
+                    vehicleModel = commandParameters[4];
+                    registrationNumber = commandParameters[5];
+
+                    Validator.Validate.EmployeeExist(this.employees, employeeFirstName);
+                    employee = Validator.Validate.EmployeeUnique(this.employees, commandParameters, 1, 7);
+
+                    //validate client
+                    //validate vehicle
+
+                    this.SellStockToClient(stock);
+
+                    break;
+
 
 
                 case "orderStockToWarehouse":
@@ -342,27 +353,9 @@ namespace AutoService.Core
                     var stockName = commandParameters[3];
                     decimal purchasePrice = Validator.Validate.DecimalFromString(commandParameters[4], "purchasePrice");
 
-                    if (!this.employees.Any(x => x.FirstName == employeeFirstName))
-                    {
-                        throw new ArgumentException($"There is no employee called {employeeFirstName} in the AutoService");
-                    }
-
-                    if (commandParameters.Length == 7) //employeeFirstName + employeeLastName + employeeDepartment
-                    {
-                        var emplLN = commandParameters[5];
-                        var emplDept = commandParameters[6];
-                        employee = this.employees.Single(x => x.FirstName == employeeFirstName && x.LastName == emplLN && x.Department.ToString() == emplDept);
-                    }
-                    else
-                    {
-                        if (this.employees.Select(x => x.FirstName == employeeFirstName).Count() > 1)
-                        {
-                            throw new ArgumentException("More than one emplyee with same name, please provide first name, last name and department");
-                        }
-
-                        employee = this.employees.Single(x => x.FirstName == employeeFirstName);
-                    }
-
+                    Validator.Validate.EmployeeExist(this.employees, employeeFirstName);
+                    employee = Validator.Validate.EmployeeUnique(this.employees, commandParameters, 1, 7);
+                    
                     if (this.suppliers.Select(x => x.Name == supplierName).Count() > 1)
                     {
                         throw new ArgumentException("More than one registered supplier with same name, please provide unique number INSTEAD of name");
@@ -546,24 +539,24 @@ namespace AutoService.Core
 
             Console.WriteLine($"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
-        
-        //private void SellStockToClient(IStock stock)
-        //{
-        //    if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
-        //        stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
-        //        stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
-        //    {
-        //        ISell sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, stockstock.PurchasePrice, TypeOfWork.Ordering, stock.Supplier, stock);
-        //        sellStock.SellToClientVehicle(stock.ResponsibleEmployee.FirstName, stock.Supplier.Name, Vehicle, stock);
-        //    }
-        //    else
-        //    {
-        //        throw new ArgumentException(
-        //            $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
-        //    }
 
-        //    Console.WriteLine($"{stock.Name} ordered for {stock.client.Supplier.Name} for the amount of {stock.PurchasePrice * 1.2} are sold to the customer {customer/*}." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
-        //}
+        private void SellStockToClient(IStock stock)
+        {
+            if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
+                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
+                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
+            {
+                ISell sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, stockstock.PurchasePrice, TypeOfWork.Ordering, stock.Supplier, stock);
+                sellStock.SellToClientVehicle(stock.ResponsibleEmployee.FirstName, stock.Supplier.Name, Vehicle, stock);
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
+            }
+
+            Console.WriteLine($"{stock.Name} ordered for {stock.client.Supplier.Name} for the amount of {stock.PurchasePrice * 1.2} are sold to the customer {customer/*}." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+        }
 
         private void ShowEmployees()
         {
