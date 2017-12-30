@@ -31,7 +31,7 @@ namespace AutoService.Core.Factory
 
         IOrderStock CreateOrderStock(IEmployee responsibleEmployee, decimal purchasePrice, TypeOfWork job, ICounterparty supplier, IStock stock);
 
-        IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber, string year, EngineType engine);
+        IVehicle CreateCar(string model, string make, string registrationNumber, string year, EngineType engine, int passengerCapacity);
 
         IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms);
 

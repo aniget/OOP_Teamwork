@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AutoService.Core.CustomExceptions;
 using AutoService.Models.Assets;
+using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Core.Validator
 {
@@ -142,6 +146,60 @@ namespace AutoService.Core.Validator
                 return employee = employees.Single(x => x.FirstName == employeeFirstName);
             }
 
+        }
+
+        public static ICounterparty ClientById(IList<ICounterparty> counterparties, int id)
+        {
+            if (id <= 0)
+            {
+                throw new InvalidIdException(
+                    $"Please provide a valid counterparty id value, i.e. between 1 and {counterparties.Count}!");
+            }
+
+            ICounterparty counterparty = counterparties.Count >= id
+                ? counterparties[id - 1]
+                : throw new ArgumentException("This counterparty does not exist!");
+
+            return counterparty;
+        }
+
+        public static DepartmentType DepartmentTypeFromString(string commandParameter, string department)
+        {
+            DepartmentType departmentFound;
+            if (!Enum.TryParse(commandParameter, out departmentFound))
+            {
+                string[] listOfDepartments = Enum.GetNames(typeof(DepartmentType));
+               
+                throw new ArgumentException("Department is not valid!" + Environment.NewLine +
+                    "List of departments to choose from:" + Environment.NewLine + string.Join(Environment.NewLine, listOfDepartments));
+            }
+            return departmentFound;
+        }
+
+        public static VehicleType VehicleTypeFromString(string commandParameter, string vehicleType)
+        {
+            VehicleType vehicleTypeFound;
+            if (!Enum.TryParse(commandParameter, out vehicleTypeFound))
+            {
+                string[] listOfvehicleTypes = Enum.GetNames(typeof(VehicleType));
+
+                throw new ArgumentException("Vehicle is not valid!" + Environment.NewLine +
+                                            "List of vehicle types to choose from:" + Environment.NewLine + string.Join(Environment.NewLine, listOfvehicleTypes));
+            }
+            return vehicleTypeFound;
+        }
+
+        public static EngineType EngineTypeFromString(string commandParameter, string engineType)
+        {
+            EngineType engineTypeFound;
+            if (!Enum.TryParse(commandParameter, out engineTypeFound))
+            {
+                string[] listOfEngineTypes = Enum.GetNames(typeof(EngineType));
+
+                throw new ArgumentException("Engine is not valid!" + Environment.NewLine +
+                                            "List of engine types to choose from:" + Environment.NewLine + string.Join(Environment.NewLine, listOfEngineTypes));
+            }
+            return engineTypeFound;
         }
     }
 }
