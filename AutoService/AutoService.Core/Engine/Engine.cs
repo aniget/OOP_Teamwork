@@ -94,7 +94,7 @@ namespace AutoService.Core
 
         private string[] ParseCommand(string command)
         {
-            return command.Split(new string[] {";"}, StringSplitOptions.RemoveEmptyEntries);
+            return command.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private void ExecuteSingleCommand(string[] commandParameters)
@@ -130,22 +130,22 @@ namespace AutoService.Core
                 case "showEmployees":
 
                     Validator.Validate.EmployeeCount(this.employees.Count);
-                   
+
                     this.ShowEmployees();
                     break;
 
                 case "hireEmployee":
 
                     Validator.Validate.ExactParameterLength(commandParameters, 7);
-                    
+
                     var firstName = commandParameters[1];
                     var lastName = commandParameters[2];
                     position = commandParameters[3];
 
                     salary = Validator.Validate.DecimalFromString(commandParameters[4], "salary");
-                    
+
                     ratePerMinute = Validator.Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
-                    
+
                     if (!Enum.TryParse(commandParameters[6], out department))
                     {
                         string[] ListOfDepartments = Enum.GetNames(typeof(DepartmentType));
@@ -163,24 +163,13 @@ namespace AutoService.Core
                 case "fireEmployee":
 
                     Validator.Validate.ExactParameterLength(commandParameters, 2);
-                    if (this.employees.Count == 0)
-                    {
-                        throw new InvalidOperationException("No employees currently in the service!");
-                    }
 
-                    employeeId = int.TryParse(commandParameters[1], out employeeId)
-                        ? employeeId
-                        : throw new ArgumentException("Please provide a valid integer value!");
+                    Validator.Validate.EmployeeCount(this.employees.Count);
 
-                    if (employeeId <= 0)
-                    {
-                        throw new InvalidIdException(
-                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
-                    }
+                    employeeId = Validator.Validate.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = this.employees.Count >= employeeId
-                        ? this.employees[employeeId - 1]
-                        : throw new ArgumentException("This employee does not exist!");
+                    employee = Validator.Validate.EmployeeById(this.employees, employeeId);
+
                     this.FireEmployee(employee);
                     break;
 
@@ -188,26 +177,13 @@ namespace AutoService.Core
 
                     Validator.Validate.ExactParameterLength(commandParameters, 3);
 
-                    if (this.employees.Count == 0)
-                    {
-                        throw new InvalidOperationException("No employees currently in the service!");
-                    }
+                    Validator.Validate.EmployeeCount(this.employees.Count);
 
-                    employeeId = int.TryParse(commandParameters[1], out employeeId)
-                        ? employeeId
-                        : throw new ArgumentException("Please provide a valid integer value for employee Id!");
+                    employeeId = Validator.Validate.IntFromString(commandParameters[1], "employeeId");
 
-                    if (employeeId <= 0)
-                    {
-                        throw new ArgumentException(
-                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
-                    }
+                    employee = Validator.Validate.EmployeeById(this.employees, employeeId);
 
                     ratePerMinute = Validator.Validate.DecimalFromString(commandParameters[2], "ratePerMinute");
-
-                    employee = this.employees.Count >= employeeId
-                        ? this.employees[employeeId - 1]
-                        : throw new ArgumentException("This employee does not exist!");
 
                     this.ChangeRateOfEmployee(employee, ratePerMinute);
                     break;
@@ -234,26 +210,14 @@ namespace AutoService.Core
 
                     Validator.Validate.ExactParameterLength(commandParameters, 3);
 
-                    if (this.employees.Count == 0)
-                    {
-                        throw new InvalidOperationException("No employees currently in the service!");
-                    }
+                    Validator.Validate.EmployeeCount(this.employees.Count);
 
-                    employeeId = int.TryParse(commandParameters[1], out employeeId)
-                        ? employeeId
-                        : throw new ArgumentException("Please provide a valid integer value for employee Id!");
+                    employeeId = Validator.Validate.IntFromString(commandParameters[1], "employeeId");
 
-                    if (employeeId <= 0)
-                    {
-                        throw new ArgumentException(
-                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
-                    }
-
-                    employee = this.employees.Count >= employeeId
-                        ? this.employees[employeeId - 1]
-                        : throw new ArgumentException("This employee does not exist!");
+                    employee = Validator.Validate.EmployeeById(this.employees, employeeId);
 
                     position = commandParameters[2];
+
                     this.ChangePositionOfEmployee(employee, position);
                     break;
 
@@ -261,24 +225,11 @@ namespace AutoService.Core
 
                     Validator.Validate.MinimumParameterLength(commandParameters, 3);
 
-                    if (this.employees.Count == 0)
-                    {
-                        throw new InvalidOperationException("No employees currently in the service!");
-                    }
+                    Validator.Validate.EmployeeCount(this.employees.Count);
 
-                    employeeId = int.TryParse(commandParameters[1], out employeeId)
-                        ? employeeId
-                        : throw new ArgumentException("Please provide a valid integer value for employee Id!");
+                    employeeId = Validator.Validate.IntFromString(commandParameters[1], "employeeId");
 
-                    if (employeeId <= 0)
-                    {
-                        throw new ArgumentException(
-                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
-                    }
-
-                    employee = this.employees.Count >= employeeId
-                        ? this.employees[employeeId - 1]
-                        : throw new ArgumentException("This employee does not exist!");
+                    employee = Validator.Validate.EmployeeById(this.employees, employeeId);
 
                     var responsibilitiesToAdd = commandParameters.Skip(2).ToArray();
                     this.AddResponsibilitiesToEmployee(employee, responsibilitiesToAdd);
@@ -289,35 +240,21 @@ namespace AutoService.Core
 
                     Validator.Validate.MinimumParameterLength(commandParameters, 3);
 
-                    if (this.employees.Count == 0)
-                    {
-                        throw new InvalidOperationException("No employees currently in the service!");
-                    }
+                    Validator.Validate.EmployeeCount(this.employees.Count);
 
-                    employeeId = int.TryParse(commandParameters[1], out employeeId)
-                        ? employeeId
-                        : throw new ArgumentException("Please provide a valid integer value for employee Id!");
+                    employeeId = Validator.Validate.IntFromString(commandParameters[1], "employeeId");
 
-                    if (employeeId <= 0)
-                    {
-                        throw new ArgumentException(
-                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
-                    }
-
-                    employee = this.employees.Count >= employeeId
-                        ? this.employees[employeeId - 1]
-                        : throw new ArgumentException("This employee does not exist!");
+                    employee = Validator.Validate.EmployeeById(this.employees, employeeId);
 
                     var responsibilitiesToRemove = commandParameters.Skip(2).ToArray();
                     this.RemoveResponsibilitiesToEmployee(employee, responsibilitiesToRemove);
 
                     break;
+
                 case "addClientsCar":
-                    if (commandParameters.Length < 8)
-                    {
-                        throw new NotSupportedException(
-                            "Add car to client  command must be at least 8 parameters!");
-                    }
+
+                    Validator.Validate.MinimumParameterLength(commandParameters, 8);
+
                     var uniaqueNumbre = commandParameters[1];
                     var vehicleMake = commandParameters[2];
                     var vehicleModel = commandParameters[3];
@@ -356,19 +293,9 @@ namespace AutoService.Core
                             "No employees currently in the service! You need to hire one then open the bank account :)");
                     }
 
-                    employeeId = int.TryParse(commandParameters[1], out employeeId)
-                        ? employeeId
-                        : throw new ArgumentException("Please provide a valid integer value for employee Id!");
+                    employeeId = Validator.Validate.IntFromString(commandParameters[1], "employeeId");
 
-                    if (employeeId <= 0)
-                    {
-                        throw new ArgumentException(
-                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
-                    }
-
-                    employee = this.employees.Count >= employeeId
-                        ? this.employees[employeeId - 1]
-                        : throw new ArgumentException("This employee does not exist!");
+                    employee = Validator.Validate.EmployeeById(this.employees, employeeId);
 
                     assetName = commandParameters[2];
 
@@ -381,29 +308,13 @@ namespace AutoService.Core
 
                     Validator.Validate.ExactParameterLength(commandParameters, 3);
 
-                    if (this.bankAccounts.Count == 0)
-                    {
-                        throw new InvalidOperationException(
-                            "No bank accounts currently opened! You need to open one then deposit the cash.");
-                    }
+                    Validator.Validate.BankAccountsCount(this.bankAccounts.Count);
 
-                    int bankAccountId = int.TryParse(commandParameters[1], out bankAccountId)
-                        ? bankAccountId
-                        : throw new ArgumentException("Please provide a valid integer value for bankAccount Id!");
+                    int bankAccountId = Validator.Validate.IntFromString(commandParameters[1], "bankAccountId");
 
-                    if (bankAccountId <= 0)
-                    {
-                        throw new ArgumentException(
-                            $"Please provide a valid bankAccount Id, i.e. between 1 and {this.bankAccounts.Count}!");
-                    }
+                    BankAccount bankAccount = Validator.Validate.BankAccountById(this.bankAccounts, bankAccountId);
 
-                    var bankAccount = this.bankAccounts.Count >= bankAccountId
-                        ? this.bankAccounts[bankAccountId - 1]
-                        : throw new ArgumentException("This bank account does not exist!");
-
-                    decimal depositAmount = decimal.TryParse(commandParameters[2], out depositAmount)
-                        ? depositAmount
-                        : throw new ArgumentException("Please provide a valid decimal value for depositAmount!");
+                    decimal depositAmount = Validator.Validate.DecimalFromString(commandParameters[2], "depositAmount");
 
                     this.DepositCashInBankAccount(bankAccount, depositAmount);
                     break;
@@ -415,7 +326,7 @@ namespace AutoService.Core
                     var emplFN = commandParameters[1];
                     var supplN = commandParameters[2];
                     var stockName = commandParameters[3];
-                    var purchasePrice = decimal.Parse(commandParameters[4]);
+                    decimal purchasePrice = Validator.Validate.DecimalFromString(commandParameters[4], "purchasePrice");
 
                     if (!this.employees.Any(x => x.FirstName == emplFN))
                     {
@@ -434,7 +345,7 @@ namespace AutoService.Core
                         {
                             throw new ArgumentException("More than one emplyee with same name, please provide first name, last name and department");
                         }
-                        
+
                         employee = this.employees.Single(x => x.FirstName == emplFN);
                     }
 
