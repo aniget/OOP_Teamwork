@@ -4,6 +4,7 @@ using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 
@@ -30,10 +31,10 @@ namespace AutoService.Core.Factory
 
         IOrderStock CreateOrderStock(IEmployee responsibleEmployee, decimal purchasePrice, TypeOfWork job, ICounterparty supplier, IStock stock);
 
-        IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber, string year, string engine);
+        IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber, string year, EngineType engine);
 
-        IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year, string engine, int weightAllowedInKilograms);
+        IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms);
 
-        IVehicle CreateTruck(string model, string make, string registrationNumber, string year, string engine, int weightAllowedInKilograms);
+        IVehicle CreateTruck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms);
     }
 }

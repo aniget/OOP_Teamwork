@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Contracts;
 
 namespace AutoService.Models.Contracts
 {
@@ -13,5 +14,6 @@ namespace AutoService.Models.Contracts
         string UniqueNumber { get; }
 
         ICollection<IInvoice> Invoices { get; }
+       
     }
 }

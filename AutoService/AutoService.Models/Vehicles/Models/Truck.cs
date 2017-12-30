@@ -1,15 +1,17 @@
 ﻿using System;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Vehicles.Models
 {
-    public class Truck : Vehicle
+    public class Truck : Vehicle, IVehicle
     {
         private int weightAllowedInKilograms;
 
-        public Truck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms) : base(model, make, registrationNumber, year, engine)
+        public Truck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms)
+            : base(model, make, registrationNumber, year, engine)
         {
             this.WeightAllowedInKilograms = weightAllowedInKilograms;
             this.VehicleType = VehicleType.Truck;

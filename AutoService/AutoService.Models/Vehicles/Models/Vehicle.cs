@@ -20,15 +20,15 @@ namespace AutoService.Models.Vehicles.Models
         public Vehicle(string model, string make, string registrationNumber,
             string year, EngineType engine)
         {
-            if (string.IsNullOrWhiteSpace(model))
+            if (string.IsNullOrWhiteSpace(model) || string.IsNullOrWhiteSpace(make))
             {
                 throw new ArgumentException("Please provide a valid model!");
             }
 
-            if (string.IsNullOrWhiteSpace(make))
-            {
-                throw new ArgumentException("Please provide a valid model!");
-            }
+            //if (string.IsNullOrWhiteSpace(make))
+            //{
+            //    throw new ArgumentException("Please provide a valid model!");
+            //}
 
             //if (owner == null)
             //{
