@@ -1,24 +1,18 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using AutoService.Core.Factory;
+﻿using AutoService.Core.Factory;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.BusinessProcess.Models;
-using AutoService.Models.Common.Models;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 using AutoService.Models.Vehicles.Models;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace AutoService.Core
 {
@@ -46,7 +40,7 @@ namespace AutoService.Core
         //constructor
         private Engine()
         {
-            
+
             this.factory = new AutoServiceFactory();
             this.employees = new List<IEmployee>();
             this.bankAccounts = new List<BankAccount>();
@@ -97,7 +91,7 @@ namespace AutoService.Core
 
         private string[] ParseCommand(string command)
         {
-            return command.Split(new string[] { ";", "," }, StringSplitOptions.RemoveEmptyEntries);
+            return command.Split(new string[] { ";"/*, "," */}, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private void ExecuteSingleCommand(string[] commandParameters)
@@ -347,9 +341,9 @@ namespace AutoService.Core
                         throw new ArgumentException("EngineType Type not valid!");
                     }
                     var additionalParams = commandParameters[8];
-                
+
                     var currClient = (Client)this.clients.FirstOrDefault(x => x.UniqueNumber == uniaqueNumbre);
-                    
+
                     if (currClient == null)
                     {
                         throw new ArgumentException($"The are no client with this {uniaqueNumbre}.");
@@ -425,24 +419,35 @@ namespace AutoService.Core
 
                 case "orderStockToWarehouse":
 
-                    ValidateMinimumParameterLength(commandParameters, 4);
+                    ValidateEitherOrParameterLength(commandParameters, 5, 7);
 
                     var emplFN = commandParameters[1];
                     var supplN = commandParameters[2];
                     var stockName = commandParameters[3];
                     var purchasePrice = decimal.Parse(commandParameters[4]);
 
-                    if (this.employees.Select(x => x.FirstName == emplFN).Count() > 1)
+                    if (!this.employees.Any(x => x.FirstName == emplFN))
                     {
-                        throw new ArgumentException("More than one emplyee with same name, please provide both first name");
-                        //TODO: case with FN and Id
-                    }
-                    else if (!this.employees.Any(x => x.FirstName == emplFN))
-                    {
-                        throw new ArgumentException($"There is no employee {emplFN} in the AutoService");
+                        throw new ArgumentException($"There is no employee called {emplFN} in the AutoService");
                     }
 
-                    employee = this.employees.Single(x => x.FirstName == emplFN);
+                    if (commandParameters.Length == 7) //employeeFirstName + employeeLastName + employeeDepartment
+                    {
+                        var emplLN = commandParameters[5];
+                        var emplDept = commandParameters[6];
+                        employee = this.employees.Single(x => x.FirstName == emplFN && x.LastName == emplLN && x.Department.ToString() == emplDept);
+                    }
+                    else
+                    {
+                        if (this.employees.Select(x => x.FirstName == emplFN).Count() > 1)
+                        {
+                            throw new ArgumentException("More than one emplyee with same name, please provide first name, last name and department");
+                        }
+                        
+                        employee = this.employees.Single(x => x.FirstName == emplFN);
+                    }
+
+                    
 
                     if (this.suppliers.Select(x => x.Name == supplN).Count() > 1)
                     {
@@ -536,7 +541,7 @@ namespace AutoService.Core
             }
             else if (vehicleType == VehicleType.Truck)
             {
-                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear,engineType,int.Parse(additionalParams));
+                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, int.Parse(additionalParams));
             }
             return vehicle;
         }
@@ -611,14 +616,14 @@ namespace AutoService.Core
                 $"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
         }
 
-        
+
         //private void OrderStockFromSupplier(/*OrderStock o, */IEmployee employee, ICounterparty supplier, string stockName, decimal purchasePrice)
         private void OrderStockFromSupplier(IStock stock)
         {
             if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
                 stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
                 stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
-            { 
+            {
                 IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.PurchasePrice, TypeOfWork.Ordering, stock.Supplier, stock);
                 orderStock.OrderStockToWarehouse(stock.ResponsibleEmployee.FirstName, stock.Supplier.Name, stock.Name, stock.PurchasePrice);
             }
@@ -756,13 +761,6 @@ namespace AutoService.Core
             Console.WriteLine($"Supplier {name} removed successfully!");
         }
 
-
-
-
-
-
-
-
         private void ValidateExactParameterLength(string[] parameters, int length)
         {
             if (parameters.Length != length)
@@ -779,6 +777,27 @@ namespace AutoService.Core
                 throw new ArgumentException(
                     $"Parameter length for command {parameters[0]} must be more than {length}");
             }
+        }
+
+        private void ValidateBetweenParameterLength(string[] parameters, int minLength, int maxLength)
+        {
+            if (parameters.Length < minLength || parameters.Length > maxLength)
+            {
+                throw new ArgumentException(
+                $"Parameter length for command {parameters[0]} must be between {minLength} and {maxLength}");
+            }
+
+        }
+
+
+        private void ValidateEitherOrParameterLength(string[] parameters, int length1, int length2)
+        {
+            if (parameters.Length == Math.Min(length1, length2) && parameters.Length == Math.Max(length1, length2))
+            {
+                throw new ArgumentException(
+                    $"Parameter length for command {parameters[0]} must be either {length1} or {length2}");
+            }
+
         }
     }
 }
