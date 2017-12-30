@@ -134,18 +134,17 @@ namespace AutoService.Models.Assets
                 {
                     hasResp.Add(resp);
                 }
-
             }
+
             if (result.Count > 0)
             {
-                Console.WriteLine($"To Employee {this.FirstName} {this.LastName} were succesfuly added responsibilities {string.Join(", ", result)}");
+                Console.WriteLine($"To Employee {this.FirstName} {this.LastName} were successfully added responsibilities {string.Join(", ", result)}");
             }
             if (hasResp.Count > 0)
 
             {
-                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has this responsibilities: {string.Join(", ", hasResp)} ");
+                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has these responsibilities: {string.Join(", ", hasResp)} ");
             }
-
         }
 
         public void RemoveResponsibilities(List<ResponsibilityType> value)

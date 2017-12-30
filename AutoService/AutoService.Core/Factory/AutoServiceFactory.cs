@@ -16,7 +16,7 @@ namespace AutoService.Core.Factory
     {
         public ICounterparty CreateClient(string name, string address, string uniqueNumber)
         {
-            throw new NotImplementedException();
+            return new Client(name, address, uniqueNumber);
         }
 
         public ICounterparty CreateSupplier(string name, string address, string uniqueNumber)
@@ -32,7 +32,7 @@ namespace AutoService.Core.Factory
 
         public IInvoice CreateInvoice(string number, DateTime date, IClient client)
         {
-            throw new NotImplementedException();
+            return new Invoice(number, date, client);
         }
 
         public BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate)
@@ -40,22 +40,22 @@ namespace AutoService.Core.Factory
             return new BankAccount(name, responsibleEmployee, registrationDate);
         }
 
-        public IAsset CreateStock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty vendor)
+        public IAsset CreateStock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty supplier)
         {
-            throw new NotImplementedException();
+            return new Stock(name, responsibleEmployee, purchasePrice, supplier);
         }
 
         public ISell CreateSoldService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string serviceName,
             int durationInMinutes)
         {
-            throw new NotImplementedException();
+            return new SellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes);
         }
 
         public ISell CreateSoldStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock)
         {
-            throw new NotImplementedException();
+            return new SellStock(responsibleEmployee, client, vehicle, stock);
         }
-        
+
         public IOrderStock CreateOrderStock(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty supplier, IStock stock)
         {
             return new OrderStock(responsibleEmployee, price, job, supplier, stock);
@@ -64,25 +64,22 @@ namespace AutoService.Core.Factory
         public IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber,
             string year, EngineType engine)
         {
-            var newCar = new Car(model, make, passengerCapacity, registrationNumber, year, engine);
+            IVehicle newCar = new Car(model, make, passengerCapacity, registrationNumber, year, engine);
             return newCar;
-            //throw new NotImplementedException();
         }
 
         public IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year,
             EngineType engine, int weightAllowedInKilograms)
         {
-            var newSmallTruck = new SmallTruck(model, make, registrationNumber, year, engine, weightAllowedInKilograms);
+            IVehicle newSmallTruck = new SmallTruck(model, make, registrationNumber, year, engine, weightAllowedInKilograms);
             return newSmallTruck;
-            //throw new NotImplementedException();
         }
 
         public IVehicle CreateTruck(string model, string make, string registrationNumber, string year, EngineType engine,
             int weightAllowedInKilograms)
         {
-            var newTruck = new Truck(model, make, registrationNumber, year, engine, weightAllowedInKilograms);
+            IVehicle newTruck = new Truck(model, make, registrationNumber, year, engine, weightAllowedInKilograms);
             return newTruck;
-            //throw new NotImplementedException();
         }
     }
 }

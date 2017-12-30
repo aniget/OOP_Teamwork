@@ -1,19 +1,13 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using AutoService.Core.Factory;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.BusinessProcess.Models;
-using AutoService.Models.Common.Models;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
@@ -40,13 +34,11 @@ namespace AutoService.Core
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
-
         private static readonly IEngine SingleInstance = new Engine();
 
         //constructor
         private Engine()
         {
-            
             this.factory = new AutoServiceFactory();
             this.employees = new List<IEmployee>();
             this.bankAccounts = new List<BankAccount>();
@@ -59,7 +51,6 @@ namespace AutoService.Core
         {
             get { return SingleInstance; }
         }
-
 
         public void Run()
         {
@@ -85,7 +76,7 @@ namespace AutoService.Core
                 {
                     Console.WriteLine(e.Message);
                 }
-                Console.WriteLine("<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>");
+                Console.WriteLine(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
                 command = ReadCommand();
             }
         }
@@ -97,7 +88,7 @@ namespace AutoService.Core
 
         private string[] ParseCommand(string command)
         {
-            return command.Split(new string[] { ";", "," }, StringSplitOptions.RemoveEmptyEntries);
+            return command.Split(new string[] {";"}, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private void ExecuteSingleCommand(string[] commandParameters)
@@ -492,8 +483,7 @@ namespace AutoService.Core
                     break;
 
                 default:
-                    //throw new InvalidOperationException();
-                    throw new ArgumentException("Unknown command!");
+                    throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
         }
 
@@ -755,13 +745,6 @@ namespace AutoService.Core
             Console.WriteLine(supplierToBeRemoved);
             Console.WriteLine($"Supplier {name} removed successfully!");
         }
-
-
-
-
-
-
-
 
         private void ValidateExactParameterLength(string[] parameters, int length)
         {

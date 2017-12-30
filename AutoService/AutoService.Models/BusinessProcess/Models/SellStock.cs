@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
@@ -8,7 +7,7 @@ using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
-    class SellStock : Sell, ISellStock
+    public class SellStock : Sell, ISellStock
     {
         private readonly IStock stock;
 
