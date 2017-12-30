@@ -25,9 +25,9 @@ namespace AutoService.Core.Factory
 
         IAsset CreateStock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty vendor);
 
-        ISell CreateSoldService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string serviceName, int durationInMinutes);
+        ISell CreateSellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string serviceName, int durationInMinutes);
 
-        ISell CreateSoldStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock);
+        ISell CreateSellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock);
 
         IOrderStock CreateOrderStock(IEmployee responsibleEmployee, decimal purchasePrice, TypeOfWork job, ICounterparty supplier, IStock stock);
 

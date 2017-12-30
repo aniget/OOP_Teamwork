@@ -45,13 +45,13 @@ namespace AutoService.Core.Factory
             return new Stock(name, responsibleEmployee, purchasePrice, supplier);
         }
 
-        public ISell CreateSoldService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string serviceName,
+        public ISell CreateSellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string serviceName,
             int durationInMinutes)
         {
             return new SellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes);
         }
 
-        public ISell CreateSoldStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock)
+        public ISell CreateSellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock)
         {
             return new SellStock(responsibleEmployee, client, vehicle, stock);
         }

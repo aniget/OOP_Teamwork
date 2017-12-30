@@ -122,8 +122,13 @@ namespace AutoService.Core
             EngineType engineType;
             string assetName;
             string supplierName;
+            string employeeFirstName;
+            string clientName;
             string supplierAddress;
             string supplierUniquieNumber;
+            string vehicleMake;
+            string vehicleModel;
+            string registrationNumber;
 
             switch (commandType)
             {
@@ -255,14 +260,14 @@ namespace AutoService.Core
 
                     Validator.Validate.MinimumParameterLength(commandParameters, 8);
 
-                    var uniaqueNumbre = commandParameters[1];
-                    var vehicleMake = commandParameters[2];
-                    var vehicleModel = commandParameters[3];
+                    var uniqueNumbre = commandParameters[1];
+                    vehicleMake = commandParameters[2];
+                    vehicleModel = commandParameters[3];
                     if (!Enum.TryParse(commandParameters[4], out vehicleType))
                     {
                         throw new ArgumentException("Vehicle Type not valid!");
                     }
-                    var registrationNumber = commandParameters[5];
+                    registrationNumber = commandParameters[5];
                     var vehicleYear = commandParameters[6];
                     if (!Enum.TryParse(commandParameters[7], out engineType))
                     {
@@ -270,11 +275,11 @@ namespace AutoService.Core
                     }
                     var additionalParams = commandParameters[8];
 
-                    var currClient = (Client)this.clients.FirstOrDefault(x => x.UniqueNumber == uniaqueNumbre);
+                    var currClient = (Client)this.clients.FirstOrDefault(x => x.UniqueNumber == uniqueNumbre);
 
                     if (currClient == null)
                     {
-                        throw new ArgumentException($"The are no client with this {uniaqueNumbre}.");
+                        throw new ArgumentException($"The are no client with this {uniqueNumbre}.");
                     }
                     if (currClient.Vehicles.Any(x => x.RegistrationNumber == registrationNumber))
                     {
@@ -319,46 +324,55 @@ namespace AutoService.Core
                     this.DepositCashInBankAccount(bankAccount, depositAmount);
                     break;
 
+                //case "sellToClientVehicle":
+                //    //sellToClientVehicles;empl;cl;veh;sell
+                //    employeeFirstName = commandParameters[1];
+                //    clientName = commandParameters[2];
+                //    vehicleMake = commandParameters[3];
+                //    vehicleModel = commandParameters[4];
+                //    registrationNumber = commandParameters[5];
+
+
                 case "orderStockToWarehouse":
 
                     Validator.Validate.EitherOrParameterLength(commandParameters, 5, 7);
 
-                    var emplFN = commandParameters[1];
-                    var supplN = commandParameters[2];
+                    employeeFirstName = commandParameters[1];
+                    supplierName = commandParameters[2];
                     var stockName = commandParameters[3];
                     decimal purchasePrice = Validator.Validate.DecimalFromString(commandParameters[4], "purchasePrice");
 
-                    if (!this.employees.Any(x => x.FirstName == emplFN))
+                    if (!this.employees.Any(x => x.FirstName == employeeFirstName))
                     {
-                        throw new ArgumentException($"There is no employee called {emplFN} in the AutoService");
+                        throw new ArgumentException($"There is no employee called {employeeFirstName} in the AutoService");
                     }
 
                     if (commandParameters.Length == 7) //employeeFirstName + employeeLastName + employeeDepartment
                     {
                         var emplLN = commandParameters[5];
                         var emplDept = commandParameters[6];
-                        employee = this.employees.Single(x => x.FirstName == emplFN && x.LastName == emplLN && x.Department.ToString() == emplDept);
+                        employee = this.employees.Single(x => x.FirstName == employeeFirstName && x.LastName == emplLN && x.Department.ToString() == emplDept);
                     }
                     else
                     {
-                        if (this.employees.Select(x => x.FirstName == emplFN).Count() > 1)
+                        if (this.employees.Select(x => x.FirstName == employeeFirstName).Count() > 1)
                         {
                             throw new ArgumentException("More than one emplyee with same name, please provide first name, last name and department");
                         }
 
-                        employee = this.employees.Single(x => x.FirstName == emplFN);
+                        employee = this.employees.Single(x => x.FirstName == employeeFirstName);
                     }
 
-                    if (this.suppliers.Select(x => x.Name == supplN).Count() > 1)
+                    if (this.suppliers.Select(x => x.Name == supplierName).Count() > 1)
                     {
                         throw new ArgumentException("More than one registered supplier with same name, please provide unique number INSTEAD of name");
                     }
-                    else if (!this.suppliers.Any(x => x.Name == supplN))
+                    else if (!this.suppliers.Any(x => x.Name == supplierName))
                     {
-                        throw new ArgumentException($"Our AutoService does not work with supplier {supplN}");
+                        throw new ArgumentException($"Our AutoService does not work with supplier {supplierName}");
                     }
 
-                    supplier = this.suppliers.Single(x => x.Name == supplN);
+                    supplier = this.suppliers.Single(x => x.Name == supplierName);
 
                     stock = new Stock(stockName, employee, purchasePrice, supplier);
 
@@ -515,8 +529,6 @@ namespace AutoService.Core
                 $"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
         }
 
-
-        //private void OrderStockFromSupplier(/*OrderStock o, */IEmployee employee, ICounterparty supplier, string stockName, decimal purchasePrice)
         private void OrderStockFromSupplier(IStock stock)
         {
             if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
@@ -531,10 +543,27 @@ namespace AutoService.Core
                 throw new ArgumentException(
                     $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required repsonsibilities to register asset {stock.Name}");
             }
-            //orderStock.OrderStockToWarehouse(employee.FirstName, supplier.Name, stockName, purchasePrice);
 
             Console.WriteLine($"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
+        
+        //private void SellStockToClient(IStock stock)
+        //{
+        //    if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
+        //        stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
+        //        stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
+        //    {
+        //        ISell sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, stockstock.PurchasePrice, TypeOfWork.Ordering, stock.Supplier, stock);
+        //        sellStock.SellToClientVehicle(stock.ResponsibleEmployee.FirstName, stock.Supplier.Name, Vehicle, stock);
+        //    }
+        //    else
+        //    {
+        //        throw new ArgumentException(
+        //            $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
+        //    }
+
+        //    Console.WriteLine($"{stock.Name} ordered for {stock.client.Supplier.Name} for the amount of {stock.PurchasePrice * 1.2} are sold to the customer {customer/*}." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+        //}
 
         private void ShowEmployees()
         {
@@ -544,7 +573,6 @@ namespace AutoService.Core
                 Console.WriteLine("Current active employees:");
                 foreach (var currentEmployee in this.employees.Where(e => e.IsHired))
                 {
-
                     Console.WriteLine(hiredCounter + ". " + currentEmployee);
                     hiredCounter++;
                 }

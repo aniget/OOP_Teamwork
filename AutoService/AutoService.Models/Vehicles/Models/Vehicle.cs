@@ -9,8 +9,10 @@ namespace AutoService.Models.Vehicles.Models
 {
     public abstract class Vehicle : IVehicle
     {
-        private readonly string model;
+        //ASSUMPTION: We assume that there are no two vehicles with the same make, model and registrationNumber
+
         private readonly string make;
+        private readonly string model;
         private VehicleType vehicleType;
         //private readonly IClient owner;
         private readonly string registrationNumber;
