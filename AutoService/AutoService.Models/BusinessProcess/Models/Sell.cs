@@ -15,15 +15,23 @@ namespace AutoService.Models.BusinessProcess.Models
 {
     public abstract class Sell : Work, ISell
     {
+        private decimal sellPrice;
 
-        //private IDictionary<IClient, ISell> notInvoicedSells;
-
-        protected Sell(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty client, Vehicle vehicle/*, IDictionary<IClient, ISell> notInvoicedSells*/)
-            : base(responsibleEmployee, price, job)
+        protected Sell(IEmployee responsibleEmployee, decimal sellPrice, TypeOfWork job, ICounterparty client, Vehicle vehicle)
+            : base(responsibleEmployee, sellPrice, job)
         {
             Client = client ?? throw new ArgumentException("Client cannot be null");
             Vehicle = vehicle ?? throw new ArgumentException("Vehicle cannot be null");
-            //this.notInvoicedSells = notInvoicedSells;
+            this.Job = TypeOfWork.Selling;
+
+            if (this.sellPrice<0) { throw new ArgumentException("Sell price must be positive number"); }
+            this.sellPrice = sellPrice;
+        }
+
+        public decimal SellPrice
+        {
+            get => this.sellPrice;
+            protected set => this.sellPrice = value;
         }
 
         public ICounterparty Client { get; protected set; }

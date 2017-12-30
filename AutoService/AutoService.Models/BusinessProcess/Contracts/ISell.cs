@@ -1,4 +1,5 @@
-﻿using AutoService.Models.BusinessProcess.Enums;
+﻿using AutoService.Models.Assets.Contracts;
+using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Models;

@@ -8,9 +8,8 @@ namespace AutoService.Models.Assets
 {
     public abstract class Work : IWork
     {
-        private readonly decimal price;
-
         private readonly ICollection<IEmployee> employees;
+        private decimal price;
 
         public Work(IEmployee responsibleEmployee, decimal price, TypeOfWork job)
         {
@@ -20,17 +19,13 @@ namespace AutoService.Models.Assets
             }
             this.ResponsibleEmployee = responsibleEmployee;
 
-            if (price < 0 || price > 1000000)
-            {
-                throw new ArgumentException(
-                    $"Price should be a positive number less than 1,000,000. The one entered is: {price}. Please check!");
-            }
-            this.price = price;
-
             Job = job;
+
+            this.price = price;
 
         }
 
+        public decimal Price => this.price;
 
         public Work(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICollection<IEmployee> employees) 
             : this(responsibleEmployee, price, job)
@@ -43,9 +38,8 @@ namespace AutoService.Models.Assets
         //Get and Set because if responsible mechanic gets sick a new responsible employee is being set on the job
         public IEmployee ResponsibleEmployee { get; set; }
 
-        public decimal Price => this.price;
-
-        public TypeOfWork Job { get; }
+        
+        public TypeOfWork Job { get; protected set; }
 
 
         public decimal GetEmployeeRatePerMinute(IEmployee employee)

@@ -18,6 +18,7 @@ namespace AutoService.Models.BusinessProcess.Models
         {
             this.supplier = supplier ?? throw new ArgumentException("Supplier cannot be null");
             //TODO: check if order is made by nonexistent supplier
+            this.Job = TypeOfWork.Ordering;
         }
 
         public ICounterparty Supplier => this.supplier;

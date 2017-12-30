@@ -1,14 +1,19 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using AutoService.Core.Factory;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
+using AutoService.Models.BusinessProcess.Models;
+using AutoService.Models.Common.Models;
 using AutoService.Models.Contracts;
 
 namespace AutoService.Core
@@ -20,10 +25,12 @@ namespace AutoService.Core
         private readonly IList<IEmployee> employees;
         private readonly IList<BankAccount> bankAccounts;
         private readonly ICollection<ICounterparty> clients;
-        private readonly ICollection<ICounterparty> vendors;
+        private readonly ICollection<ICounterparty> suppliers;
         private readonly IDictionary<IClient, List<ISell>> notInvoicedSells;
 
-        private DateTime lastInvoiceDate = DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        private DateTime lastInvoiceDate =
+            DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
         private DateTime lastAssetDate = DateTime.ParseExact("2017-01-30", "yyyy-MM-dd", CultureInfo.InvariantCulture);
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
@@ -31,22 +38,20 @@ namespace AutoService.Core
 
         private static readonly IEngine SingleInstance = new Engine();
 
+        //constructor
         private Engine()
         {
             this.factory = new AutoServiceFactory();
             this.employees = new List<IEmployee>();
             this.bankAccounts = new List<BankAccount>();
             this.clients = new List<ICounterparty>();
-            this.vendors = new List<ICounterparty>();
+            this.suppliers = new List<ICounterparty>();
             this.notInvoicedSells = new Dictionary<IClient, List<ISell>>();
         }
 
         public static IEngine Instance
         {
-            get
-            {
-                return SingleInstance;
-            }
+            get { return SingleInstance; }
         }
 
 
@@ -91,16 +96,33 @@ namespace AutoService.Core
 
         private void ExecuteSingleCommand(string[] commandParameters)
         {
-            var commandType = commandParameters[0];
+            string commandType = "";
+
+            try
+            {
+                commandType = commandParameters[0];
+            }
+            catch
+            {
+                //this catch the IndexOutOfRange Exception and throws a message "Unknown command" which is the default of the Switch
+            }
             int employeeId;
             decimal ratePerMinute;
             IEmployee employee;
+            ICounterparty supplier;
+            //IOrderStock orderStock;
+            IStock stock;
             string position;
             DepartmentType department;
             string assetName;
+            string supplierName;
+            string supplierAddress;
+            string supplierUniquieNumber;
 
             switch (commandType)
             {
+                #region showEmployees
+
                 case "showEmployees":
 
                     if (this.employees.Count == 0)
@@ -109,6 +131,9 @@ namespace AutoService.Core
                     }
                     this.ShowEmployees();
                     break;
+
+
+                #endregion
 
                 case "hireEmployee":
 
@@ -127,7 +152,13 @@ namespace AutoService.Core
 
                     if (!Enum.TryParse(commandParameters[6], out department))
                     {
-                        throw new ArgumentException("Department not valid!");
+                        string[] ListOfDepartments = Enum.GetNames(typeof(DepartmentType));
+                        StringBuilder builder = new StringBuilder();
+                        foreach (var dept in ListOfDepartments)
+                        {
+                            builder.AppendLine(dept);
+                        }
+                        throw new ArgumentException("Department is not valid!" + Environment.NewLine + "List of departments to choose from:" + Environment.NewLine + builder);
                     }
 
                     this.AddEmployee(firstName, lastName, position, salary, ratePerMinute, department);
@@ -148,12 +179,13 @@ namespace AutoService.Core
 
                     if (employeeId <= 0)
                     {
-                        throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
+                        throw new ArgumentException(
+                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
                     employee = this.employees.Count >= employeeId
-                           ? this.employees[employeeId - 1]
-                           : throw new ArgumentException("This employee does not exist!");
+                        ? this.employees[employeeId - 1]
+                        : throw new ArgumentException("This employee does not exist!");
                     this.FireEmployee(employee);
                     break;
 
@@ -172,7 +204,8 @@ namespace AutoService.Core
 
                     if (employeeId <= 0)
                     {
-                        throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
+                        throw new ArgumentException(
+                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
                     ratePerMinute = decimal.TryParse(commandParameters[2], out ratePerMinute)
@@ -219,7 +252,8 @@ namespace AutoService.Core
 
                     if (employeeId <= 0)
                     {
-                        throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
+                        throw new ArgumentException(
+                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
                     employee = this.employees.Count >= employeeId
@@ -245,7 +279,8 @@ namespace AutoService.Core
 
                     if (employeeId <= 0)
                     {
-                        throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
+                        throw new ArgumentException(
+                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
                     employee = this.employees.Count >= employeeId
@@ -272,7 +307,8 @@ namespace AutoService.Core
 
                     if (employeeId <= 0)
                     {
-                        throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
+                        throw new ArgumentException(
+                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
                     employee = this.employees.Count >= employeeId
@@ -290,7 +326,8 @@ namespace AutoService.Core
 
                     if (this.employees.Count == 0)
                     {
-                        throw new InvalidOperationException("No employees currently in the service! You need to hire one then open the bank account :)");
+                        throw new InvalidOperationException(
+                            "No employees currently in the service! You need to hire one then open the bank account :)");
                     }
 
                     employeeId = int.TryParse(commandParameters[1], out employeeId)
@@ -299,7 +336,8 @@ namespace AutoService.Core
 
                     if (employeeId <= 0)
                     {
-                        throw new ArgumentException($"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
+                        throw new ArgumentException(
+                            $"Please provide a valid employee value, i.e. between 1 and {this.employees.Count}!");
                     }
 
                     employee = this.employees.Count >= employeeId
@@ -319,7 +357,8 @@ namespace AutoService.Core
 
                     if (this.bankAccounts.Count == 0)
                     {
-                        throw new InvalidOperationException("No bank accounts currently opened! You need to open one then deposit the cash.");
+                        throw new InvalidOperationException(
+                            "No bank accounts currently opened! You need to open one then deposit the cash.");
                     }
 
                     int bankAccountId = int.TryParse(commandParameters[1], out bankAccountId)
@@ -328,7 +367,8 @@ namespace AutoService.Core
 
                     if (bankAccountId <= 0)
                     {
-                        throw new ArgumentException($"Please provide a valid bankAccount Id, i.e. between 1 and {this.bankAccounts.Count}!");
+                        throw new ArgumentException(
+                            $"Please provide a valid bankAccount Id, i.e. between 1 and {this.bankAccounts.Count}!");
                     }
 
                     var bankAccount = this.bankAccounts.Count >= bankAccountId
@@ -342,8 +382,77 @@ namespace AutoService.Core
                     this.DepositCashInBankAccount(bankAccount, depositAmount);
                     break;
 
+                case "orderStockToWarehouse":
+
+                    ValidateMinimumParameterLength(commandParameters, 4);
+
+                    var emplFN = commandParameters[1];
+                    var supplN = commandParameters[2];
+                    var stockName = commandParameters[3];
+                    var purchasePrice = decimal.Parse(commandParameters[4]);
+
+                    if (this.employees.Select(x => x.FirstName == emplFN).Count() > 1)
+                    {
+                        throw new ArgumentException("More than one emplyee with same name, please provide both first name");
+                        //TODO: case with FN and Id
+                    }
+                    else if (!this.employees.Any(x => x.FirstName == emplFN))
+                    {
+                        throw new ArgumentException($"There is no employee {emplFN} in the AutoService");
+                    }
+
+                    employee = this.employees.Single(x => x.FirstName == emplFN);
+
+                    if (this.suppliers.Select(x => x.Name == supplN).Count() > 1)
+                    {
+                        throw new ArgumentException("More than one registered supplier with same name, please provide unique number INSTEAD of name");
+                    }
+                    else if (!this.suppliers.Any(x => x.Name == supplN))
+                    {
+                        throw new ArgumentException($"Our AutoService does not work with supplier {supplN}");
+                    }
+
+                    supplier = this.suppliers.Single(x => x.Name == supplN);
+
+                    stock = new Stock(stockName, employee, purchasePrice, supplier);
+
+                    //OrderStock orderStock = null;
+                    ////this.OrderStockToday(orderedStockClass, emplFN, supplN);
+
+                    this.OrderStockFromSupplier(stock);
+                    break;
+
+                case "registerSupplier":
+
+                    //ValidateMinimumParameterLength(commandParameters, 2); //validation is made in the class
+
+                    supplierName = commandParameters[1];
+                    supplierAddress = commandParameters[2];
+                    supplierUniquieNumber = commandParameters[3];
+
+                    this.AddSupplier(supplierName, supplierAddress, supplierUniquieNumber);
+                    break;
+
+                case "removeSupplier":
+
+                    ValidateMinimumParameterLength(commandParameters, 2);
+
+                    supplierName = commandParameters[1];
+
+                    if (commandParameters.Length == 3)
+                    {
+                        supplierUniquieNumber = commandParameters[2];
+                        this.RemoveSupplier(supplierName, supplierUniquieNumber);
+                    }
+                    else
+                    {
+                        this.RemoveSupplier(supplierName);
+                    }
+                    break;
+
                 default:
-                    throw new InvalidOperationException();
+                    //throw new InvalidOperationException();
+                    throw new ArgumentException("Unknown command!");
             }
         }
 
@@ -355,16 +464,19 @@ namespace AutoService.Core
 
         private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate)
         {
-            if (employee.Responsibiities.Contains(ResponsibilityType.Account) || employee.Responsibiities.Contains(ResponsibilityType.Manage))
+            if (employee.Responsibiities.Contains(ResponsibilityType.Account) ||
+                employee.Responsibiities.Contains(ResponsibilityType.Manage))
             {
                 BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, currentAssetDate);
 
                 this.bankAccounts.Add(bankAccountToAdd);
-                Console.WriteLine($"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
+                Console.WriteLine(
+                    $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
             }
             else
             {
-                throw new ArgumentException($"Employee {employee.FirstName} {employee.LastName} does not have the required repsonsibilities to register asset {assetName}");
+                throw new ArgumentException(
+                    $"Employee {employee.FirstName} {employee.LastName} does not have the required repsonsibilities to register asset {assetName}");
             }
 
         }
@@ -404,7 +516,8 @@ namespace AutoService.Core
         {
             employee.ChangePosition(position);
 
-            Console.WriteLine($"Position of employee {employee.FirstName} {employee.LastName} was successfully set to {position}");
+            Console.WriteLine(
+                $"Position of employee {employee.FirstName} {employee.LastName} was successfully set to {position}");
         }
 
         private void ListEmployeesAtDepartment(DepartmentType department)
@@ -434,7 +547,29 @@ namespace AutoService.Core
         private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute)
         {
             employee.ChangeRate(ratePerMinute);
-            Console.WriteLine($"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
+            Console.WriteLine(
+                $"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
+        }
+
+        
+        //private void OrderStockFromSupplier(/*OrderStock o, */IEmployee employee, ICounterparty supplier, string stockName, decimal purchasePrice)
+        private void OrderStockFromSupplier(IStock stock)
+        {
+            if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
+                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
+                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
+            { 
+                IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.PurchasePrice, TypeOfWork.Ordering, stock.Supplier, stock);
+                orderStock.OrderStockToWarehouse(stock.ResponsibleEmployee.FirstName, stock.Supplier.Name, stock.Name, stock.PurchasePrice);
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required repsonsibilities to register asset {stock.Name}");
+            }
+            //orderStock.OrderStockToWarehouse(employee.FirstName, supplier.Name, stockName, purchasePrice);
+
+            Console.WriteLine($"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
 
         private void ShowEmployees()
@@ -448,6 +583,12 @@ namespace AutoService.Core
 
                     Console.WriteLine(hiredCounter + ". " + currentEmployee);
                     hiredCounter++;
+                }
+                int counter = 1;
+                foreach (var currentEmployee in this.employees)
+                {
+                    Console.WriteLine(counter + ". " + currentEmployee.ToString());
+                    counter++;
                 }
             }
             else
@@ -488,7 +629,8 @@ namespace AutoService.Core
                 {
                     invoice.InvoiceItems.Add(sell);
                 }
-                var clientToAddInvoice = this.clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
+                var clientToAddInvoice =
+                    this.clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
                 clientToAddInvoice.Invoices.Add(invoice);
             }
 
@@ -514,11 +656,59 @@ namespace AutoService.Core
             Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
         }
 
+        private void AddSupplier(string name, string address, string uniqueNumber)
+        {
+            ICounterparty supplier = this.factory.CreateSupplier(name, address, uniqueNumber);
+            if (suppliers.FirstOrDefault(x => x.UniqueNumber == uniqueNumber) != null)
+            {
+                throw new ArgumentException("Supplier with the same unique number already exist. Please check the number and try again!");
+            }
+            this.suppliers.Add(supplier);
+            Console.WriteLine(supplier);
+            Console.WriteLine($"Supplier {name} added successfully with Id {this.suppliers.Count}!");
+        }
+
+        private void RemoveSupplier(string name)
+        {
+            ICounterparty supplierToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == name);
+            if (supplierToBeRemoved == null)
+            {
+                throw new ArgumentException($"Supplier with name {name} cannot be removed - no such supplier found");
+            }
+            else if (this.suppliers.Select(x => x.Name == name).Count() > 1)
+            {
+                throw new ArgumentException($"More than one supplier with name {name} exist." + Environment.NewLine + "Please provide both name and uniquire number of the supplier you want to remove");
+            }
+            this.suppliers.Remove(supplierToBeRemoved);
+            Console.WriteLine(supplierToBeRemoved);
+            Console.WriteLine($"Supplier {name} removed successfully!");
+        }
+
+        private void RemoveSupplier(string name, string uniqueNumber)
+        {
+            ICounterparty supplierToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == name && x.UniqueNumber == uniqueNumber);
+            if (supplierToBeRemoved == null)
+            {
+                throw new ArgumentException($"Supplier with name {name} and uniquie number {uniqueNumber} cannot be removed - no such supplier found");
+            }
+            this.suppliers.Remove(supplierToBeRemoved);
+            Console.WriteLine(supplierToBeRemoved);
+            Console.WriteLine($"Supplier {name} removed successfully!");
+        }
+
+
+
+
+
+
+
+
         private void ValidateExactParameterLength(string[] parameters, int length)
         {
             if (parameters.Length != length)
             {
-                throw new ArgumentException($"Parameter length for command {parameters[0]} must be exactly {length}");
+                throw new ArgumentException(
+                    $"Parameter length for command {parameters[0]} must be exactly {length}");
             }
         }
 
@@ -526,7 +716,8 @@ namespace AutoService.Core
         {
             if (parameters.Length < length)
             {
-                throw new ArgumentException($"Parameter length for command {parameters[0]} must be more than {length}");
+                throw new ArgumentException(
+                    $"Parameter length for command {parameters[0]} must be more than {length}");
             }
         }
     }

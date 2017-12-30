@@ -4,7 +4,6 @@
     {
         static void Main()
         {
-
             AutoService.Core.Engine.Instance.Run();
         }
     }

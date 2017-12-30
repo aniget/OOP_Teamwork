@@ -8,29 +8,30 @@ namespace AutoService.Models.Assets
     public class Stock : Asset,  IStock
     {
         private readonly decimal purchasePrice;
-        private ICounterparty vendor;
+        private ICounterparty supplier;
 
-        public Stock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty vendor) : base(name, responsibleEmployee)
+        public Stock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty supplier) : base(name, responsibleEmployee)
         {
-            if (purchasePrice < 0)
+            if (purchasePrice < 0 || purchasePrice > 1000000)
             {
-                throw new ArgumentException("Purchase price cannot be negative!");
+                throw new ArgumentException("Purchase price cannot be negative or greater than 1mln!");
             }
             this.purchasePrice = purchasePrice;
-            if (vendor == null)
+            if (supplier == null)
             {
                 throw new ArgumentException("Null ");
             }
-            this.vendor = vendor;
+            this.supplier = supplier;
         }
 
         public decimal PurchasePrice
         {
             get => this.purchasePrice;
         }
-        public ICounterparty Vendor
+
+        public ICounterparty Supplier
         {
-            get => this.vendor;
+            get => this.supplier;
         }
 
         protected override void ChangeResponsibleEmployee(IEmployee employee)
@@ -53,7 +54,7 @@ namespace AutoService.Models.Assets
         {
             return base.ToString() + Environment.NewLine +
                    $"  - Purchase price: {this.PurchasePrice}" + Environment.NewLine +
-                   $"  - Purchased from: {this.Vendor.Name}" + Environment.NewLine;
+                   $"  - Purchased from: {this.Supplier.Name}" + Environment.NewLine;
         }
     }
 }

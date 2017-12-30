@@ -8,18 +8,23 @@ using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
-    class SellStock: Sell, ISellStock
+    class SellStock : Sell, ISellStock
     {
         private readonly IStock stock;
 
-        public SellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, /*IDictionary<IClient, ISell> notInvoicedSells, */IStock stock) 
-            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, TypeOfWork.Selling, client, vehicle/*, notInvoicedSells*/)
+        public SellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock)
+            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, TypeOfWork.Selling, client, vehicle)
         {
             this.stock = stock ?? throw new ArgumentException("Stock cannot be null");
         }
-
         public IStock Stock => this.stock;
-        
+
+        public string Name => this.Stock.Name;
+        public decimal PurchasePrice => this.Stock.PurchasePrice;
+        public ICounterparty Supplier => this.Stock.Supplier;
+
+
+
         public override string AdditionalInfo_ServiceOrPart() { return "autoparts"; }
 
         //public override decimal CalculateRevenue() { return Stock.PurchasePrice * 1.5m;}
@@ -37,7 +42,6 @@ namespace AutoService.Models.BusinessProcess.Models
                                  + "This part costs: {1} BGN"
                        , this.Stock, this.Stock.PurchasePrice * 1.2m);
         }
-
 
 
     }

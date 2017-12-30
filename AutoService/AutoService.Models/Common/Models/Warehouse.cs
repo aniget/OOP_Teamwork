@@ -9,22 +9,22 @@ namespace AutoService.Models.Common.Models
 {
     public static class Warehouse
     {
-        public static ICollection<IStock> Stocks { get; private set; }
 
+
+        public static List<IStock> Stocks;
+
+        static Warehouse()
+        {
+            Stocks = new List<IStock>();
+        }
         public static void AddPartToWarehouse(IStock stock, IEmployee employee)
         {
-            //only employees with right (Responsibility) to SELL can perform this work
-            if (employee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse))
-            {
+            //only employees with right (Responsibility) to SELL can perform this work - this check is made on an earlier stage in the engine
+            //if (employee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse))
                 Stocks.Add(stock);
-            }
-            else
-            {
-                throw new ArgumentException("No authorization to buy parts to warehouse.");
-            }
-
         }
 
+        //TODO: finish and test below
         public static void SellPartToClient(IStock stock, IEmployee employee, Vehicle car)
         {
             //only employees with right (Responsibility) to SELL can perform this work

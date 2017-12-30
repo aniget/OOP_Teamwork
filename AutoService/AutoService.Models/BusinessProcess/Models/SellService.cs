@@ -20,10 +20,9 @@ namespace AutoService.Models.BusinessProcess.Models
 
         private int durationInMinutes;
         private string serviceName;
-        private ICollection<IInvoice> invoices;
 
         public SellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, /*IDictionary<IClient, ISell> notInvoicedSells, */string serviceName, int durationInMinutes)
-            : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute ,TypeOfWork.Selling, client, vehicle/*, notInvoicedSells*/)
+            : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute, TypeOfWork.Selling, client, vehicle/*, notInvoicedSells*/)
         {
 
             //validation of serviceName
@@ -37,8 +36,6 @@ namespace AutoService.Models.BusinessProcess.Models
 
             this.serviceName = serviceName.Trim();
             this.durationInMinutes = durationInMinutes;
-
-            this.invoices = invoices;
         }
 
 

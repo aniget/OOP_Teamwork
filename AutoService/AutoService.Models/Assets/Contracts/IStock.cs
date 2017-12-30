@@ -1,13 +1,14 @@
 ﻿using System;
+using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Contracts;
 
 namespace AutoService.Models.Assets.Contracts
 {
-    public interface IStock : IAsset
+    public interface IStock : IAsset/*, ISellStock*/
     {
         decimal PurchasePrice { get; }
 
-        ICounterparty Vendor { get; }
+        ICounterparty Supplier { get; }
 
     
 

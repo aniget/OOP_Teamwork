@@ -4,6 +4,7 @@ using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
+using AutoService.Models.BusinessProcess.Models;
 using AutoService.Models.Contracts;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
@@ -19,7 +20,7 @@ namespace AutoService.Core.Factory
 
         public ICounterparty CreateSupplier(string name, string address, string uniqueNumber)
         {
-            throw new NotImplementedException();
+            return new Supplier(name, address, uniqueNumber);
         }
 
         public IEmployee CreateEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
@@ -53,10 +54,10 @@ namespace AutoService.Core.Factory
         {
             throw new NotImplementedException();
         }
-
-        public IOrder CreateOrderStock()
+        
+        public IOrderStock CreateOrderStock(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty supplier, IStock stock)
         {
-            throw new NotImplementedException();
+            return new OrderStock(responsibleEmployee, price, job, supplier, stock);
         }
 
         public IVehicle CreateCar(string model, string make, int passengerCapacity, string registrationNumber,

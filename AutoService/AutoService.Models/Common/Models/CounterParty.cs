@@ -8,7 +8,7 @@ namespace AutoService.Models.Common.Models
 {
     public abstract class CounterParty : ICounterparty
     {
-        private string name;
+        protected string name;
         private string address;
         private string uniqueNumber;
         private ICollection<IInvoice> invoices;
