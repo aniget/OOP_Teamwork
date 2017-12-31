@@ -10,7 +10,7 @@ namespace AutoService.Models.Assets
         private readonly decimal purchasePrice;
         private ICounterparty supplier;
 
-        public Stock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty supplier) : base(name, responsibleEmployee)
+        public Stock(string name, IEmployee responsibleEmployee, string uniqueNumber, decimal purchasePrice, ICounterparty supplier) : base(name, responsibleEmployee, uniqueNumber)
         {
             if (purchasePrice < 0 || purchasePrice > 1000000)
             {

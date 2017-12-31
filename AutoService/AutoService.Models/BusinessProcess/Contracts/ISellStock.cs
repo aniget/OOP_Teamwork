@@ -4,7 +4,7 @@ using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {
-    public interface ISellStock: ISell, IStock
+    public interface ISellStock: ISell/*, IStock*/
     {
         IStock Stock { get; }
 

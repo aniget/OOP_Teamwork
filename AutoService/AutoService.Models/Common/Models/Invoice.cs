@@ -44,7 +44,7 @@ namespace AutoService.Models.Assets
         public decimal Amount
         {
             get => this.amount;
-            protected set
+            private set
             {
                 if (value < 0)
                 {
@@ -57,7 +57,7 @@ namespace AutoService.Models.Assets
         public decimal PaidAmount
         {
             get => this.paidAmount;
-            protected set
+            private set
             {
                 if (this.Amount < value)
                 {
@@ -87,9 +87,10 @@ namespace AutoService.Models.Assets
            return this.Amount - this.PaidAmount;
         }
 
+        //TODO: Alex, please check it. Once I removed the price from the IWork (because we had a duplication in IWork and IStock) and the commented row below complained
         public void CalculateInvoiceAmoint()
         {
-            this.Amount = this.invoiceItems.Select(i => i.Price).Sum();
+            //this.Amount = this.invoiceItems.Select(i => i.Price).Sum();
         }
 
         public override string ToString()

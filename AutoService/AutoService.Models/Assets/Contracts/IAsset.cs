@@ -8,5 +8,6 @@ namespace AutoService.Models.Assets.Contracts
 
         IEmployee ResponsibleEmployee { get; }
 
+        string UniqueNumber { get; }
     }
 }

@@ -8,11 +8,13 @@ namespace AutoService.Models.Assets
     {
         private string name;
         private IEmployee responsibleEmployee;
+        private string uniqueNumber;
 
-        public Asset(string name, IEmployee responsibleEmployee)
+        public Asset(string name, IEmployee responsibleEmployee, string uniqueNumber)
         {
             this.Name = name;
             this.ResponsibleEmployee = responsibleEmployee;
+            this.UniqueNumber = uniqueNumber;
         }
 
         public string Name
@@ -40,12 +42,27 @@ namespace AutoService.Models.Assets
             }
         }
 
+        public string UniqueNumber
+        {
+            get => this.uniqueNumber;
+
+            protected set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentException("Unique number cannot be null!");
+                }
+                this.uniqueNumber = value;
+            }
+        }
+
         protected abstract void ChangeResponsibleEmployee(IEmployee employee);
 
         public override string ToString()
         {
             return $"Asset type: {this.GetType().Name}" + Environment.NewLine +
                    $"  - Asset name: {this.Name}" + Environment.NewLine +
+                   $"  - Asset unique number: {this.UniqueNumber}" + Environment.NewLine +
                 $"  - Responsible employee: {this.ResponsibleEmployee.FirstName} {this.ResponsibleEmployee.LastName} - {this.ResponsibleEmployee.Position}";
         }
     }

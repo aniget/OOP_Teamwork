@@ -8,6 +8,8 @@ using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Vehicles.Models;
 using AutoService;
+using AutoService.Models.Assets.Contracts;
+using AutoService.Models.Vehicles.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
@@ -21,7 +23,7 @@ namespace AutoService.Models.BusinessProcess.Models
         private int durationInMinutes;
         private string serviceName;
 
-        public SellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, /*IDictionary<IClient, ISell> notInvoicedSells, */string serviceName, int durationInMinutes)
+        public SellService(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, /*IDictionary<IClient, ISell> notInvoicedSells, */string serviceName, int durationInMinutes)
             : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute, TypeOfWork.Selling, client, vehicle/*, notInvoicedSells*/)
         {
 
@@ -42,9 +44,9 @@ namespace AutoService.Models.BusinessProcess.Models
         public string ServiceName => this.serviceName;
         public int DurationInMinutes => this.durationInMinutes;
 
-        public override void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ISell sell)
+        public override void SellToClientVehicle(/*IEmployee responsibleEmployee, IClient client, Vehicle vehicle, */ISell sell, IStock stock)
         {
-            base.SellToClientVehicle(responsibleEmployee, client, vehicle, this);
+            base.SellToClientVehicle(/*responsibleEmployee, client, vehicle, */this, stock);
         }
 
 

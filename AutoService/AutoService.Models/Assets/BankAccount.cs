@@ -9,7 +9,7 @@ namespace AutoService.Models.Assets
         private decimal balance;
         private DateTime registrationDate;
 
-        public BankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate) : base(name, responsibleEmployee)
+        public BankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate) : base(name, responsibleEmployee, uniqueNumber)
         {
             this.Balance = 0;
             this.RegistrationDate = registrationDate;

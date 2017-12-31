@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using AutoService.Models.Assets;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Core.Validator
@@ -124,7 +126,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static  IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNemaIndex, int maxLength)
+        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNemaIndex, int maxLength)
         {
             IEmployee employee;
 
@@ -132,8 +134,8 @@ namespace AutoService.Core.Validator
 
             if (commandParameters.Length == maxLength) //employeeFirstName + employeeLastName + employeeDepartment
             {
-                var employeeLastName = commandParameters[maxLength-2];
-                var employeeDepartment = commandParameters[maxLength-1];
+                var employeeLastName = commandParameters[maxLength - 2];
+                var employeeDepartment = commandParameters[maxLength - 1];
                 return employee = employees.Single(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment);
             }
             else
@@ -169,11 +171,45 @@ namespace AutoService.Core.Validator
             if (!Enum.TryParse(commandParameter, out departmentFound))
             {
                 string[] listOfDepartments = Enum.GetNames(typeof(DepartmentType));
-               
+
                 throw new ArgumentException("Department is not valid!" + Environment.NewLine +
                     "List of departments to choose from:" + Environment.NewLine + string.Join(Environment.NewLine, listOfDepartments));
             }
             return departmentFound;
+        }
+
+        public static void VehicleMakeModelRegNumber(string vehicleMake, string vehicleModel, string vehicleRegistrationNumber)
+        {
+            //validate All for null
+            if (string.IsNullOrWhiteSpace(vehicleMake) || string.IsNullOrWhiteSpace(vehicleModel) || string.IsNullOrWhiteSpace(vehicleRegistrationNumber))
+            {
+                throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
+            }
+            //validate Make
+            if (vehicleMake.Length < 3 || vehicleMake.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
+            //validate Model
+            if (vehicleModel.Length < 2 || vehicleModel.Length > 20) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
+
+            //validate Reg Number
+            if (vehicleRegistrationNumber.Length < 6){ throw new ArgumentException("Invalid registration number. Must be at least 6 characters!"); }
+            
+        }
+
+        public static void CounterpartyCreate(string counterpartyName, string counterpartyAddress, string counterpartyUniqueNumber)
+        {
+            //validate All for null
+            if (string.IsNullOrWhiteSpace(counterpartyName) || string.IsNullOrWhiteSpace(counterpartyAddress) || string.IsNullOrWhiteSpace(counterpartyUniqueNumber))
+            {
+                throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
+            }
+            //validate Name
+            if (counterpartyName.Length < 3 || counterpartyName.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
+            //validate Address
+            if (counterpartyAddress.Length < 10 || counterpartyAddress.Length > 200) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
+
+            //validate UniqueNumber
+            if (counterpartyUniqueNumber.Length != 9 || counterpartyUniqueNumber.Any(a => !char.IsDigit(a))) { throw new ArgumentException("Invalid unique number. Must be exactly 9 characters and only digits!"); }
+
         }
 
         public static VehicleType VehicleTypeFromString(string commandParameter, string vehicleType)
@@ -200,6 +236,69 @@ namespace AutoService.Core.Validator
                                             "List of engine types to choose from:" + Environment.NewLine + string.Join(Environment.NewLine, listOfEngineTypes));
             }
             return engineTypeFound;
+        }
+
+        public static ICounterparty CounterpartyByNameOrUniqueNumber(string counterpartyNameOrUniqueNumber, IList<ICounterparty> counterparties)
+        {
+            if (!counterparties.Any(x => x.Name == counterpartyNameOrUniqueNumber || x.UniqueNumber == counterpartyNameOrUniqueNumber))
+            {
+                throw new ArgumentException($"Our AutoService does not work with supplier {counterpartyNameOrUniqueNumber}");
+            }
+            //iF INFO provided is not the Unique number but the name
+            if (counterparties.Any(x => x.UniqueNumber != counterpartyNameOrUniqueNumber))
+            {
+                if (counterparties.Select(x => x.Name == counterpartyNameOrUniqueNumber).Count() > 1)
+                {
+                    throw new ArgumentException(
+                        "More than one registered supplier with same name, please provide unique number INSTEAD of name");
+                }
+                else
+                {
+                    return counterparties.Single(x => x.Name == counterpartyNameOrUniqueNumber);
+                }
+            }
+            else
+            {
+                return counterparties.Single(x => x.UniqueNumber == counterpartyNameOrUniqueNumber);
+            }
+        }
+
+        public static void ValidateBankAccount(string bankAccount)
+        {
+            //Special thanks for the ValidateBankAccount code to
+            //https://www.codeproject.com/Tips/775696/IBAN-Validator
+
+            if (String.IsNullOrEmpty(bankAccount))
+            {
+                throw new ArgumentException("Bank Account IBAN cannot be null!");
+            }
+
+            bankAccount = bankAccount.Replace(" ", String.Empty).ToUpper();
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(bankAccount,
+                @"^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$"))
+            {
+                bankAccount = bankAccount.Substring(4) + bankAccount.Substring(0, 4);
+                int checksum = 0;
+                foreach (char c in bankAccount)
+                {
+                    if (Char.IsLetter(c))
+                    {
+                        checksum = ((100 * checksum) + (c - 55)) % 97;
+                    }
+                    else
+                    {
+                        checksum = ((10 * checksum) + (c - 48)) % 97;
+                    }
+                }
+
+                if (checksum != 1)
+                    throw new ArgumentException("Bank Account IBAN is invalid!");
+            }
+            else
+            {
+                throw new ArgumentException("Bank Account IBAN is invalid!");
+            }
         }
     }
 }

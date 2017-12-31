@@ -3,7 +3,7 @@
   <Class Name="AutoService.Models.Assets.Work">
     <Position X="3.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAQAAAAAAAAAAAAAAAgACAAAAAAAAQAAAAAA=</HashCode>
+      <HashCode>AAABAAAAAQAAAAAAAAAIAAAAAgACAAAAAAAAQAAAAAA=</HashCode>
       <FileName>BusinessProcess\Models\Work.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -11,7 +11,7 @@
   <Class Name="AutoService.Models.BusinessProcess.Models.Order">
     <Position X="2.75" Y="3.5" Width="1.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAIAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>BusinessProcess\Models\Order.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -19,15 +19,14 @@
   <Class Name="AutoService.Models.BusinessProcess.Models.Sell">
     <Position X="5.5" Y="3.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAABAABAAAAAAAAAAAAAAAAAY=</HashCode>
+      <HashCode>AAAAAAAABAAAAAQEEAAAAAAABAAAAAAAAABAAAAAAAY=</HashCode>
       <FileName>BusinessProcess\Models\Sell.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="AutoService.Models.BusinessProcess.Models.SellService">
     <Position X="8.5" Y="4.75" Width="1.25" />
     <TypeIdentifier>
-      <HashCode>AACEAICAAAAAAAAEAAAAABAAAAAAAAIAAAAAAAAABgI=</HashCode>
+      <HashCode>AAAEAICAAAAAAAAEAAAAAAAAAAAAAAIAAABAAAAABgI=</HashCode>
       <FileName>BusinessProcess\Models\SellService.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

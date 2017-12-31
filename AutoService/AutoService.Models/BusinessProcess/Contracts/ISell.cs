@@ -1,7 +1,6 @@
 ﻿using AutoService.Models.Assets.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.BusinessProcess.Contracts
@@ -10,9 +9,9 @@ namespace AutoService.Models.BusinessProcess.Contracts
     {
         ICounterparty Client { get; }
 
-        Vehicle Vehicle { get; }
+        IVehicle Vehicle { get; }
 
-        void SellToClientVehicle(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, ISell sell);
+        void SellToClientVehicle(/*IEmployee responsibleEmployee, IClient client, IVehicle vehicle, */ISell sell, IStock stock);
         
     }
 }

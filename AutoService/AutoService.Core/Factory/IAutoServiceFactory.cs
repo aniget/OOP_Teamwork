@@ -21,17 +21,17 @@ namespace AutoService.Core.Factory
 
         IInvoice CreateInvoice(string number, DateTime date, IClient client);
 
-        BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate);
+        BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate);
 
-        IAsset CreateStock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty vendor);
+        IAsset CreateStock(string name, IEmployee responsibleEmployee, string uniqueNumber, decimal purchasePrice, ICounterparty vendor);
 
-        ISell CreateSellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string serviceName, int durationInMinutes);
+        ISell CreateSellService(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName, int durationInMinutes);
 
-        ISell CreateSellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock);
+        ISell CreateSellStock(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, IStock stock);
 
         IOrderStock CreateOrderStock(IEmployee responsibleEmployee, decimal purchasePrice, TypeOfWork job, ICounterparty supplier, IStock stock);
 
-        IVehicle CreateCar(string model, string make, string registrationNumber, string year, EngineType engine, int passengerCapacity);
+        IVehicle CreateVehicle(string make, string model, string registrationNumber, string year, EngineType engine, int passengerCapacity);
 
         IVehicle CreateSmallTruck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms);
 

@@ -19,7 +19,7 @@ namespace AutoService.Models.Vehicles.Models
         private readonly string year;
         private readonly EngineType engine;
 
-        public Vehicle(string model, string make, string registrationNumber,
+        public Vehicle(string make, string model, string registrationNumber,
             string year, EngineType engine)
         {
             if (string.IsNullOrWhiteSpace(model) || string.IsNullOrWhiteSpace(make))
@@ -55,10 +55,10 @@ namespace AutoService.Models.Vehicles.Models
             this.engine = engine;
         }
 
-        public string Model { get => this.model; }
-
         public string Make { get => this.make; }
 
+        public string Model { get => this.model; }
+        
         public VehicleType VehicleType { get => this.vehicleType; protected set { this.vehicleType = value; }}
 
         //public IClient Owner { get => this.owner; }

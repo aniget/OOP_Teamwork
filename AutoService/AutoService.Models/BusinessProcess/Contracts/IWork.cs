@@ -11,7 +11,7 @@ namespace AutoService.Models.Contracts
 
         //both Sell and Order works have a price BUT SellService doesn't, so in case we sell Service override will follow
         //TODO: want to remove the price from ISell because we already have price in IStock and a calculatable price in SellService
-        decimal Price { get; } //commented because price comes from stock 
+        //decimal Price { get; } //commented because price comes from stock 
 
         //Set whether the work is Sell (revenue generating) or Order (cost generating) type of work
         TypeOfWork Job { get; }

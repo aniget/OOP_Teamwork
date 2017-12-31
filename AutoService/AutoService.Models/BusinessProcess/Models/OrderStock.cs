@@ -30,8 +30,8 @@ namespace AutoService.Models.BusinessProcess.Models
         {
             if (string.IsNullOrWhiteSpace(employeeFirstName)) { throw new ArgumentException("Please enter a valid employee name!"); }
             if (string.IsNullOrWhiteSpace(supplierName)) { throw new ArgumentException("Supplier cannot be null!"); }
-
-            Warehouse.AddPartToWarehouse(this.Stock,this.ResponsibleEmployee);
+            
+            Warehouse.AddStockToWarehouse(this.Stock,this.ResponsibleEmployee);
         }
 
         //public override string ToString()

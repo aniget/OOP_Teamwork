@@ -34,23 +34,23 @@ namespace AutoService.Core.Factory
             return new Invoice(number, date, client);
         }
 
-        public BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, DateTime registrationDate)
+        public BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate)
         {
-            return new BankAccount(name, responsibleEmployee, registrationDate);
+            return new BankAccount(name, responsibleEmployee, uniqueNumber, registrationDate);
         }
 
-        public IAsset CreateStock(string name, IEmployee responsibleEmployee, decimal purchasePrice, ICounterparty supplier)
+        public IAsset CreateStock(string name, IEmployee responsibleEmployee, string uniqueNumber, decimal purchasePrice, ICounterparty supplier)
         {
-            return new Stock(name, responsibleEmployee, purchasePrice, supplier);
+            return new Stock(name, responsibleEmployee, uniqueNumber, purchasePrice, supplier);
         }
 
-        public ISell CreateSellService(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, string serviceName,
+        public ISell CreateSellService(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName,
             int durationInMinutes)
         {
             return new SellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes);
         }
 
-        public ISell CreateSellStock(IEmployee responsibleEmployee, IClient client, Vehicle vehicle, IStock stock)
+        public ISell CreateSellStock(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, IStock stock)
         {
             return new SellStock(responsibleEmployee, client, vehicle, stock);
         }
@@ -60,7 +60,7 @@ namespace AutoService.Core.Factory
             return new OrderStock(responsibleEmployee, price, job, supplier, stock);
         }
 
-        public IVehicle CreateCar(string model, string make, string registrationNumber,
+        public IVehicle CreateVehicle(string make, string model, string registrationNumber,
             string year, EngineType engine, int passengerCapacity)
         {
             IVehicle newCar = new Car(model, make, registrationNumber, year, engine, passengerCapacity);
