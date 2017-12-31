@@ -14,6 +14,7 @@ namespace AutoService.Models.Contracts
         string UniqueNumber { get; }
 
         ICollection<IInvoice> Invoices { get; }
-       
+
+        void ChangeName(string name);
     }
 }

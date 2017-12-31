@@ -344,7 +344,7 @@ namespace AutoService.Core
                     {
                         throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse");
                     }
-                    
+
                     vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.Make == vehicleMake && x.Model == vehicleModel && x.RegistrationNumber == vehicleRegistrationNumber);
 
                     if (vehicle == null)
@@ -405,20 +405,35 @@ namespace AutoService.Core
                     decimal purchasePrice = Validate.DecimalFromString(commandParameters[5], "purchasePrice");
 
                     stock = new Stock(stockName, employee, stockUniqueNumber, purchasePrice, supplier);
-                    
+
                     this.OrderStockFromSupplier(stock);
                     break;
 
                 case "registerSupplier":
-
+                    //registerSupplier;AXM - AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
                     Validate.ExactParameterLength(commandParameters, 4);
 
                     supplierName = commandParameters[1];
                     supplierAddress = commandParameters[2];
                     supplierUniqueNumber = commandParameters[3];
 
+                    Validate.ExistingSupplierFromNameAndUniqueNumber(this.suppliers, supplierName, supplierUniqueNumber);
+
                     this.AddSupplier(supplierName, supplierAddress, supplierUniqueNumber);
                     Console.WriteLine("Supplier registered sucessfully");
+                    break;
+
+                case "changeSupplierName":
+                    //changeSupplierName; 211311577; VintchetaBolchetaGaiki
+                    Validate.ExactParameterLength(commandParameters, 3);
+
+                    supplierUniqueNumber = commandParameters[1];
+                    supplierName = commandParameters[2];
+
+                    Validate.ExistingSupplierFromUniqueNumber(this.suppliers, supplierUniqueNumber);
+
+                    this.ChangeSupplierName(supplierUniqueNumber, supplierName);
+                    Console.WriteLine($"Supplier name changed sucessfully to {supplierName}");
                     break;
 
                 case "removeSupplier":
@@ -445,7 +460,7 @@ namespace AutoService.Core
                     clientName = commandParameters[1];
                     clientAddress = commandParameters[2];
                     clientUniquieNumber = commandParameters[3];
-                    
+
                     this.AddClient(clientName, clientAddress, clientUniquieNumber);
                     break;
 
@@ -469,6 +484,13 @@ namespace AutoService.Core
                 default:
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
+        }
+
+        private void ChangeSupplierName(string supplierUniqueNumber, string supplierName)
+        {
+            var supplier = this.suppliers.First(f => f.UniqueNumber == supplierUniqueNumber);
+
+            supplier.ChangeName(supplierName);
         }
 
         private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
@@ -667,11 +689,6 @@ namespace AutoService.Core
                     hiredCounter++;
                 }
                 int counter = 1;
-                foreach (var currentEmployee in this.employees)
-                {
-                    Console.WriteLine(counter + ". " + currentEmployee.ToString());
-                    counter++;
-                }
             }
             else
             {
@@ -722,6 +739,7 @@ namespace AutoService.Core
 
         private void FireEmployee(IEmployee employee)
         {
+            Validate.CheckNullObject(employee);
             employee.FireEmployee();
 
             Console.WriteLine($"Employee {employee.FirstName} {employee.LastName} was fired!");

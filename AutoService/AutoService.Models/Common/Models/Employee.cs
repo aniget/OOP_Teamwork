@@ -174,6 +174,7 @@ namespace AutoService.Models.Assets
         {
             if (IsHired)
             {
+                this.Responsibiities.Clear();
                 this.IsHired = false;
             }
             else

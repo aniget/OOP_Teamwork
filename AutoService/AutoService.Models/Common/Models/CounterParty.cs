@@ -65,6 +65,11 @@ namespace AutoService.Models.Common.Models
             get => this.invoices;
         }
 
+        public void ChangeName(string name)
+        {
+            this.Name = name;
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
