@@ -29,11 +29,11 @@ namespace AutoService.Models.BusinessProcess.Models
 
             //validation of serviceName
             if (string.IsNullOrWhiteSpace(serviceName)) { throw new ArgumentException("ServiceName cannot be null, empty or whitespace!"); }
-            if (serviceName.Length < 5 || serviceName.Length < 500) { throw new ArgumentException("ServiceName should be between 5 and 500 characters long"); }
+            if (serviceName.Length < 5 || serviceName.Length > 500) { throw new ArgumentException("ServiceName should be between 5 and 500 characters long"); }
 
             //validation of durationInMinutes
             if (durationInMinutes < 0) { throw new ArgumentException("Duration of service should be provided in minutes and should be a positive number"); }
-            if (durationInMinutes > 0 && durationInMinutes > minDuration) { throw new ArgumentException($"As per AutoService Policy minimum duration is {minDuration} min."); }
+            if (durationInMinutes < minDuration) { throw new ArgumentException($"As per AutoService Policy minimum duration is {minDuration} min."); }
             if (durationInMinutes > maxDuration) { throw new ArgumentException($"Duration of service should be provided in minutes and should not exceed {maxDuration}min."); }
 
             this.serviceName = serviceName.Trim();

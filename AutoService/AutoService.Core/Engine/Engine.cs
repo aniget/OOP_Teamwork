@@ -361,7 +361,6 @@ namespace AutoService.Core
                     vehicleModel = commandParameters[4];
                     vehicleRegistrationNumber = commandParameters[5];
                     var serviceName = commandParameters[6];
-                    int temp;
                     
                     if (!int.TryParse(commandParameters[7], out int durationInMinutes))
                     {
