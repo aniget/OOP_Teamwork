@@ -26,6 +26,12 @@ namespace AutoService.Models.Assets
                 {
                     throw new ArgumentException("Asset name cannot be null!");
                 }
+
+                if (value.Length > 200)
+                {
+                    throw new ArgumentException("Asset name cannot be more than 200 characters long!");
+                }
+
                 this.name = value;
             }
         }
@@ -52,6 +58,7 @@ namespace AutoService.Models.Assets
                 {
                     throw new ArgumentException("Unique number cannot be null!");
                 }
+
                 this.uniqueNumber = value;
             }
         }

@@ -16,6 +16,7 @@ namespace AutoService.Models.BusinessProcess.Models
 
         private int durationInMinutes;
         private string serviceName;
+        //private decimal sellPrice;
 
         public SellService(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, /*IDictionary<IClient, ISell> notInvoicedSells, */string serviceName, int durationInMinutes)
             : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute, TypeOfWork.Selling, client, vehicle/*, notInvoicedSells*/)
@@ -32,29 +33,28 @@ namespace AutoService.Models.BusinessProcess.Models
 
             this.serviceName = serviceName.Trim();
             this.durationInMinutes = durationInMinutes;
+            this.SellPrice = durationInMinutes * responsibleEmployee.RatePerMinute;
         }
-
 
         public string ServiceName => this.serviceName;
+
         public int DurationInMinutes => this.durationInMinutes;
 
-        public override void SellToClientVehicle(/*IEmployee responsibleEmployee, IClient client, Vehicle vehicle, */ISell sell, IStock stock)
+        public override void SellToClientVehicle(ISell sell, IStock stock)
         {
-            base.SellToClientVehicle(/*responsibleEmployee, client, vehicle, */this, stock);
+            base.SellToClientVehicle(this, stock);
         }
 
 
-        public override string AdditionalInfo_ServiceOrPart() { return "service";}
-
-        //public override decimal CalculateRevenue() { return this.durationInMinutes * GetEmployeeRatePerMinute(ResponsibleEmployee);}
-
+        public override string AdditionalInfo_ServiceOrPart() { return "service"; }
+        
         public override string ToString()
         {
             return base.ToString() + Environment.NewLine +
                    string.Format("The following service procedure was carried out: {0}" + Environment.NewLine
                                  + "and it took {1} minutes" + Environment.NewLine
                                  + "This service amounts to: {2} BGN"
-                                 , this.ServiceName, this.durationInMinutes, GetEmployeeRatePerMinute(ResponsibleEmployee) * this.durationInMinutes);
+                                 , this.ServiceName, this.durationInMinutes, this.SellPrice);
         }
     }
 }

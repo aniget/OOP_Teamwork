@@ -175,39 +175,40 @@ namespace AutoService.Core.Validator
             return departmentFound;
         }
 
-        public static void VehicleMakeModelRegNumber(string vehicleMake, string vehicleModel, string vehicleRegistrationNumber)
-        {
-            //validate All for null
-            if (string.IsNullOrWhiteSpace(vehicleMake) || string.IsNullOrWhiteSpace(vehicleModel) || string.IsNullOrWhiteSpace(vehicleRegistrationNumber))
-            {
-                throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
-            }
-            //validate Make
-            if (vehicleMake.Length < 3 || vehicleMake.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
-            //validate Model
-            if (vehicleModel.Length < 2 || vehicleModel.Length > 20) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
+        ////this is validatete in the class
+        //public static void VehicleMakeModelRegNumber(string vehicleMake, string vehicleModel, string vehicleRegistrationNumber)
+        //{
+        //    //validate All for null
+        //    if (string.IsNullOrWhiteSpace(vehicleMake) || string.IsNullOrWhiteSpace(vehicleModel) || string.IsNullOrWhiteSpace(vehicleRegistrationNumber))
+        //    {
+        //        throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
+        //    }
+        //    //validate Make
+        //    if (vehicleMake.Length < 3 || vehicleMake.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
+        //    //validate Model
+        //    if (vehicleModel.Length < 2 || vehicleModel.Length > 20) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
 
-            //validate Reg Number
-            if (vehicleRegistrationNumber.Length < 6){ throw new ArgumentException("Invalid registration number. Must be at least 6 characters!"); }
+        //    //validate Reg Number
+        //    if (vehicleRegistrationNumber.Length < 6){ throw new ArgumentException("Invalid registration number. Must be at least 6 characters!"); }
             
-        }
+        //}
 
-        public static void CounterpartyCreate(string counterpartyName, string counterpartyAddress, string counterpartyUniqueNumber)
-        {
-            //validate All for null
-            if (string.IsNullOrWhiteSpace(counterpartyName) || string.IsNullOrWhiteSpace(counterpartyAddress) || string.IsNullOrWhiteSpace(counterpartyUniqueNumber))
-            {
-                throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
-            }
-            //validate Name
-            if (counterpartyName.Length < 3 || counterpartyName.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
-            //validate Address
-            if (counterpartyAddress.Length < 10 || counterpartyAddress.Length > 200) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
+        //public static void CounterpartyCreate(string counterpartyName, string counterpartyAddress, string counterpartyUniqueNumber)
+        //{
+        //    //validate All for null
+        //    if (string.IsNullOrWhiteSpace(counterpartyName) || string.IsNullOrWhiteSpace(counterpartyAddress) || string.IsNullOrWhiteSpace(counterpartyUniqueNumber))
+        //    {
+        //        throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
+        //    }
+        //    //validate Name
+        //    if (counterpartyName.Length < 3 || counterpartyName.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
+        //    //validate Address
+        //    if (counterpartyAddress.Length < 10 || counterpartyAddress.Length > 200) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
 
-            //validate UniqueNumber
-            if (counterpartyUniqueNumber.Length != 9 || counterpartyUniqueNumber.Any(a => !char.IsDigit(a))) { throw new ArgumentException("Invalid unique number. Must be exactly 9 characters and only digits!"); }
+        //    //validate UniqueNumber
+        //    if (counterpartyUniqueNumber.Length != 9 || counterpartyUniqueNumber.Any(a => !char.IsDigit(a))) { throw new ArgumentException("Invalid unique number. Must be exactly 9 characters and only digits!"); }
 
-        }
+        //}
 
         public static VehicleType VehicleTypeFromString(string commandParameter, string vehicleType)
         {

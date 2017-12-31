@@ -16,7 +16,7 @@ namespace AutoService.Models.Contracts
         //Set whether the work is Sell (revenue generating) or Order (cost generating) type of work
         TypeOfWork Job { get; }
 
-        decimal GetEmployeeRatePerMinute(IEmployee employee);
+        //decimal GetEmployeeRatePerMinute(IEmployee employee);
 
     }
 }

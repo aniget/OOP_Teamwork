@@ -16,7 +16,7 @@ namespace AutoService.Models.BusinessProcess.Models
         private decimal sellPrice;
 
         protected Sell(IEmployee responsibleEmployee, decimal sellPrice, TypeOfWork job, ICounterparty client, IVehicle vehicle)
-            : base(responsibleEmployee, sellPrice, job)
+            : base(responsibleEmployee, /*sellPrice, */job)
         {
             Client = client ?? throw new ArgumentException("Client cannot be null");
             Vehicle = vehicle ?? throw new ArgumentException("Vehicle cannot be null");
@@ -35,28 +35,10 @@ namespace AutoService.Models.BusinessProcess.Models
         public ICounterparty Client { get; protected set; }
         public IVehicle Vehicle { get; protected set; }
 
-        public virtual void SellToClientVehicle(/*IEmployee responsibleEmployee, IClient client, IVehicle vehicle, */ISell sell, IStock stock)
+        public virtual void SellToClientVehicle(ISell sell, IStock stock)
         {
-            IEmployee tempEmpl = sell.ResponsibleEmployee;
-            //employee is hired and has the responsibility to sell service
-            if (tempEmpl == null) { throw new ArgumentException("Please enter employee!"); }
-            if (tempEmpl.IsHired == false) { throw new ArgumentException($"Employee {tempEmpl} is no longer working for the AutoService!"); }
-            if (tempEmpl.Responsibiities.Contains(ResponsibilityType.SellService) == false && 
-                tempEmpl.Responsibiities.Contains(ResponsibilityType.Manage) == false && 
-                tempEmpl.Responsibiities.Contains(ResponsibilityType.Sell) == false)
-                { throw new ArgumentException($"Employee {tempEmpl} not authorized to repair vehicles"); }
-            if (sell.Client == null) { throw new ArgumentException("Client cannot be null!"); }
-            if (sell.Vehicle == null) { throw new ArgumentException("Vehicle cannot be null!"); }
-
-            //add to notInvoicedItems
-            //done in the command in the engine because from here we have no access to the dictionary collection
-
             //remove from warehouse only when sell is of type ISellStock
-            if (sell is ISellStock) { Warehouse.RemoveStockFromWarehouse(stock, tempEmpl, sell.Vehicle);}
-
-            //this.Client = sell.Client;
-            //this.Vehicle = sell.Vehicle;
-            //this.ResponsibleEmployee = responsibleEmployee;
+            if (sell is ISellStock) { Warehouse.RemoveStockFromWarehouse(stock, this.ResponsibleEmployee, sell.Vehicle);}
         }
 
         private string SellToClientWithoutCar(IVehicle currentVehicle)

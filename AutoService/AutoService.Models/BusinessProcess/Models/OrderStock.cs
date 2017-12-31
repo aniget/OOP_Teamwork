@@ -15,7 +15,7 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         private IStock stock;
 
-        public OrderStock(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty supplier, IStock stock /*, ICollection<IStock> warehouse*/) : base(responsibleEmployee, price, job, supplier)
+        public OrderStock(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty supplier, IStock stock) : base(responsibleEmployee, price, job, supplier)
         {
             this.stock = stock ?? throw new ArgumentException("Stock cannot be null!");
         }

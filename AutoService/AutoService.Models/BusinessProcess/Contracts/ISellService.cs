@@ -9,5 +9,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
         string ServiceName { get; }
         
         int DurationInMinutes { get; }
+
+        //decimal SellPrice { get; }
     }
 }

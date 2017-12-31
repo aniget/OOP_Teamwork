@@ -96,7 +96,7 @@ namespace AutoService.Core
 
         private string[] ParseCommand(string command)
         {
-            return command.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            return command.Split(new string[] { ";" }, StringSplitOptions.None);
         }
 
         private void ExecuteSingleCommand(string[] commandParameters)
@@ -344,9 +344,7 @@ namespace AutoService.Core
                     {
                         throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse");
                     }
-
-                    Validate.VehicleMakeModelRegNumber(vehicleMake, vehicleModel, vehicleRegistrationNumber);
-
+                    
                     vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.Make == vehicleMake && x.Model == vehicleModel && x.RegistrationNumber == vehicleRegistrationNumber);
 
                     if (vehicle == null)
@@ -371,22 +369,11 @@ namespace AutoService.Core
                     var serviceName = commandParameters[6];
 
                     int durationInMinutes = Validate.IntFromString(commandParameters[7], "duration in minutes");
-                    //if (!int.TryParse(commandParameters[7], out int durationInMinutes))
-                    //{
-                    //    throw new ArgumentException("Duration must contain only digits");
-                    //}
-                    //if (durationInMinutes < 10 || durationInMinutes > 5000)
-
-                    //{
-                    //    throw new ArgumentException("Dration must be be a number between 10 and 5000 minutes)}");
-                    //}
 
                     Validate.EmployeeExist(this.employees, employeeFirstName);
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 10);
 
                     clientWeSellServiceTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
-
-                    Validate.VehicleMakeModelRegNumber(vehicleMake, vehicleModel, vehicleRegistrationNumber);
 
                     vehicle = clientWeSellServiceTo.Vehicles.FirstOrDefault(x => x.Make == vehicleMake && x.Model == vehicleModel && x.RegistrationNumber == vehicleRegistrationNumber);
 
@@ -405,27 +392,20 @@ namespace AutoService.Core
                     Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
                     employeeFirstName = commandParameters[1];
-                    var supplierNameOrUniqueNumber = commandParameters[2];
-                    var stockName = commandParameters[3];
-                    stockUniqueNumber = commandParameters[4];
-                    decimal purchasePrice = Validate.DecimalFromString(commandParameters[5], "purchasePrice");
-
-                    if (string.IsNullOrWhiteSpace(stockUniqueNumber)) { throw new InvalidIdException("The Uniquie number cannot be null!"); }
-                    int minLen = 3;
-                    int maxLen = 10;
-                    if (stockUniqueNumber.Length < minLen || stockUniqueNumber.Length > maxLen) { throw new InvalidIdException($"The stock unique number bust be between {minLen} and {maxLen} characters long!"); }
-
                     Validate.EmployeeExist(this.employees, employeeFirstName);
-
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
 
+                    var supplierNameOrUniqueNumber = commandParameters[2];
                     supplier = Validate.CounterpartyByNameOrUniqueNumber(supplierNameOrUniqueNumber, this.suppliers);
 
+                    var stockName = commandParameters[3];
+
+                    stockUniqueNumber = commandParameters[4];
+
+                    decimal purchasePrice = Validate.DecimalFromString(commandParameters[5], "purchasePrice");
+
                     stock = new Stock(stockName, employee, stockUniqueNumber, purchasePrice, supplier);
-
-                    //OrderStock orderStock = null;
-                    ////this.OrderStockToday(orderedStockClass, emplFN, supplN);
-
+                    
                     this.OrderStockFromSupplier(stock);
                     break;
 
@@ -436,8 +416,6 @@ namespace AutoService.Core
                     supplierName = commandParameters[1];
                     supplierAddress = commandParameters[2];
                     supplierUniqueNumber = commandParameters[3];
-
-                    Validate.CounterpartyCreate(supplierName, supplierAddress, supplierUniqueNumber);
 
                     this.AddSupplier(supplierName, supplierAddress, supplierUniqueNumber);
                     Console.WriteLine("Supplier registered sucessfully");
@@ -467,9 +445,7 @@ namespace AutoService.Core
                     clientName = commandParameters[1];
                     clientAddress = commandParameters[2];
                     clientUniquieNumber = commandParameters[3];
-
-                    Validate.CounterpartyCreate(clientName, clientAddress, clientUniquieNumber);
-
+                    
                     this.AddClient(clientName, clientAddress, clientUniquieNumber);
                     break;
 
@@ -675,7 +651,7 @@ namespace AutoService.Core
                     $"Employee {responsibleEmployee.FirstName} {responsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
             }
 
-            Console.WriteLine($"{serviceName} was performed to {client.Name} for the amount of {sellService.DurationInMinutes * sellService.GetEmployeeRatePerMinute(responsibleEmployee)}" + Environment.NewLine
+            Console.WriteLine($"{serviceName} was performed to {client.Name} for the amount of {sellService.SellPrice}" + Environment.NewLine
                               + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
         }
 
@@ -771,7 +747,7 @@ namespace AutoService.Core
             }
             this.suppliers.Add(supplier);
             Console.WriteLine(supplier);
-            Console.WriteLine($"Supplier {name} added successfully with Id {this.suppliers.Count}!");
+            //Console.WriteLine($"Supplier {name} added successfully with Id {this.suppliers.Count}!");
         }
 
         private void AddClient(string name, string address, string uniqueNumber)
@@ -786,7 +762,7 @@ namespace AutoService.Core
 
             this.clients.Add(client);
             Console.WriteLine(client);
-            Console.WriteLine($"Client {name} added successfully with Id {this.clients.Count}!");
+            //Console.WriteLine($"Client {name} added successfully with Id {this.clients.Count}!");
         }
 
         private void RemoveSupplier(string name)

@@ -14,7 +14,7 @@ namespace AutoService.Models.BusinessProcess.Models
         
 
         protected Order(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty supplier) 
-            : base(responsibleEmployee, price, job)
+            : base(responsibleEmployee, /*price, */job)
         {
             this.supplier = supplier ?? throw new ArgumentException("Supplier cannot be null");
             //TODO: check if order is made by nonexistent supplier

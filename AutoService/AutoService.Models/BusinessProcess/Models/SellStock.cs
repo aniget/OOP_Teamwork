@@ -20,17 +20,10 @@ namespace AutoService.Models.BusinessProcess.Models
         public IStock Stock => this.stock;
 
         public string Name => this.Stock.Name;
-        //public string UniqueNumber => this.Stock.UniqueNumber;
-        //public decimal PurchasePrice => this.Stock.PurchasePrice;
-        //public ICounterparty Supplier => this.Stock.Supplier;
-
-
 
         public override string AdditionalInfo_ServiceOrPart() { return "autoparts"; }
 
-        //public override decimal CalculateRevenue() { return Stock.PurchasePrice * 1.5m;}
-
-        public override void SellToClientVehicle(/*IEmployee responsibleEmployee, IClient client, IVehicle vehicle, */ISell sell, IStock stockSelling)
+        public override void SellToClientVehicle(ISell sell, IStock stockSelling)
         {
             base.SellToClientVehicle(this, Stock);
         }

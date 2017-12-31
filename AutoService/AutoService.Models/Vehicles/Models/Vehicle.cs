@@ -21,20 +21,21 @@ namespace AutoService.Models.Vehicles.Models
         public Vehicle(string make, string model, string registrationNumber,
             string year, EngineType engine)
         {
+
+            if (string.IsNullOrWhiteSpace(make))
+            {
+                throw new ArgumentException("Please provide a valid model!");
+            }
+            
             if (string.IsNullOrWhiteSpace(model) || string.IsNullOrWhiteSpace(make))
             {
                 throw new ArgumentException("Please provide a valid model!");
             }
 
-            //if (string.IsNullOrWhiteSpace(make))
-            //{
-            //    throw new ArgumentException("Please provide a valid model!");
-            //}
-
-            //if (owner == null)
-            //{
-            //    throw new ArgumentException("Invalid owner!");
-            //}
+            if (make.Length > 50 || model.Length > 50)
+            {
+                throw new ArgumentException("Make ot Model should not be more than 50 characters long!");
+            }
 
             if (string.IsNullOrWhiteSpace(registrationNumber) || registrationNumber.Length < 6)
             {

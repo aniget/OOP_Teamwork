@@ -10,6 +10,9 @@ namespace AutoService.Models.Assets
         private readonly decimal purchasePrice;
         private ICounterparty supplier;
 
+        private static int minLen = 3;
+        private static int maxLen = 10;
+
         public Stock(string name, IEmployee responsibleEmployee, string uniqueNumber, decimal purchasePrice, ICounterparty supplier) : base(name, responsibleEmployee, uniqueNumber)
         {
             if (purchasePrice < 0 || purchasePrice > 1000000)
@@ -22,6 +25,9 @@ namespace AutoService.Models.Assets
                 throw new ArgumentException("Null ");
             }
             this.supplier = supplier;
+
+            if (UniqueNumber.Length < minLen || UniqueNumber.Length > maxLen) { throw new ArgumentException($"The stock unique number bust be between {minLen} and {maxLen} characters long!"); }
+
         }
 
         public decimal PurchasePrice

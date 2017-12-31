@@ -12,6 +12,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
         IVehicle Vehicle { get; }
 
         void SellToClientVehicle(/*IEmployee responsibleEmployee, IClient client, IVehicle vehicle, */ISell sell, IStock stock);
-        
+
+        decimal SellPrice { get; }
     }
 }
