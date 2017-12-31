@@ -1,69 +1,51 @@
 ﻿using System;
-using System.Text;
 using AutoService.Core.Validator;
-using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
-using AutoService.Models.Assets.Contracts;
-using AutoService.Models.Common.Models;
 using AutoService.Models.Vehicles.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Models22222
 
 {
-    public abstract class Sell : Work, ISell
+    public abstract class Sell : Work //, ISell
     {
-        private readonly decimal sellPrice;
+        private decimal sellPrice;
+        private readonly IClient client;
+        private readonly IVehicle vehicle;
 
-
-        protected Sell(IEmployee responsibleEmployee, decimal sellPrice, ICounterparty client)
+        protected Sell(IEmployee responsibleEmployee, decimal sellPrice, IClient client, IVehicle vehicle)
             : base(responsibleEmployee, TypeOfWork.Selling)
         {
-            Validate.CheckNullObject(new object[]{responsibleEmployee, client});
+            Validate.CheckNullObject(new object[] {client, vehicle});
+            Validate.SellPrice(sellPrice);
 
-
-            this.Client = client ?? throw new ArgumentException("Client cannot be null");
-            
-            if (this.sellPrice < 0) { throw new ArgumentException("Sell price must be positive number"); }
+            this.client = client;
             this.sellPrice = sellPrice;
+            this.vehicle = vehicle;
         }
 
         public decimal SellPrice
         {
-            get => this.sellPrice;
-            protected set => this.sellPrice = value;
-        }
+            get => this.sellPrice; }
 
-        public ICounterparty Client { get; protected set; }
-        public IVehicle Vehicle { get; protected set; }
-
-        public virtual void SellToClientVehicle(ISell sell, IStock stock)
+        public IClient Client
         {
-            //remove from warehouse only when sell is of type ISellStock
-            if (sell is ISellStock) { Warehouse.RemoveStockFromWarehouse(stock, this.ResponsibleEmployee, sell.Vehicle);}
+            get => this.client;
         }
 
-        private string SellToClientWithoutCar(IVehicle currentVehicle)
+        public IVehicle Vehicle
         {
-            string vehicleMake = "";
-
-            if (Vehicle == null) vehicleMake = "";
-            else vehicleMake = Vehicle.Make + " " + Vehicle.Model;
-
-            return "for vehicle " + vehicleMake;
+            get => this.vehicle;
         }
+
+        public abstract string AdditionalInfoForServiceType();
+        public abstract string AdditionalInfoForSale();
+        public abstract decimal GetSalePrice();
 
         public override string ToString()
         {
-            var builder = new StringBuilder();
-            builder.AppendLine(string.Format("Information about sale of {0} to client {1} {2}" + Environment.NewLine + "Performed by: {3}",
-                AdditionalInfo_ServiceOrPart(), Client.Name, SellToClientWithoutCar(Vehicle), base.ResponsibleEmployee));
-            return builder.ToString();
+           return string.Format("Information about sale of {0} to client {1} {2}" + Environment.NewLine + "Performed by: {3}",
+               this.AdditionalInfoForServiceType(), this.Client.Name, this.AdditionalInfoForSale(), this.ResponsibleEmployee.FirstName + " " + this.ResponsibleEmployee.LastName);
         }
-
-        public abstract string AdditionalInfo_ServiceOrPart();
-
-        //public abstract decimal CalculateRevenue();
-
     }
 }

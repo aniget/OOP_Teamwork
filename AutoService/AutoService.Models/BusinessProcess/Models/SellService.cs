@@ -45,7 +45,6 @@ namespace AutoService.Models.BusinessProcess.Models
             base.SellToClientVehicle(this, stock);
         }
 
-
         public override string AdditionalInfo_ServiceOrPart() { return "service"; }
         
         public override string ToString()

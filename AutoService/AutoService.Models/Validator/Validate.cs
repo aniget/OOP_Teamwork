@@ -315,6 +315,17 @@ namespace AutoService.Core.Validator
             }
         }
 
+        public static void StringForNullEmpty(params string[] values)
+        {
+            foreach (var value in values)
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Null, empty or whistespace string provided!");
+                }
+            }
+        }
+
         public static void ExistingSupplierFromNameAndUniqueNumber(IList<ICounterparty> suppliers, string supplierName, string supplierUniqueNumber)
         {
             if (suppliers.Any(a => a.Name == supplierName) || suppliers.Any(a => a.UniqueNumber == supplierUniqueNumber))
@@ -329,6 +340,25 @@ namespace AutoService.Core.Validator
             {
                 throw new ArgumentException("This supplier is not found. Please check if the correct Unique number was used!");
             }
+        }
+
+        public static void SellPrice(decimal sellPrice)
+        {
+            if (sellPrice < 0)
+            {
+                throw new ArgumentException("Sell price must be positive number");
+            }
+        }
+
+        public static void ServiceNameLength(string serviceName)
+        {
+            if (serviceName.Length < 5 || serviceName.Length > 500) { throw new ArgumentException("ServiceName should be between 5 and 500 characters long"); }
+        }
+
+        public static void ServiceDurationInMinutes(int durationInMinutes, int minDuration, int maxDuration)
+        {
+            if (durationInMinutes < minDuration) { throw new ArgumentException($"As per AutoService Policy minimum duration is {minDuration} min."); }
+            if (durationInMinutes > maxDuration) { throw new ArgumentException($"Duration of service should be provided in minutes and should not exceed {maxDuration} min. If the provided service took more than {maxDuration} min. please raise two sold service requests."); }
         }
     }
 }

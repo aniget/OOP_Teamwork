@@ -627,14 +627,16 @@ namespace AutoService.Core
 
         private void SellStockToClient(IStock stock, IClient client, IVehicle vehicle)
         {
+            ISell sellStock;
             if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Sell) ||
                 stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
             {
-                ISell sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock);
-                sellStock.SellToClientVehicle(sellStock, stock);
+                sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock);
+
+                Warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee, vehicle);
+                //sellStock.SellToClientVehicle(sellStock, stock);
 
                 //record the Sell in the notInvoicedSells Dictionary
-                //this.notInvoicedSells.Add(client, new[] { sellStock });
                 if (!this.notInvoicedSells.ContainsKey(client))
                 {
                     this.notInvoicedSells[client] = new List<ISell>();
@@ -647,7 +649,7 @@ namespace AutoService.Core
                     $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
             }
 
-            Console.WriteLine($"{stock.Name} purchased by {stock.Supplier.Name} was sold to {client.Name} for the amount of {stock.PurchasePrice * 1.2m}" + Environment.NewLine
+            Console.WriteLine($"{stock.Name} purchased from {stock.Supplier.Name} was sold to {client.Name} for the amount of {sellStock.SellPrice}" + Environment.NewLine
                 + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
 

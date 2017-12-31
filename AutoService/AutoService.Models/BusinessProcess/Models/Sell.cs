@@ -15,7 +15,7 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         private decimal sellPrice;
 
-        protected Sell(IEmployee responsibleEmployee, decimal sellPrice, TypeOfWork job, ICounterparty client, IVehicle vehicle)
+        protected Sell(IEmployee responsibleEmployee, decimal sellPrice, TypeOfWork job, IClient client, IVehicle vehicle)
             : base(responsibleEmployee, /*sellPrice, */job)
         {
             Client = client ?? throw new ArgumentException("Client cannot be null");
@@ -32,7 +32,7 @@ namespace AutoService.Models.BusinessProcess.Models
             protected set => this.sellPrice = value;
         }
 
-        public ICounterparty Client { get; protected set; }
+        public IClient Client { get; protected set; }
         public IVehicle Vehicle { get; protected set; }
 
         public virtual void SellToClientVehicle(ISell sell, IStock stock)
