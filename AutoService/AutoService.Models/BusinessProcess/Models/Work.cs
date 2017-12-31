@@ -19,7 +19,7 @@ namespace AutoService.Models.Assets
             }
             this.ResponsibleEmployee = responsibleEmployee;
 
-            Job = job;
+            this.Job = job;
 
             this.price = price;
 
@@ -33,14 +33,10 @@ namespace AutoService.Models.Assets
             this.employees = employees ?? throw new ArgumentException("List of employees cannot be null!");
         }
 
-
-
         //Get and Set because if responsible mechanic gets sick a new responsible employee is being set on the job
         public IEmployee ResponsibleEmployee { get; set; }
-
         
         public TypeOfWork Job { get; protected set; }
-
 
         public decimal GetEmployeeRatePerMinute(IEmployee employee)
         {

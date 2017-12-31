@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Models;
 using AutoService.Models.Vehicles.Contracts;
-using AutoService.Models.Vehicles.Models;
 using IEmployee = AutoService.Models.Contracts.IEmployee;
 
 namespace AutoService.Models.BusinessProcess.Models

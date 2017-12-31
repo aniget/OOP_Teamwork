@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
@@ -77,7 +76,7 @@ namespace AutoService.Models.Vehicles.Models
                    $"-- Year: {this.Year}" + Environment.NewLine +
                    $"-- Engine: {this.Engine}" + Environment.NewLine +
                    $"-- Number of tires: {(int) this.VehicleType}" + Environment.NewLine +
-                   $"-- Registration number: {this.RegistrationNumber}" + Environment.NewLine;
+                   $"-- Registration number: {this.RegistrationNumber}";
             //$"-- Owner: {this.Owner.Name}";
         }
     }

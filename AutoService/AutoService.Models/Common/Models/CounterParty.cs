@@ -74,7 +74,7 @@ namespace AutoService.Models.Common.Models
             sb.AppendLine("### Invoices:");
             if (invoices.Count == 0)
             {
-                sb.AppendLine("No invoices!");
+                sb.Append("No invoices!");
             }
             else
             {

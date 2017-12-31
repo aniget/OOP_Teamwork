@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AutoService.Core.CustomExceptions;
 using AutoService.Models.Assets;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
-using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Core.Validator
