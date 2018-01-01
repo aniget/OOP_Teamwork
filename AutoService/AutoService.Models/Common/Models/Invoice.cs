@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AutoService.Core.Validator;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Contracts;
+using AutoService.Models.Validator;
 
 namespace AutoService.Models.Assets
 {
@@ -77,7 +77,6 @@ namespace AutoService.Models.Assets
            return this.Amount - this.PaidAmount;
         }
 
-        //TODO: Alex, please check it. Once I removed the price from the IWork (because we had a duplication in IWork and IStock) and the commented row below complained
         public void CalculateInvoiceAmount()
         {
             this.Amount = this.invoiceItems.Select(i => i.SellPrice).Sum();
