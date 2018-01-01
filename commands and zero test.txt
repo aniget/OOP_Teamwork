@@ -1,0 +1,74 @@
+test (to see that non-implemented throws error message :))
+showEmployees
+hireEmployee;<firstName>;<lastName>;<position>;<salary>;<ratePerMinute>;<department>;
+showAllEmployeesAtDepartment;<department>
+fireEmployee;<employeeId>
+changeEmployeeRate;<employeeId>;<ratePerMinute>
+changeEmployeePosition;<employeeId>;<position>
+createBankAccount;<employeeId>;<assetName>;<IBAN> - check validation
+addEmployeeResponsibility;<employeeId>;<responsibility>;[<responsibility>;]*
+removeEmpoloyeeResponsibility;<employeeId>;<responsibility>;[<responsibility>;]*
+depositCashInBank;<bankAccountId>;<depositAmount> - id or IBAN?
+registerClient;<name>;<address>;<uniqueNumber>
+registerSupplier;<name>;<address>;<uniqueNumber>
+removeSupplier - DO WE NEED IT? Usually we don't remove suppliers in order to keep history in database
+removeClient - DO WE NEED IT? Usually we don't remove clients in order to keep history in database
+changeSupplierName;<uniqueNumber>;<newName>
+orderStockToWarehouse - either or? check!
+addVehicleToClient;<vehicleType>;<make>;<model>;<uniqueNumber>;<year>;<engineType>;<seats/weightCapacity>;<clientId> - id or name?
+sellServiceToClient - two, one with vehicle, one without. Check!
+sellStockToClientVehicle - two, one with vehicle, one without. Check!
+issueInvoices - two, one with clientName, other without will issue all non-issued. Have to implement it!
+
+not implemented:
+
+changeDueDaysClient
+changeClientDiscount;
+removeVehicleFromClient;
+changeEmployeeSalary;
+increaseInvoicePaidAmount?
+
+zero1:
+
+hireEmployee;Pesho;Goshov;Mazach;1500;11;ServicesForClients
+hireEmployee;Pesho;Goshov;Mazach;1500;11;ServicesForClients
+hireEmployee;Pesho;Goshov;Mazach;1500;11;ServicesForClients
+hireEmployee;Pesho;Goshov;Mazach;1500;11;ServicesForClients
+showAllEmployeesAtDepartment;ServicesForClients
+hireEmployee;Minka;Stavreva;Mazach;1700;11;Management
+fireEmployee;585459847594574395743594375
+fireEmployee;-1
+fireEmployee;2
+showEmployees
+createBankAccount;1;Разплащателна сметка
+removeEmpoloyeeResponsibility;1;Manage
+depositCashInBank;1;15000;
+addEmployeeResponsibility;1;Manage;алабала
+
+zero2:
+
+hireEmployee;Jo;Ma;Cleaner;1000;20;Cleaning
+hireEmployee;Jo;Ma;CleanerManager;1000;20;Management
+hireEmployee;Jo;Manarino;DrivetManager;1000;20;Management
+registerSupplier;AXM-AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
+registerSupplier;AXM-AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
+changeSupplierName;211311577;VintchetaBolchetaGaiki
+removeSupplier;AXM-AUTO
+removeSupplier;AXM-AUTO;211311577
+orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120
+addEmployeeResponsibility;1;WorkInWarehouse
+addEmployeeResponsibility;2;Manage
+orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120
+orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;RT20134HP;180;Manarino;Management
+registerClient;TelerikAcademy;Mladost Blvd Sofia Bulgaria;123456789
+addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;1
+sellStockToClientVehicle;Jo;123456789;BMW;E39;CA1234AC;SIMER M240;Manarino;Management
+sellStockToClientVehicle;Jo;123456789;BMW;E39;CA1234AC;RT20134HP;Manarino;Management
+sellServiceToClientVehicle;Jo;123456789;BMW;E39;CA1234AC;Change Disks;240;Manarino;Management
+addEmployeeResponsibility;2;Repair
+sellServiceToClientVehicle;Jo;123456789;BMW;E39;CA1234AC;Change Disks;240;Manarino;Management
+addEmployeeResponsibility;2;SellService
+sellServiceToClientVehicle;Jo;123456789;BMW;E39;CA1234AC;Change Disks;240;Manarino;Management
+
+валидация на доставчик дали не се повтаря името
+addEmployeeResponsibility;1;Manage;алабала // add check, not throw
