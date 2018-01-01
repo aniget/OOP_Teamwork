@@ -35,7 +35,7 @@ namespace AutoService.Core
         private DateTime lastAssetDate = DateTime.ParseExact("2017-01-30", "yyyy-MM-dd", CultureInfo.InvariantCulture);
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
-
+        
         private static readonly IEngine SingleInstance = new Engine();
 
         //constructor
@@ -86,7 +86,7 @@ namespace AutoService.Core
                                   "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
                                   Environment.NewLine);
                 command = ReadCommand();
-            }
+            }        
         }
 
         private string ReadCommand()
@@ -115,6 +115,7 @@ namespace AutoService.Core
             decimal ratePerMinute;
             IEmployee employee;
             ICounterparty supplier;
+            ICounterparty client;
             IVehicle vehicle;
             decimal salary;
             //IOrderStock orderStock;
@@ -124,6 +125,7 @@ namespace AutoService.Core
             DepartmentType department;
             VehicleType vehicleType;
             EngineType engineType;
+            IVehicle newVehicle = null;
             string assetName;
             string stockUniqueNumber;
             string bankAccountNumber;
@@ -131,12 +133,13 @@ namespace AutoService.Core
             string employeeFirstName;
             string supplierAddress;
             string supplierUniqueNumber;
-            string clientName;
+            string clientUniqueName = "";
             string clientAddress;
             string clientUniquieNumber;
             string vehicleMake;
             string vehicleModel;
             string vehicleRegistrationNumber;
+            
 
             switch (commandType)
             {
@@ -255,7 +258,7 @@ namespace AutoService.Core
                     break;
 
                 case "addVehicleToClient":
-                    //addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;1
+                    //addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;TelerikAcademy
                     Validate.ExactParameterLength(commandParameters, 9);
 
                     vehicleType = Validate.VehicleTypeFromString(commandParameters[1], "vehicle type");
@@ -265,16 +268,15 @@ namespace AutoService.Core
                     string vehicleYear = commandParameters[5];
                     engineType = Validate.EngineTypeFromString(commandParameters[6], "engine type");
                     var additionalParams = Validate.IntFromString(commandParameters[7], "additional parameters");
-                    var clientId = Validate.IntFromString(commandParameters[8], "clientId");
-                    var client = (Client)Validate.ClientById(this.clients, clientId);
+                    client = (Client)Validate.ClientByUniqueName(this.clients, clientUniqueName);
 
-                    if (client.Vehicles.Any(x => x.RegistrationNumber == vehicleRegistrationNumber))
+                    if (((IClient)client).Vehicles.Any(x => x.RegistrationNumber == vehicleRegistrationNumber))
                     {
                         throw new ArgumentException($"This client already has a vehicle with this registration number: {vehicleRegistrationNumber}.");
                     }
-                    var newVehicle = CreateVehicle(vehicleType, vehicleMake, vehicleModel, vehicleRegistrationNumber, vehicleYear, engineType, additionalParams);
+                    newVehicle = CreateVehicle(vehicleType, vehicleMake, vehicleModel, vehicleRegistrationNumber, vehicleYear, engineType, additionalParams);
 
-                    client.Vehicles.Add((Vehicle)newVehicle);
+                    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
                     Console.WriteLine(newVehicle);
 
                     Console.WriteLine($"Vehicle {vehicleMake} {vehicleModel} add to client {client.Name}");
@@ -321,19 +323,17 @@ namespace AutoService.Core
                     break;
 
                 case "sellStockToClientVehicle":
-                    //sellStockToClientVehicle; Jo; 123456789; BMW; E39; CA1234AC; RT20134HP; Manarino; Management
-                    Validate.EitherOrParameterLength(commandParameters, 7, 9);
+                    //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
+                    Validate.EitherOrParameterLength(commandParameters, 5, 7);
 
                     IClient clientWeSellStockTo;
                     employeeFirstName = commandParameters[1];
                     clientNameOrUniqueNumber = commandParameters[2];
-                    vehicleMake = commandParameters[3];
-                    vehicleModel = commandParameters[4];
-                    vehicleRegistrationNumber = commandParameters[5];
-                    stockUniqueNumber = commandParameters[6];
+                    vehicleRegistrationNumber = commandParameters[3];
+                    stockUniqueNumber = commandParameters[4];
 
                     Validate.EmployeeExist(this.employees, employeeFirstName);
-                    employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 9);
+                    employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 7);
 
                     clientWeSellStockTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
 
@@ -345,49 +345,41 @@ namespace AutoService.Core
                         throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse");
                     }
 
-                    vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.Make == vehicleMake && x.Model == vehicleModel && x.RegistrationNumber == vehicleRegistrationNumber);
-
-                    if (vehicle == null)
-                    {
-                        throw new ArgumentException($"Client {clientWeSellStockTo.Name} does not have {vehicleMake} {vehicleModel} registered in our database");
-                    }
-
+                    //no need to ckech vehicle for null because we create a default vehicle with every client registration
+                    vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    
                     this.SellStockToClient(stock, clientWeSellStockTo, vehicle);
 
                     break;
 
                 case "sellServiceToClientVehicle":
-                    //sellServiceToClientVehicle; Jo; 123456789; BMW; E39; CA1234AC; Disk change; 240; Manarino; Management
-                    Validate.EitherOrParameterLength(commandParameters, 8, 10);
+                    //sellServiceToClientVehicle; Jo; 123456789; CA1234AC; Disk change; 240; Manarino; Management
+
+                    //we can sell services to client without vehicle, e.g. client brings old tire rim for repair
+                    Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
                     IClient clientWeSellServiceTo;
                     employeeFirstName = commandParameters[1];
                     clientNameOrUniqueNumber = commandParameters[2];
-                    vehicleMake = commandParameters[3];
-                    vehicleModel = commandParameters[4];
-                    vehicleRegistrationNumber = commandParameters[5];
-                    var serviceName = commandParameters[6];
+                    vehicleRegistrationNumber = commandParameters[3];
+                    var serviceName = commandParameters[4];
 
-                    int durationInMinutes = Validate.IntFromString(commandParameters[7], "duration in minutes");
+                    int durationInMinutes = Validate.IntFromString(commandParameters[5], "duration in minutes");
 
                     Validate.EmployeeExist(this.employees, employeeFirstName);
-                    employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 10);
+                    employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
 
                     clientWeSellServiceTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
 
-                    vehicle = clientWeSellServiceTo.Vehicles.FirstOrDefault(x => x.Make == vehicleMake && x.Model == vehicleModel && x.RegistrationNumber == vehicleRegistrationNumber);
-
-                    if (vehicle == null)
-                    {
-                        throw new ArgumentException($"Client {clientWeSellServiceTo.Name} does not have {vehicleMake} {vehicleModel} registered in our database");
-                    }
-
+                    vehicle = clientWeSellServiceTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    
                     this.SellServiceToClient(employee, clientWeSellServiceTo, vehicle, serviceName, durationInMinutes);
 
                     break;
 
 
                 case "orderStockToWarehouse":
+                    //orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;RT20134HP;180;Manarino;Management
 
                     Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
@@ -457,27 +449,36 @@ namespace AutoService.Core
                     //registerClient; TelerikAcademy; Mladost Blvd Sofia Bulgaria; 123456789
                     Validate.ExactParameterLength(commandParameters, 4);
 
-                    clientName = commandParameters[1];
+                    clientUniqueName = commandParameters[1];
                     clientAddress = commandParameters[2];
                     clientUniquieNumber = commandParameters[3];
 
-                    this.AddClient(clientName, clientAddress, clientUniquieNumber);
+                    this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
+
+                    //add default car to the client
+                    client = this.clients.FirstOrDefault(x => x.UniqueNumber == clientUniquieNumber);
+                    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol, 5);
+                    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
+                    Console.WriteLine(newVehicle);
+
+                    Console.WriteLine("Default Vehicle added to client {client.Name}");
+
                     break;
 
                 case "removeClient":
 
                     Validate.EitherOrParameterLength(commandParameters, 2, 3);
 
-                    clientName = commandParameters[1];
+                    clientUniqueName= commandParameters[1];
 
                     if (commandParameters.Length == 3)
                     {
                         clientUniquieNumber = commandParameters[2];
-                        this.RemoveClient(clientName, clientUniquieNumber);
+                        this.RemoveClient(clientUniqueName, clientUniquieNumber);
                     }
                     else
                     {
-                        this.RemoveClient(clientName);
+                        this.RemoveClient(clientUniqueName);
                     }
                     break;
 
@@ -783,20 +784,20 @@ namespace AutoService.Core
             //Console.WriteLine($"Client {name} added successfully with Id {this.clients.Count}!");
         }
 
-        private void RemoveSupplier(string name)
+        private void RemoveSupplier(string supplierName)
         {
-            ICounterparty supplierToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == name);
+            ICounterparty supplierToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == supplierName);
             if (supplierToBeRemoved == null)
             {
-                throw new ArgumentException($"Supplier with name {name} cannot be removed - no such supplier found");
+                throw new ArgumentException($"Supplier with name {supplierName} cannot be removed - no such supplier found");
             }
-            else if (this.suppliers.Select(x => x.Name == name).Count() > 1)
+            else if (this.suppliers.Where(x => x.Name == supplierName).Count() > 1)
             {
-                throw new ArgumentException($"More than one supplier with name {name} exists." + Environment.NewLine + "Please provide both name and unique number of the supplier you want to remove");
+                throw new ArgumentException($"More than one supplier with name {supplierName} exists." + Environment.NewLine + "Please provide both name and unique number of the supplier you want to remove");
             }
             this.suppliers.Remove(supplierToBeRemoved);
             Console.WriteLine(supplierToBeRemoved);
-            Console.WriteLine($"Supplier {name} removed successfully!");
+            Console.WriteLine($"Supplier {supplierName} removed successfully!");
         }
 
         private void RemoveSupplier(string name, string uniqueNumber)

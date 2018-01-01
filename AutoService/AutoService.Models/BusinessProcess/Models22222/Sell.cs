@@ -13,7 +13,7 @@ namespace AutoService.Models.BusinessProcess.Models22222
 {
     public abstract class Sell : Work, ISell
     {
-        private readonly decimal sellPrice;
+        private decimal sellPrice;
 
 
         protected Sell(IEmployee responsibleEmployee, decimal sellPrice, ICounterparty client)

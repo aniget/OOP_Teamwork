@@ -147,16 +147,15 @@ namespace AutoService.Core.Validator
 
         }
 
-        public static ICounterparty ClientById(IList<ICounterparty> counterparties, int id)
+        public static ICounterparty ClientByUniqueName(IList<ICounterparty> counterparties, string clientUniqueName)
         {
-            if (id <= 0)
+            if (string.IsNullOrWhiteSpace(clientUniqueName))
             {
-                throw new InvalidIdException(
-                    $"Please provide a valid counterparty id value, i.e. between 1 and {counterparties.Count}!");
+                throw new InvalidIdException("Please provide a valid counterparty name value");
             }
 
-            ICounterparty counterparty = counterparties.Count >= id
-                ? counterparties[id - 1]
+            ICounterparty counterparty = counterparties.Count(x => x.Name == clientUniqueName) == 1
+                ? counterparties.FirstOrDefault(x=>x.Name == clientUniqueName)
                 : throw new ArgumentException("This counterparty does not exist!");
 
             return counterparty;

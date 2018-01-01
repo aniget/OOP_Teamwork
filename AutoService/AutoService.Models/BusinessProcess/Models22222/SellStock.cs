@@ -12,8 +12,8 @@ namespace AutoService.Models.BusinessProcess.Models22222
     {
         private readonly IStock stock;
 
-        public SellStock(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, IStock stock)
-            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, TypeOfWork.Selling, client, vehicle)
+        public SellStock(IEmployee responsibleEmployee, decimal sellPrice, IClient client, IStock stock)
+            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, client)
         {
             this.stock = stock;
         }
@@ -33,7 +33,7 @@ namespace AutoService.Models.BusinessProcess.Models22222
             return base.ToString() + Environment.NewLine +
                    string.Format("The following part was sold: {0}" + Environment.NewLine
                                  + "This part costs: {1} BGN"
-                       , this.Stock, this.Stock.PurchasePrice * 1.2m);
+                       , this.Stock, this.SellPrice);
         }
 
 
