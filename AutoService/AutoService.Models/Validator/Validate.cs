@@ -279,7 +279,7 @@ namespace AutoService.Models.Validator
                 throw new InvalidIdException($"Please provide a valid {counterpartyType} name");
             }
 
-            if (counterparties.Any(a => a.Name != counterpartyName))
+            if (counterparties.All(a => a.Name != counterpartyName))
             {
                 throw new ArgumentException($"{counterpartyName} is not registered.");
             }
