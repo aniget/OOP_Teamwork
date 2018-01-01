@@ -407,7 +407,7 @@ namespace AutoService.Core
                     supplierAddress = commandParameters[2];
                     supplierUniqueNumber = commandParameters[3];
 
-                    Validate.ExistingSupplierFromNameAndUniqueNumber(this.suppliers, supplierName, supplierUniqueNumber);
+                    Validate.CounterpartyExists(this.suppliers, supplierName);
 
                     this.AddSupplier(supplierName, supplierAddress, supplierUniqueNumber);
                     Console.WriteLine("Supplier registered sucessfully");
@@ -428,19 +428,12 @@ namespace AutoService.Core
 
                 case "removeSupplier":
 
-                    Validate.EitherOrParameterLength(commandParameters, 2, 3);
+                    Validate.ExactParameterLength(commandParameters, 2);
 
                     supplierName = commandParameters[1];
-
-                    if (commandParameters.Length == 3)
-                    {
-                        supplierUniqueNumber = commandParameters[2];
-                        this.RemoveSupplier(supplierName, supplierUniqueNumber);
-                    }
-                    else
-                    {
-                        this.RemoveSupplier(supplierName);
-                    }
+                    supplierUniqueNumber = commandParameters[2];
+                    Validate.ExistingSupplierFromNameAndUniqueNumber();
+                    this.RemoveCounterparty(supplierName, supplierUniqueNumber, "supplier");
                     break;
 
                 case "registerClient":
@@ -659,7 +652,7 @@ namespace AutoService.Core
 
                 //record the Sell in the notInvoicedSells Dictionary
                 AddSellToNotInvoicedItems(client, sellService);
-                
+
             }
             else
             {
@@ -798,20 +791,24 @@ namespace AutoService.Core
                 throw new ArgumentException($"More than one supplier with name {supplierName} exists." + Environment.NewLine + "Please provide both name and unique number of the supplier you want to remove");
             }
             this.suppliers.Remove(supplierToBeRemoved);
-            Console.WriteLine(supplierToBeRemoved);
+            //Console.WriteLine(supplierToBeRemoved);
             Console.WriteLine($"Supplier {supplierName} removed successfully!");
         }
 
-        private void RemoveSupplier(string name, string uniqueNumber)
+        private void RemoveCounterparty(string name, string uniqueNumber, string counterpartyType)
         {
-            ICounterparty supplierToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == name && x.UniqueNumber == uniqueNumber);
-            if (supplierToBeRemoved == null)
+            switch (counterpartyType)
             {
-                throw new ArgumentException($"Supplier with name {name} and uniquie number {uniqueNumber} cannot be removed - no such supplier found");
+                case "client":
+
             }
-            this.suppliers.Remove(supplierToBeRemoved);
-            Console.WriteLine(supplierToBeRemoved);
-            Console.WriteLine($"Supplier {name} removed successfully!");
+            ICounterparty counterpartyToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == name && x.UniqueNumber == uniqueNumber);
+            if (counterpartyToBeRemoved == null)
+            {
+                throw new ArgumentException($"{counterpartyType} with name {name} and uniquie number {uniqueNumber} cannot be removed - no such {counterpartyType} found");
+            }
+            this.suppliers.Remove(counterpartyToBeRemoved);
+            Console.WriteLine($"{counterpartyType} {name} removed successfully!");
         }
 
         private void RemoveClient(string name)
@@ -826,7 +823,7 @@ namespace AutoService.Core
                 throw new ArgumentException($"More than one client with name {name} exist." + Environment.NewLine + "Please provide both name and unique number");
             }
             this.clients.Remove(clientToBeRemoved);
-            Console.WriteLine(clientToBeRemoved);
+            //Console.WriteLine(clientToBeRemoved);
             Console.WriteLine($"Client {name} removed successfully!");
         }
 
@@ -838,7 +835,7 @@ namespace AutoService.Core
                 throw new ArgumentException($"Client with name {name} and uniquie number {uniqueNumber} cannot be removed - no such client found");
             }
             this.clients.Remove(clientToBeRemoved);
-            Console.WriteLine(clientToBeRemoved);
+            //Console.WriteLine(clientToBeRemoved);
             Console.WriteLine($"Supplier {name} removed successfully!");
         }
     }

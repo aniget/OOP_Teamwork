@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AutoService.Core.CustomExceptions;
 using AutoService.Models.Assets;
 using AutoService.Models.BusinessProcess.Enums;
@@ -235,30 +236,30 @@ namespace AutoService.Core.Validator
             return engineTypeFound;
         }
 
-        public static ICounterparty CounterpartyByNameOrUniqueNumber(string counterpartyNameOrUniqueNumber, IList<ICounterparty> counterparties)
-        {
-            if (!counterparties.Any(x => x.Name == counterpartyNameOrUniqueNumber || x.UniqueNumber == counterpartyNameOrUniqueNumber))
-            {
-                throw new ArgumentException($"Our AutoService does not work with supplier {counterpartyNameOrUniqueNumber}");
-            }
-            //iF INFO provided is not the Unique number but the name
-            if (counterparties.Any(x => x.UniqueNumber != counterpartyNameOrUniqueNumber))
-            {
-                if (counterparties.Select(x => x.Name == counterpartyNameOrUniqueNumber).Count() > 1)
-                {
-                    throw new ArgumentException(
-                        "More than one registered supplier with same name, please provide unique number INSTEAD of name");
-                }
-                else
-                {
-                    return counterparties.Single(x => x.Name == counterpartyNameOrUniqueNumber);
-                }
-            }
-            else
-            {
-                return counterparties.Single(x => x.UniqueNumber == counterpartyNameOrUniqueNumber);
-            }
-        }
+        //public static ICounterparty CounterpartyByNameOrUniqueNumber(string counterpartyNameOrUniqueNumber, IList<ICounterparty> counterparties)
+        //{
+        //    if (!counterparties.Any(x => x.Name == counterpartyNameOrUniqueNumber || x.UniqueNumber == counterpartyNameOrUniqueNumber))
+        //    {
+        //        throw new ArgumentException($"Our AutoService does not work with supplier {counterpartyNameOrUniqueNumber}");
+        //    }
+        //    //iF INFO provided is not the Unique number but the name
+        //    if (counterparties.Any(x => x.UniqueNumber != counterpartyNameOrUniqueNumber))
+        //    {
+        //        if (counterparties.Select(x => x.Name == counterpartyNameOrUniqueNumber).Count() > 1)
+        //        {
+        //            throw new ArgumentException(
+        //                "More than one registered supplier with same name, please provide unique number INSTEAD of name");
+        //        }
+        //        else
+        //        {
+        //            return counterparties.Single(x => x.Name == counterpartyNameOrUniqueNumber);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return counterparties.Single(x => x.UniqueNumber == counterpartyNameOrUniqueNumber);
+        //    }
+        //}
 
         public static void ValidateBankAccount(string bankAccount)
         {
@@ -325,12 +326,18 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void ExistingSupplierFromNameAndUniqueNumber(IList<ICounterparty> suppliers, string supplierName, string supplierUniqueNumber)
+        public static bool CounterpartyExists(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType, bool throwErrorMessage)
         {
-            if (suppliers.Any(a => a.Name == supplierName) || suppliers.Any(a => a.UniqueNumber == supplierUniqueNumber))
+            bool exist = false;
+            if (counterparties.Any(a => a.Name == counterpartyName))
             {
-                throw new ArgumentException("This supplier is already registered. If an existing supplier has changed it's name use command \"changeSupplierName\"");
+                if (throwErrorMessage)
+                {
+                    throw new ArgumentException($"{counterpartyName} is already registered. If an existing counterparty has changed it's name use command \"change{counterpartyType}Name\"");
+                }
+                exist = true;
             }
+            return exist;
         }
 
         public static void ExistingSupplierFromUniqueNumber(IList<ICounterparty> suppliers, string supplierUniqueNumber)
