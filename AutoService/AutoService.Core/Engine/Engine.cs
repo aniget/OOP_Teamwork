@@ -7,9 +7,13 @@ using AutoService.Core.Factory;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
+using AutoService.Models.BusinessProcess.Enums;
+using AutoService.Models.Contracts;
+using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 using AutoService.Models.Vehicles.Models;
+using AutoService.Core.CustomExceptions;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.Validator;
@@ -127,17 +131,17 @@ namespace AutoService.Core
             DepartmentType department;
             VehicleType vehicleType;
             EngineType engineType;
-            IVehicle newVehicle;
+            IVehicle newVehicle = null;
             string assetName;
             string stockUniqueNumber;
             string bankAccountNumber;
-            string supplierName;
             string employeeFirstName;
-            string supplierAddress;
             string supplierUniqueNumber;
+            string supplierUniqueName = "";
+            string supplierAddress;
+            string clientUniquieNumber;
             string clientUniqueName = "";
             string clientAddress;
-            string clientUniquieNumber;
             string vehicleMake;
             string vehicleModel;
             string vehicleRegistrationNumber;
@@ -270,7 +274,9 @@ namespace AutoService.Core
                     string vehicleYear = commandParameters[5];
                     engineType = Validate.EngineTypeFromString(commandParameters[6], "engine type");
                     var additionalParams = Validate.IntFromString(commandParameters[7], "additional parameters");
-                    client = (Client)Validate.ClientByUniqueName(this.clients, clientUniqueName);
+                    clientUniqueName = commandParameters[8];
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
                     if (((IClient)client).Vehicles.Any(x => x.RegistrationNumber == vehicleRegistrationNumber))
                     {
@@ -306,10 +312,7 @@ namespace AutoService.Core
                     DateTime currentAssetDate = this.lastAssetDate.AddDays(5); //fixed date in order to check zero tests
 
                     this.CreateBankAccount(employee, assetName, currentAssetDate, bankAccountNumber);
-
-                    
                     break;
-                    
 
                 case "depositCashInBank":
 
@@ -330,16 +333,17 @@ namespace AutoService.Core
                     //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
                     Validate.EitherOrParameterLength(commandParameters, 5, 7);
 
-                    IClient clientWeSellStockTo;
                     employeeFirstName = commandParameters[1];
-                    clientNameOrUniqueNumber = commandParameters[2];
+                    clientUniqueName = commandParameters[2];
                     vehicleRegistrationNumber = commandParameters[3];
                     stockUniqueNumber = commandParameters[4];
 
                     Validate.EmployeeExist(this.employees, employeeFirstName);
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 7);
 
-                    clientWeSellStockTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+
+                    client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
                     //stock we sell must be present in the warehouse :)
                     bool stockExists = this.warehouse.ConfirmStockExists(stockUniqueNumber, employee);
@@ -347,10 +351,10 @@ namespace AutoService.Core
                     stock = this.warehouse.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
                     //no need to ckech vehicle for null because we create a default vehicle with every client registration
-                    vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
 
                     this.warehouse.RemoveStockFromWarehouse(stock, employee, vehicle);
-                    this.SellStockToClient(stock, clientWeSellStockTo, vehicle);
+                    this.SellStockToClient(stock, (IClient)client, vehicle);
 
                     break;
 
@@ -360,7 +364,6 @@ namespace AutoService.Core
                     //we can sell services to client without vehicle, e.g. client brings old tire rim for repair
                     Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
-                    IClient clientWeSellServiceTo;
                     employeeFirstName = commandParameters[1];
                     clientNameOrUniqueNumber = commandParameters[2];
                     vehicleRegistrationNumber = commandParameters[3];
@@ -371,11 +374,12 @@ namespace AutoService.Core
                     Validate.EmployeeExist(this.employees, employeeFirstName);
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
 
-                    clientWeSellServiceTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
-                    vehicle = clientWeSellServiceTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
 
-                    this.SellServiceToClient(employee, clientWeSellServiceTo, vehicle, serviceName, durationInMinutes);
+                    this.SellServiceToClient(employee, (IClient)client, vehicle, serviceName, durationInMinutes);
 
                     break;
 
@@ -389,8 +393,10 @@ namespace AutoService.Core
                     Validate.EmployeeExist(this.employees, employeeFirstName);
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
 
-                    var supplierNameOrUniqueNumber = commandParameters[2];
-                    supplier = Validate.CounterpartyByNameOrUniqueNumber(supplierNameOrUniqueNumber, this.suppliers);
+                    supplierUniqueName = commandParameters[2];
+
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    supplier = this.suppliers.FirstOrDefault(x => x.Name == supplierUniqueName);
 
                     var stockName = commandParameters[3];
 
@@ -407,47 +413,48 @@ namespace AutoService.Core
                     //registerSupplier;AXM - AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
                     Validate.ExactParameterLength(commandParameters, 4);
 
-                    supplierName = commandParameters[1];
+                    supplierUniqueName = commandParameters[1];
                     supplierAddress = commandParameters[2];
                     supplierUniqueNumber = commandParameters[3];
 
-                    Validate.CounterpartyExists(this.suppliers, supplierName);
+                    Validate.CounterpartyAlreadyRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    this.AddSupplier(supplierName, supplierAddress, supplierUniqueNumber);
+                    this.AddSupplier(supplierUniqueName, supplierAddress, supplierUniqueNumber);
                     Console.WriteLine("Supplier registered sucessfully");
                     break;
 
                 case "changeSupplierName":
-                    //changeSupplierName; 211311577; VintchetaBolchetaGaiki
-                    Validate.ExactParameterLength(commandParameters, 3);
+                    //changeSupplierName; VintchetaBolchetaGaiki
+                    Validate.ExactParameterLength(commandParameters, 2);
 
-                    supplierUniqueNumber = commandParameters[1];
-                    supplierName = commandParameters[2];
+                    supplierUniqueName = commandParameters[1];
 
-                    Validate.ExistingSupplierFromUniqueNumber(this.suppliers, supplierUniqueNumber);
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    this.ChangeSupplierName(supplierUniqueNumber, supplierName);
-                    Console.WriteLine($"Supplier name changed sucessfully to {supplierName}");
+                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
                     break;
 
                 case "removeSupplier":
 
                     Validate.ExactParameterLength(commandParameters, 2);
 
-                    supplierName = commandParameters[1];
+                    supplierUniqueName = commandParameters[1];
                     supplierUniqueNumber = commandParameters[2];
-                    Validate.ExistingSupplierFromNameAndUniqueNumber();
-                    this.RemoveCounterparty(supplierName, supplierUniqueNumber, "supplier");
+
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
 
                 case "registerClient":
-                    //registerClient; TelerikAcademy; Mladost Blvd Sofia Bulgaria; 123456789
+
                     Validate.ExactParameterLength(commandParameters, 4);
 
                     clientUniqueName = commandParameters[1];
                     clientAddress = commandParameters[2];
                     clientUniquieNumber = commandParameters[3];
 
+                    Validate.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
                     this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
 
                     //add default car to the client
@@ -460,21 +467,26 @@ namespace AutoService.Core
 
                     break;
 
+                case "changeClientName":
+                    //changeClientName; ClientSuperDuper
+                    Validate.ExactParameterLength(commandParameters, 2);
+
+                    supplierUniqueName = commandParameters[1];
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+
+                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
+                    break;
+
                 case "removeClient":
 
                     Validate.EitherOrParameterLength(commandParameters, 2, 3);
 
                     clientUniqueName = commandParameters[1];
 
-                    if (commandParameters.Length == 3)
-                    {
-                        clientUniquieNumber = commandParameters[2];
-                        this.RemoveClient(clientUniqueName, clientUniquieNumber);
-                    }
-                    else
-                    {
-                        this.RemoveClient(clientUniqueName);
-                    }
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    this.RemoveCounterparty(clientUniqueName, this.clients);
+
                     break;
 
                 default:
@@ -482,11 +494,11 @@ namespace AutoService.Core
             }
         }
 
-        private void ChangeSupplierName(string supplierUniqueNumber, string supplierName)
+        private void ChangeCounterpartyName(string counterpartyName, List<ICounterparty> counterparties)
         {
-            var supplier = this.suppliers.First(f => f.UniqueNumber == supplierUniqueNumber);
+            var supplier = counterparties.First(f => f.Name == counterpartyName);
 
-            supplier.ChangeName(supplierName);
+            supplier.ChangeName(counterpartyName);
         }
 
         private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
@@ -504,7 +516,7 @@ namespace AutoService.Core
 
                 this.bankAccounts.Add(bankAccountToAdd);
                 Console.WriteLine(
-                    $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName} on {currentAssetDate:dd/MM/yyyy}");
+                    $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
             }
             else
             {
@@ -565,7 +577,6 @@ namespace AutoService.Core
                 responsibilitesToAdd.Add(currentResponsibility);
             }
             employee.AddResponsibilities(responsibilitesToAdd);
-            Console.WriteLine($"{responsibilitesToAdd.Count} responsibilities added: {string.Join(", ", responsibilitesToAdd)}");
         }
 
         private void ChangePositionOfEmployee(IEmployee employee, string position)
@@ -784,64 +795,11 @@ namespace AutoService.Core
             //Console.WriteLine($"Client {name} added successfully with Id {this.clients.Count}!");
         }
 
-        private void RemoveSupplier(string supplierName)
+        private void RemoveCounterparty(string counterpartyUniqueName, IList<ICounterparty> counterparties)
         {
-            ICounterparty supplierToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == supplierName);
-            if (supplierToBeRemoved == null)
-            {
-                throw new ArgumentException($"Supplier with name {supplierName} cannot be removed - no such supplier found");
-            }
-            else if (this.suppliers.Where(x => x.Name == supplierName).Count() > 1)
-            {
-                throw new ArgumentException($"More than one supplier with name {supplierName} exists." + Environment.NewLine + "Please provide both name and unique number of the supplier you want to remove");
-            }
-            this.suppliers.Remove(supplierToBeRemoved);
-            //Console.WriteLine(supplierToBeRemoved);
-            Console.WriteLine($"Supplier {supplierName} removed successfully!");
-        }
-
-        private void RemoveCounterparty(string name, string uniqueNumber, string counterpartyType)
-        {
-            switch (counterpartyType)
-            {
-                case "client":
-
-            }
-            ICounterparty counterpartyToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == name && x.UniqueNumber == uniqueNumber);
-            if (counterpartyToBeRemoved == null)
-            {
-                throw new ArgumentException($"{counterpartyType} with name {name} and uniquie number {uniqueNumber} cannot be removed - no such {counterpartyType} found");
-            }
-            this.suppliers.Remove(counterpartyToBeRemoved);
-            Console.WriteLine($"{counterpartyType} {name} removed successfully!");
-        }
-
-        private void RemoveClient(string name)
-        {
-            ICounterparty clientToBeRemoved = this.clients.FirstOrDefault(x => x.Name == name);
-            if (clientToBeRemoved == null)
-            {
-                throw new ArgumentException($"Client with name {name} cannot be removed - no such client found!");
-            }
-            else if (this.clients.Select(x => x.Name == name).Count() > 1)
-            {
-                throw new ArgumentException($"More than one client with name {name} exist." + Environment.NewLine + "Please provide both name and unique number");
-            }
-            this.clients.Remove(clientToBeRemoved);
-            //Console.WriteLine(clientToBeRemoved);
-            Console.WriteLine($"Client {name} removed successfully!");
-        }
-
-        private void RemoveClient(string name, string uniqueNumber)
-        {
-            ICounterparty clientToBeRemoved = this.clients.FirstOrDefault(x => x.Name == name && x.UniqueNumber == uniqueNumber);
-            if (clientToBeRemoved == null)
-            {
-                throw new ArgumentException($"Client with name {name} and uniquie number {uniqueNumber} cannot be removed - no such client found");
-            }
-            this.clients.Remove(clientToBeRemoved);
-            //Console.WriteLine(clientToBeRemoved);
-            Console.WriteLine($"Supplier {name} removed successfully!");
+            ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
+            counterparties.Remove(counterparty);
+            Console.WriteLine($"{counterpartyUniqueName} removed successfully!");
         }
     }
 }
