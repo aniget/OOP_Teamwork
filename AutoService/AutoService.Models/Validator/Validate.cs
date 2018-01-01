@@ -136,7 +136,7 @@ namespace AutoService.Models.Validator
             }
             else
             {
-                if (employees.Select(x => x.FirstName == employeeFirstName).Count() > 1)
+                if (employees.Where(x => x.FirstName == employeeFirstName).Count() > 1)
                 {
                     throw new ArgumentException("More than one employee with the same name, please provide first name, last name and department");
                 }

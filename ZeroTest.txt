@@ -1,3 +1,4 @@
+exit
 showEmployees
 hireEmployee;Jo;Ma;Cleaner;1000;20;Cleaning
 hireEmployee;Jo;Ma;CleanerManager;1000;20;Management
@@ -13,9 +14,6 @@ fireEmployee;585459847594574395743594375
 fireEmployee;-1
 fireEmployee;4
 showEmployees
-hireEmployee;Jo;Ma;Cleaner;1000;20;Cleaning
-hireEmployee;Jo;Ma;CleanerManager;1000;20;Management
-hireEmployee;Jo;Manarino;DriverManager;1000;20;Management
 addEmployeeResponsibility;1;Manage;алабала
 addEmployeeResponsibility;3;Manage
 createBankAccount;1;Разплащателна сметка;BG45UNCR763011111CEZELe
@@ -29,13 +27,13 @@ registerSupplier;AXM-AUTO2;54 Yerusalim Blvd Sofia Bulgaria;211311576
 removeSupplier;AXM-AUTO2
 orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120
 orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120;Manarino;Management
-orderStockToWarehouse;Gosho;AXM-AUTO;Chistachki;22 incha;20;Manarino;Management
-orderStockToWarehouse;Gosho;AXM-AUTO;Poluoska;ZX;220;Manarino;Management
-orderStockToWarehouse;Gosho;AXM-AUTO;Vintili;komplekt220;2;Manarino;Management
-orderStockToWarehouse;Gosho;AXM-AUTO;Remak;Koleh21;40;Manarino;Management
-orderStockToWarehouse;Gosho;AXM-AUTO;rolka obtiajna;Ina221;20;Manarino;Management
-orderStockToWarehouse;Gosho;AXM-AUTO;Najlonov markuch;22212;10;Manarino;Management
-orderStockToWarehouse;Gosho;AXM-AUTO;Klimatik;289898;2000;Manarino;Management
+orderStockToWarehouse;Gosho;AXM-AUTO;Chistachki;22 incha;20;Goshov;Management
+orderStockToWarehouse;Gosho;AXM-AUTO;Poluoska;ZX;220;Goshov;Management
+orderStockToWarehouse;Gosho;AXM-AUTO;Vintili;komplekt220;2;Goshov;Management
+orderStockToWarehouse;Gosho;AXM-AUTO;Remak;Koleh21;40;Goshov;Management
+orderStockToWarehouse;Gosho;AXM-AUTO;rolka obtiajna;Ina221;20;Goshov;Management
+orderStockToWarehouse;Gosho;AXM-AUTO;Najlonov markuch;22212;10;Goshov;Management
+orderStockToWarehouse;Gosho;AXM-AUTO;Klimatik;289898;2000;Goshov;Management
 addEmployeeResponsibility;1;WorkInWarehouse
 addEmployeeResponsibility;2;Manage
 orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120;Manarino;Management
