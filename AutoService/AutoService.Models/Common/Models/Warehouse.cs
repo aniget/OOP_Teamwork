@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Permissions;
-using AutoService.Core.Validator;
+using System.Text;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 
 namespace AutoService.Models.Common.Models
 {
-    public static class Warehouse
+    public class Warehouse
     {
-        private static List<IStock> stocks;
+        private List<IStock> availableStocks;
 
-        static Warehouse()
+        public Warehouse()
         {
-            stocks = new List<IStock>();
+            this.availableStocks = new List<IStock>();
         }
 
-        public static List<IStock> Stocks => stocks;
+        public List<IStock> AvailableStocks => this.availableStocks;
 
-        public static void AddStockToWarehouse(IStock stock, IEmployee employee)
+        public void AddStockToWarehouse(IStock stock, IEmployee employee)
         {
             Validate.CheckNullObject(stock, employee);
             //only employees with right (Responsibility) to BUY can perform this work
@@ -30,14 +30,14 @@ namespace AutoService.Models.Common.Models
                 employee.Responsibiities.Contains(ResponsibilityType.BuyPartForClient) ||
                 employee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse))
 
-                stocks.Add(stock);
+                availableStocks.Add(stock);
             else
             {
                 throw new ArgumentException("No authorization to put stock in warehouse parts.");
             }
         }
         
-        public static void RemoveStockFromWarehouse(IStock stock, IEmployee employee, IVehicle vehicle)
+        public void RemoveStockFromWarehouse(IStock stock, IEmployee employee, IVehicle vehicle)
         {
             Validate.CheckNullObject(stock, employee, vehicle);
             
@@ -45,14 +45,14 @@ namespace AutoService.Models.Common.Models
             if (employee.Responsibiities.Contains(ResponsibilityType.Sell) ||
                 employee.Responsibiities.Contains(ResponsibilityType.Manage))
 
-                stocks.Remove(stock);
+                availableStocks.Remove(stock);
             else
             {
                 throw new ArgumentException("No authorization to remove stock from warehouse!");
             }
         }
 
-        public static bool ConfirmStockExists(string stockUniqueNumber, IEmployee employee)
+        public bool ConfirmStockExists(string stockUniqueNumber, IEmployee employee)
         {
             Validate.CheckNullObject(stockUniqueNumber, employee);
             bool exists = false;
@@ -61,16 +61,31 @@ namespace AutoService.Models.Common.Models
                 employee.Responsibiities.Contains(ResponsibilityType.Manage) ||
                 employee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse))
             {
-                if (stocks.Any(x=>x.UniqueNumber == stockUniqueNumber))
+                if (availableStocks.Any(x=>x.UniqueNumber == stockUniqueNumber))
                 {
                     exists = true;
                 }
             }
             else
             {
-                throw new ArgumentException("No authorization to remove stock from warehouse!");
+                throw new ArgumentException("No authorization to check stock in warehouse!");
             }
             return exists;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            var counter = 1;
+
+            foreach (var stock in this.AvailableStocks.OrderBy(ob => ob.Supplier.Name))
+            {
+                sb.AppendLine(counter + ". " + stock + Environment.NewLine);
+                counter++;
+            }
+
+            return sb.ToString();
         }
     }
 }

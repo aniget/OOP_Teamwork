@@ -14,7 +14,7 @@ using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 using AutoService.Models.Vehicles.Models;
 using AutoService.Core.CustomExceptions;
-using AutoService.Core.Validator;
+using AutoService.Models.Validator;
 using AutoService.Models.Common.Models;
 
 namespace AutoService.Core
@@ -28,6 +28,7 @@ namespace AutoService.Core
         private readonly IList<ICounterparty> clients;
         private readonly IList<ICounterparty> suppliers;
         private readonly IDictionary<IClient, IList<ISell>> notInvoicedSells;
+        private readonly Warehouse warehouse;
 
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -47,6 +48,7 @@ namespace AutoService.Core
             this.clients = new List<ICounterparty>();
             this.suppliers = new List<ICounterparty>();
             this.notInvoicedSells = new Dictionary<IClient, IList<ISell>>();
+            this.warehouse = new Warehouse();
         }
 
         public static IEngine Instance
@@ -338,14 +340,14 @@ namespace AutoService.Core
                     clientWeSellStockTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
 
                     //stock we sell must be present in the warehouse :)
-                    bool stockExists = Warehouse.ConfirmStockExists(stockUniqueNumber, employee);
+                    bool stockExists = this.warehouse.ConfirmStockExists(stockUniqueNumber, employee);
                     if (stockExists == false) { throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse"); }
-                    stock = Warehouse.Stocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
+                    stock = this.warehouse.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
                     //no need to ckech vehicle for null because we create a default vehicle with every client registration
                     vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
 
-                    Warehouse.RemoveStockFromWarehouse(stock, employee, vehicle);
+                    this.warehouse.RemoveStockFromWarehouse(stock, employee, vehicle);
                     this.SellStockToClient(stock, clientWeSellStockTo, vehicle);
 
                     break;
@@ -563,7 +565,7 @@ namespace AutoService.Core
                 ResponsibilityType currentResponsibility;
                 if (!Enum.TryParse(responsibility, out currentResponsibility))
                 {
-                    throw new ArgumentException($"Responsibility {responsibility} not valid!");
+                    Console.WriteLine($"Responsibility {responsibility} not valid!");
                 }
                 responsibilitesToAdd.Add(currentResponsibility);
             }
@@ -613,7 +615,7 @@ namespace AutoService.Core
                 stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
             {
                 IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.Supplier, stock);
-                Warehouse.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
+                this.warehouse.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
             }
             else
             {
@@ -632,7 +634,7 @@ namespace AutoService.Core
             {
                 sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock);
 
-                Warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee, vehicle);
+                this.warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee, vehicle);
                 //sellStock.SellToClientVehicle(sellStock, stock);
 
                 //record the Sell in the notInvoicedSells Dictionary

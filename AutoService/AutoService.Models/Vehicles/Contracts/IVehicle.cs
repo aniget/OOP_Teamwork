@@ -1,5 +1,4 @@
-﻿using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
+﻿using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Vehicles.Contracts
@@ -11,8 +10,6 @@ namespace AutoService.Models.Vehicles.Contracts
         string Make { get; }
 
         VehicleType VehicleType { get; }
-
-        //IClient Owner { get; }
 
         string RegistrationNumber { get; }
 

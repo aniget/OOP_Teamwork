@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AutoService.Core.CustomExceptions;
 using AutoService.Models.Assets;
 using AutoService.Models.BusinessProcess.Enums;
@@ -8,7 +9,7 @@ using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Enums;
 
-namespace AutoService.Core.Validator
+namespace AutoService.Models.Validator
 {
     public static class Validate
     {
@@ -381,6 +382,63 @@ namespace AutoService.Core.Validator
             if (amount < value)
             {
                 throw new ArgumentException("Invoice is overpaid, please correct the amount to pay!");
+            }
+        }
+
+        public static void PassengerCapacity(int passengerCapacity)
+        {
+            if (passengerCapacity < 1 || passengerCapacity > 9)
+            {
+                throw new ArgumentException("Invalid passenger count for car!");
+            }
+        }
+
+        public static void MakeAndModelLength(params string[] values)
+        {
+            foreach (var value in values)
+            {
+                if (value.Length > 50)
+                {
+                    throw new ArgumentException("Make ot Model should not be more than 50 characters long!");
+                }
+            }
+        }
+
+        public static void RegistrationNumber(string registrationNumber)
+        {
+            if (registrationNumber.Length < 6)
+            {
+                throw new ArgumentException("Invalid registration number. Must be at least 6 characters!");
+            }
+        }
+
+        public static void VehicleYear(string year)
+        {
+            if (year.Any(a => !char.IsDigit(a)))
+            {
+                throw new ArgumentException("Invalid year!");
+            }
+
+            Validate.IntFromString(year, "Vehicle Year");
+            if (int.Parse(year) < 1900 || int.Parse(year) > DateTime.Now.Year)
+            {
+                throw new ArgumentException($"Invalid year! Cars are produced between 1900 and {DateTime.Now.Year}");
+            }
+        }
+
+        public static void HasDigitInString(string value, string parameter)
+        {
+            if (value.Any(char.IsDigit))
+            {
+                throw new ArgumentException($"Invalid value! Cannot have digits in parameter {parameter}");
+            }
+        }
+
+        public static void NonNegativeValue(decimal value, string parameter)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException($"{parameter} cannot be negative!");
             }
         }
     }

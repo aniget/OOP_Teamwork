@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Text;
-using AutoService.Core.Validator;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Assets;
-using AutoService.Models.Assets.Contracts;
-using AutoService.Models.Common.Models;
+using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 using IEmployee = AutoService.Models.Contracts.IEmployee;
 

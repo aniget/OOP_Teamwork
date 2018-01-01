@@ -1,5 +1,5 @@
 ﻿using System;
-using AutoService.Core.Validator;
+using AutoService.Models.Validator;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;

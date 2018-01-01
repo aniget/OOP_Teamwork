@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Validator;
 
 namespace AutoService.Models.Assets
 {
@@ -35,10 +36,8 @@ namespace AutoService.Models.Assets
             get => this.firstName;
             private set
             {
-                if (string.IsNullOrWhiteSpace(value) || value.Any(char.IsDigit))
-                {
-                    throw new ArgumentException("Invalid first name!");
-                }
+                Validate.StringForNullEmpty(value);
+                Validate.HasDigitInString(value, "first name");
                 this.firstName = value;
             }
         }
@@ -49,10 +48,9 @@ namespace AutoService.Models.Assets
 
             private set
             {
-                if (string.IsNullOrWhiteSpace(value) || value.Any(char.IsDigit))
-                {
-                    throw new ArgumentException("Invalid last name!");
-                }
+                Validate.StringForNullEmpty(value);
+                Validate.HasDigitInString(value, "last name");
+
                 this.lastName = value;
             }
         }
@@ -63,10 +61,8 @@ namespace AutoService.Models.Assets
 
             private set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Salary cannot be negative!");
-                }
+                Validate.NonNegativeValue(value, "salary");
+                
                 this.salary = value;
             }
         }
@@ -75,10 +71,7 @@ namespace AutoService.Models.Assets
             get => this.position;
             private set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentException("Invalid position!");
-                }
+                Validate.StringForNullEmpty(value);
                 this.position = value;
             }
         }
@@ -88,10 +81,8 @@ namespace AutoService.Models.Assets
             get => this.ratePerMinute;
             private set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Invalid rate!");
-                }
+                Validate.NonNegativeValue(value, "rate per minute");
+
                 this.ratePerMinute = value;
             }
         }
@@ -159,7 +150,7 @@ namespace AutoService.Models.Assets
                 }
                 else
                 {
-                    throw new ArgumentException("Employee does not have this responsibility!");
+                    Console.WriteLine("Employee does not have this responsibility!");
                 }
             }
             Console.WriteLine($"Employee {this.FirstName} {this.LastName} were succesfuly declined and removed responsibilities {string.Join(", ", removedResponsibilities)}");

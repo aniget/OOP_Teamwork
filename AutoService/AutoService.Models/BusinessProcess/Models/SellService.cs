@@ -1,9 +1,7 @@
 ﻿using System;
-using AutoService.Core.Validator;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
-using AutoService.Models.Assets.Contracts;
+using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Models

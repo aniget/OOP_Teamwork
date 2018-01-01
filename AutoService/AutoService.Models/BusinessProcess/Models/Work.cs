@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoService.Core.Validator;
-using AutoService.Models.BusinessProcess.Enums;
+﻿using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
+using AutoService.Models.Validator;
 
 namespace AutoService.Models.Assets
 {
