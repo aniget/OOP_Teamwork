@@ -25,10 +25,10 @@ namespace AutoService.Models.Common.Models
         {
             Validate.CheckNullObject(stock, employee);
             //only employees with right (Responsibility) to BUY can perform this work
-            if (employee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
-                employee.Responsibiities.Contains(ResponsibilityType.Manage) ||
-                employee.Responsibiities.Contains(ResponsibilityType.BuyPartForClient) ||
-                employee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse))
+            if (employee.Responsibilities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
+                employee.Responsibilities.Contains(ResponsibilityType.Manage) ||
+                employee.Responsibilities.Contains(ResponsibilityType.BuyPartForClient) ||
+                employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
 
                 availableStocks.Add(stock);
             else
@@ -37,13 +37,13 @@ namespace AutoService.Models.Common.Models
             }
         }
         
-        public void RemoveStockFromWarehouse(IStock stock, IEmployee employee, IVehicle vehicle)
+        public void RemoveStockFromWarehouse(IStock stock, IEmployee employee)
         {
-            Validate.CheckNullObject(stock, employee, vehicle);
+            Validate.CheckNullObject(stock, employee);
             
             //only employees with right (Responsibility) to SELL can perform this work
-            if (employee.Responsibiities.Contains(ResponsibilityType.Sell) ||
-                employee.Responsibiities.Contains(ResponsibilityType.Manage))
+            if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||
+                employee.Responsibilities.Contains(ResponsibilityType.Manage))
 
                 availableStocks.Remove(stock);
             else
@@ -57,9 +57,9 @@ namespace AutoService.Models.Common.Models
             Validate.CheckNullObject(stockUniqueNumber, employee);
             bool exists = false;
             //only employees with right (Responsibility) to SELL can perform this work
-            if (employee.Responsibiities.Contains(ResponsibilityType.Sell) ||
-                employee.Responsibiities.Contains(ResponsibilityType.Manage) ||
-                employee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse))
+            if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||
+                employee.Responsibilities.Contains(ResponsibilityType.Manage) ||
+                employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
             {
                 if (availableStocks.Any(x=>x.UniqueNumber == stockUniqueNumber))
                 {

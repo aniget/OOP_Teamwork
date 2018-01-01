@@ -133,10 +133,10 @@ namespace AutoService.Core
             string bankAccountNumber;
             string employeeFirstName;
             string supplierUniqueNumber;
-            string supplierUniqueName = "";
+            string supplierUniqueName;
             string supplierAddress;
             string clientUniquieNumber;
-            string clientUniqueName = "";
+            string clientUniqueName;
             string clientAddress;
             string vehicleMake;
             string vehicleModel;
@@ -270,8 +270,11 @@ namespace AutoService.Core
                     string vehicleYear = commandParameters[5];
                     engineType = Validate.EngineTypeFromString(commandParameters[6], "engine type");
                     var additionalParams = Validate.IntFromString(commandParameters[7], "additional parameters");
+                    
+                    Validate.CounterpartyNotRegistered(this.clients, commandParameters[8], "client");
+
                     clientUniqueName = commandParameters[8];
-                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
                     if (((IClient)client).Vehicles.Any(x => x.RegistrationNumber == vehicleRegistrationNumber))
@@ -283,7 +286,7 @@ namespace AutoService.Core
                     ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
                     Console.WriteLine(newVehicle);
 
-                    Console.WriteLine($"Vehicle {vehicleMake} {vehicleModel} add to client {client.Name}");
+                    Console.WriteLine($"Vehicle {vehicleMake} {vehicleModel} added to client {client.Name}");
                     break;
 
                 case "createBankAccount":
@@ -346,10 +349,9 @@ namespace AutoService.Core
                     if (stockExists == false) { throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse"); }
                     stock = this.warehouse.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
-                    //no need to ckech vehicle for null because we create a default vehicle with every client registration
+                    //no need to check vehicle for null because we create a default vehicle with every client registration
                     vehicle = ((IClient)client).Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
 
-                    this.warehouse.RemoveStockFromWarehouse(stock, employee, vehicle);
                     this.SellStockToClient(stock, (IClient)client, vehicle);
 
                     break;
@@ -361,7 +363,7 @@ namespace AutoService.Core
                     Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
                     employeeFirstName = commandParameters[1];
-                    clientNameOrUniqueNumber = commandParameters[2];
+                    clientUniqueName = commandParameters[2];
                     vehicleRegistrationNumber = commandParameters[3];
                     var serviceName = commandParameters[4];
 
@@ -500,13 +502,13 @@ namespace AutoService.Core
         private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
         {
             bankAccount.DepositFunds(depositAmount);
-            Console.WriteLine($"{depositAmount} $ were successfully added to bank account {bankAccount.Name}");
+            Console.WriteLine($"{depositAmount} BGN were successfully added to bank account {bankAccount.Name}");
         }
 
         private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate, string uniqueNumber)
         {
-            if (employee.Responsibiities.Contains(ResponsibilityType.Account) ||
-                employee.Responsibiities.Contains(ResponsibilityType.Manage))
+            if (employee.Responsibilities.Contains(ResponsibilityType.Account) ||
+                employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
                 BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
 
@@ -546,18 +548,19 @@ namespace AutoService.Core
 
         private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
         {
-            var responsibilitesToAdd = new List<ResponsibilityType>();
+            var responsibilitesToRemove = new List<ResponsibilityType>();
             foreach (var responsibility in responsibilitiesToRemove)
             {
-                ResponsibilityType currentResponsibility;
-                if (!Enum.TryParse(responsibility, out currentResponsibility))
-                {
-                    throw new ArgumentException($"Responsibility {responsibility} not valid!");
+                bool isValid = Validate.IsValidResponsibilityTypeFromString(responsibility);
 
+                if (isValid)
+                {
+                    ResponsibilityType currentResponsibility;
+                    Enum.TryParse(responsibility, out currentResponsibility);
+                    responsibilitesToRemove.Add(currentResponsibility);
                 }
-                responsibilitesToAdd.Add(currentResponsibility);
             }
-            employee.RemoveResponsibilities(responsibilitesToAdd);
+            employee.RemoveResponsibilities(responsibilitesToRemove);
         }
 
         private void AddResponsibilitiesToEmployee(IEmployee employee, string[] responsibilities)
@@ -565,12 +568,14 @@ namespace AutoService.Core
             var responsibilitesToAdd = new List<ResponsibilityType>();
             foreach (var responsibility in responsibilities)
             {
-                ResponsibilityType currentResponsibility;
-                if (!Enum.TryParse(responsibility, out currentResponsibility))
+                bool isValid = Validate.IsValidResponsibilityTypeFromString(responsibility);
+
+                if (isValid)
                 {
-                    Console.WriteLine($"Responsibility {responsibility} not valid!");
+                    ResponsibilityType currentResponsibility;
+                    Enum.TryParse(responsibility, out currentResponsibility);
+                    responsibilitesToAdd.Add(currentResponsibility);
                 }
-                responsibilitesToAdd.Add(currentResponsibility);
             }
             employee.AddResponsibilities(responsibilitesToAdd);
         }
@@ -613,9 +618,9 @@ namespace AutoService.Core
 
         private void OrderStockFromSupplier(IStock stock)
         {
-            if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
-                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
-                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
+            if (stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
+                stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse) ||
+                stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
                 IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.Supplier, stock);
                 this.warehouse.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
@@ -632,12 +637,13 @@ namespace AutoService.Core
         private void SellStockToClient(IStock stock, IClient client, IVehicle vehicle)
         {
             ISell sellStock;
-            if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Sell) ||
-                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
+            if (stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Sell) ||
+                stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
                 sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock);
 
-                this.warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee, vehicle);
+                this.warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee);
+
                 //sellStock.SellToClientVehicle(sellStock, stock);
 
                 //record the Sell in the notInvoicedSells Dictionary
@@ -656,8 +662,8 @@ namespace AutoService.Core
         private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName, int durationInMinutes)
         {
             ISellService sellService;
-            if (responsibleEmployee.Responsibiities.Contains(ResponsibilityType.Repair) ||
-                responsibleEmployee.Responsibiities.Contains(ResponsibilityType.SellService))
+            if (responsibleEmployee.Responsibilities.Contains(ResponsibilityType.Repair) ||
+                responsibleEmployee.Responsibilities.Contains(ResponsibilityType.SellService))
             {
                 sellService = (ISellService)factory.CreateSellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes);
                 //sellService.SellToClientVehicle(sellService, null);
@@ -676,13 +682,13 @@ namespace AutoService.Core
                               + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
         }
 
-        private void AddSellToNotInvoicedItems(IClient client, ISell sellService)
+        private void AddSellToNotInvoicedItems(IClient client, ISell sell)
         {
             if (!this.notInvoicedSells.ContainsKey(client))
             {
                 this.notInvoicedSells[client] = new List<ISell>();
             }
-            this.notInvoicedSells[client].Add(sellService);
+            this.notInvoicedSells[client].Add(sell);
         }
 
         private void ShowEmployees()

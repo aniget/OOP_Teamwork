@@ -122,11 +122,11 @@ namespace AutoService.Models.Validator
             }
         }
 
-        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNemaIndex, int maxLength)
+        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNameIndex, int maxLength)
         {
             IEmployee employee;
 
-            var employeeFirstName = commandParameters[employeeFirstNemaIndex];
+            var employeeFirstName = commandParameters[employeeFirstNameIndex];
 
             if (commandParameters.Length == maxLength) //employeeFirstName + employeeLastName + employeeDepartment
             {
@@ -138,7 +138,7 @@ namespace AutoService.Models.Validator
             {
                 if (employees.Select(x => x.FirstName == employeeFirstName).Count() > 1)
                 {
-                    throw new ArgumentException("More than one emplyee with same name, please provide first name, last name and department");
+                    throw new ArgumentException("More than one employee with the same name, please provide first name, last name and department");
                 }
 
                 return employee = employees.Single(x => x.FirstName == employeeFirstName);
@@ -274,23 +274,17 @@ namespace AutoService.Models.Validator
 
         public static void CounterpartyNotRegistered(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType)
         {
-            if (string.IsNullOrWhiteSpace(counterpartyName))
-            {
-                throw new InvalidIdException($"Please provide a valid {counterpartyType} name");
-            }
+            Validate.StringForNullEmpty(counterpartyName);
 
             if (counterparties.All(a => a.Name != counterpartyName))
             {
-                throw new ArgumentException($"{counterpartyName} is not registered.");
+                throw new ArgumentException($"{counterpartyType} is not registered.");
             }
         }
 
         public static void SellPrice(decimal sellPrice)
         {
-            if (sellPrice < 0)
-            {
-                throw new ArgumentException("Sell price must be positive number");
-            }
+            Validate.NonNegativeValue(sellPrice, "sell price");
         }
 
         public static void ServiceNameLength(string serviceName)
@@ -383,6 +377,18 @@ namespace AutoService.Models.Validator
             {
                 throw new ArgumentException($"{parameter} cannot be negative!");
             }
+        }
+
+        public static bool IsValidResponsibilityTypeFromString(string responsibility)
+        {
+            bool isValid = true;
+            ResponsibilityType currentResponsibility;
+            if (!Enum.TryParse(responsibility, out currentResponsibility))
+            {
+                Console.WriteLine($"Responsibility {responsibility} not valid!");
+                isValid = false;
+            }
+            return isValid;
         }
     }
 }
