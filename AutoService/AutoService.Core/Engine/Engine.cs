@@ -131,13 +131,13 @@ namespace AutoService.Core
             string assetName;
             string stockUniqueNumber;
             string bankAccountNumber;
-            string supplierName;
             string employeeFirstName;
-            string supplierAddress;
             string supplierUniqueNumber;
+            string supplierUniqueName = "";
+            string supplierAddress;
+            string clientUniquieNumber;
             string clientUniqueName = "";
             string clientAddress;
-            string clientUniquieNumber;
             string vehicleMake;
             string vehicleModel;
             string vehicleRegistrationNumber;
@@ -270,7 +270,9 @@ namespace AutoService.Core
                     string vehicleYear = commandParameters[5];
                     engineType = Validate.EngineTypeFromString(commandParameters[6], "engine type");
                     var additionalParams = Validate.IntFromString(commandParameters[7], "additional parameters");
-                    client = (Client)Validate.ClientByUniqueName(this.clients, clientUniqueName);
+                    clientUniqueName = commandParameters[8];
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
                     if (((IClient)client).Vehicles.Any(x => x.RegistrationNumber == vehicleRegistrationNumber))
                     {
@@ -330,16 +332,17 @@ namespace AutoService.Core
                     //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
                     Validate.EitherOrParameterLength(commandParameters, 5, 7);
 
-                    IClient clientWeSellStockTo;
                     employeeFirstName = commandParameters[1];
-                    clientNameOrUniqueNumber = commandParameters[2];
+                    clientUniqueName = commandParameters[2];
                     vehicleRegistrationNumber = commandParameters[3];
                     stockUniqueNumber = commandParameters[4];
 
                     Validate.EmployeeExist(this.employees, employeeFirstName);
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 7);
 
-                    clientWeSellStockTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+
+                    client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
                     //stock we sell must be present in the warehouse :)
                     bool stockExists = this.warehouse.ConfirmStockExists(stockUniqueNumber, employee);
@@ -347,10 +350,10 @@ namespace AutoService.Core
                     stock = this.warehouse.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
                     //no need to ckech vehicle for null because we create a default vehicle with every client registration
-                    vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
 
                     this.warehouse.RemoveStockFromWarehouse(stock, employee, vehicle);
-                    this.SellStockToClient(stock, clientWeSellStockTo, vehicle);
+                    this.SellStockToClient(stock, (IClient)client, vehicle);
 
                     break;
 
@@ -360,7 +363,6 @@ namespace AutoService.Core
                     //we can sell services to client without vehicle, e.g. client brings old tire rim for repair
                     Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
-                    IClient clientWeSellServiceTo;
                     employeeFirstName = commandParameters[1];
                     clientNameOrUniqueNumber = commandParameters[2];
                     vehicleRegistrationNumber = commandParameters[3];
@@ -371,11 +373,12 @@ namespace AutoService.Core
                     Validate.EmployeeExist(this.employees, employeeFirstName);
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
 
-                    clientWeSellServiceTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
-                    vehicle = clientWeSellServiceTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
 
-                    this.SellServiceToClient(employee, clientWeSellServiceTo, vehicle, serviceName, durationInMinutes);
+                    this.SellServiceToClient(employee, (IClient)client, vehicle, serviceName, durationInMinutes);
 
                     break;
 
@@ -389,8 +392,10 @@ namespace AutoService.Core
                     Validate.EmployeeExist(this.employees, employeeFirstName);
                     employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
 
-                    var supplierNameOrUniqueNumber = commandParameters[2];
-                    supplier = Validate.CounterpartyByNameOrUniqueNumber(supplierNameOrUniqueNumber, this.suppliers);
+                    supplierUniqueName = commandParameters[2];
+
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    supplier = this.suppliers.FirstOrDefault(x => x.Name == supplierUniqueName);
 
                     var stockName = commandParameters[3];
 
@@ -407,47 +412,48 @@ namespace AutoService.Core
                     //registerSupplier;AXM - AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
                     Validate.ExactParameterLength(commandParameters, 4);
 
-                    supplierName = commandParameters[1];
+                    supplierUniqueName = commandParameters[1];
                     supplierAddress = commandParameters[2];
                     supplierUniqueNumber = commandParameters[3];
 
-                    Validate.CounterpartyExists(this.suppliers, supplierName);
+                    Validate.CounterpartyAlreadyRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    this.AddSupplier(supplierName, supplierAddress, supplierUniqueNumber);
+                    this.AddSupplier(supplierUniqueName, supplierAddress, supplierUniqueNumber);
                     Console.WriteLine("Supplier registered sucessfully");
                     break;
 
                 case "changeSupplierName":
-                    //changeSupplierName; 211311577; VintchetaBolchetaGaiki
-                    Validate.ExactParameterLength(commandParameters, 3);
+                    //changeSupplierName; VintchetaBolchetaGaiki
+                    Validate.ExactParameterLength(commandParameters, 2);
 
-                    supplierUniqueNumber = commandParameters[1];
-                    supplierName = commandParameters[2];
+                    supplierUniqueName = commandParameters[1];
 
-                    Validate.ExistingSupplierFromUniqueNumber(this.suppliers, supplierUniqueNumber);
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    this.ChangeSupplierName(supplierUniqueNumber, supplierName);
-                    Console.WriteLine($"Supplier name changed sucessfully to {supplierName}");
+                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
                     break;
 
                 case "removeSupplier":
 
                     Validate.ExactParameterLength(commandParameters, 2);
 
-                    supplierName = commandParameters[1];
+                    supplierUniqueName = commandParameters[1];
                     supplierUniqueNumber = commandParameters[2];
-                    Validate.ExistingSupplierFromNameAndUniqueNumber();
-                    this.RemoveCounterparty(supplierName, supplierUniqueNumber, "supplier");
+
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
 
                 case "registerClient":
-                    //registerClient; TelerikAcademy; Mladost Blvd Sofia Bulgaria; 123456789
+
                     Validate.ExactParameterLength(commandParameters, 4);
 
                     clientUniqueName = commandParameters[1];
                     clientAddress = commandParameters[2];
                     clientUniquieNumber = commandParameters[3];
 
+                    Validate.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
                     this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
 
                     //add default car to the client
@@ -460,48 +466,67 @@ namespace AutoService.Core
 
                     break;
 
+                case "changeClientName":
+                    //changeClientName; ClientSuperDuper
+                    Validate.ExactParameterLength(commandParameters, 2);
+
+                    supplierUniqueName = commandParameters[1];
+                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+
+                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
+                    break;
+
                 case "removeClient":
 
                     Validate.EitherOrParameterLength(commandParameters, 2, 3);
 
                     clientUniqueName = commandParameters[1];
 
-                    if (commandParameters.Length == 3)
-                    {
-                        clientUniquieNumber = commandParameters[2];
-                        this.RemoveClient(clientUniqueName, clientUniquieNumber);
-                    }
-                    else
-                    {
-                        this.RemoveClient(clientUniqueName);
-                    }
-                    break;
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                this.RemoveCounterparty(clientUniqueName, this.clients);
+            
+            break;
 
-                default:
+            default:
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
-            }
+        }
+    }
+
+    private void ChangeCounterpartyName(string counterpartyName, List<ICounterparty> counterparties)
+    {
+        var supplier = counterparties.First(f => f.Name == counterpartyName);
+
+        supplier.ChangeName(counterpartyName);
+    }
+
+    private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
+    {
+        bankAccount.DepositFunds(depositAmount);
+        Console.WriteLine($"{depositAmount} $ were successfully added to bank account {bankAccount.Name}");
+    }
+
+    private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate, string uniqueNumber)
+    {
+        if (employee.Responsibiities.Contains(ResponsibilityType.Account) ||
+            employee.Responsibiities.Contains(ResponsibilityType.Manage))
+        {
+            BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
+
+            this.bankAccounts.Add(bankAccountToAdd);
+            Console.WriteLine(
+                $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"Employee {employee.FirstName} {employee.LastName} does not have the required repsonsibilities to register asset {assetName}");
         }
 
-        private void ChangeSupplierName(string supplierUniqueNumber, string supplierName)
-        {
-            var supplier = this.suppliers.First(f => f.UniqueNumber == supplierUniqueNumber);
+    }
 
-            supplier.ChangeName(supplierName);
-        }
-
-        private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
-        {
-            bankAccount.DepositFunds(depositAmount);
-            Console.WriteLine($"{depositAmount} $ were successfully added to bank account {bankAccount.Name}");
-        }
-
-        private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate, string uniqueNumber)
-        {
-            if (employee.Responsibiities.Contains(ResponsibilityType.Account) ||
-                employee.Responsibiities.Contains(ResponsibilityType.Manage))
-            {
-                BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
-
+    private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleMake, string vehicleModel, string registrationNumber, string vehicleYear, EngineType engineType, int additionalParams)
+    //vehicleType, vehicleMake, vehicleModel, registrationNumber, vehicleYear, engineType, additionalParams
                 this.bankAccounts.Add(bankAccountToAdd);
                 Console.WriteLine(
                     $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName} on {currentAssetDate:dd/MM/yyyy}");
@@ -512,336 +537,278 @@ namespace AutoService.Core
                     $"Employee {employee.FirstName} {employee.LastName} does not have the required repsonsibilities to register asset {assetName}");
             }
 
+    {
+        IVehicle vehicle = null;
+
+        if (vehicleType == VehicleType.Car)
+        {
+            vehicle = (IVehicle)this.factory.CreateVehicle(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
         }
 
-        private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleMake, string vehicleModel, string registrationNumber, string vehicleYear, EngineType engineType, int additionalParams)
-        //vehicleType, vehicleMake, vehicleModel, registrationNumber, vehicleYear, engineType, additionalParams
-
+        else if (vehicleType == VehicleType.SmallTruck)
         {
-            IVehicle vehicle = null;
-
-            if (vehicleType == VehicleType.Car)
-            {
-                vehicle = (IVehicle)this.factory.CreateVehicle(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
-            }
-
-            else if (vehicleType == VehicleType.SmallTruck)
-            {
-                vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
-            }
-            else if (vehicleType == VehicleType.Truck)
-            {
-                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
-            }
-            return vehicle;
+            vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
         }
-
-        private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
+        else if (vehicleType == VehicleType.Truck)
         {
-            var responsibilitesToAdd = new List<ResponsibilityType>();
-            foreach (var responsibility in responsibilitiesToRemove)
-            {
-                ResponsibilityType currentResponsibility;
-                if (!Enum.TryParse(responsibility, out currentResponsibility))
-                {
-                    throw new ArgumentException($"Responsibility {responsibility} not valid!");
-
-                }
-                responsibilitesToAdd.Add(currentResponsibility);
-            }
-            employee.RemoveResponsibilities(responsibilitesToAdd);
+            vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
         }
+        return vehicle;
+    }
 
-        private void AddResponsibilitiesToEmployee(IEmployee employee, string[] responsibilities)
+    private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
+    {
+        var responsibilitesToAdd = new List<ResponsibilityType>();
+        foreach (var responsibility in responsibilitiesToRemove)
         {
-            var responsibilitesToAdd = new List<ResponsibilityType>();
-            foreach (var responsibility in responsibilities)
+            ResponsibilityType currentResponsibility;
+            if (!Enum.TryParse(responsibility, out currentResponsibility))
             {
-                ResponsibilityType currentResponsibility;
-                if (!Enum.TryParse(responsibility, out currentResponsibility))
-                {
-                    Console.WriteLine($"Responsibility {responsibility} not valid!");
-                }
-                responsibilitesToAdd.Add(currentResponsibility);
+                throw new ArgumentException($"Responsibility {responsibility} not valid!");
+
             }
-            employee.AddResponsibilities(responsibilitesToAdd);
+            responsibilitesToAdd.Add(currentResponsibility);
+        }
+        employee.RemoveResponsibilities(responsibilitesToAdd);
+    }
+
+    private void AddResponsibilitiesToEmployee(IEmployee employee, string[] responsibilities)
+    {
+        var responsibilitesToAdd = new List<ResponsibilityType>();
+        foreach (var responsibility in responsibilities)
+        {
+            ResponsibilityType currentResponsibility;
+            if (!Enum.TryParse(responsibility, out currentResponsibility))
+            {
+                Console.WriteLine($"Responsibility {responsibility} not valid!");
+            }
+            responsibilitesToAdd.Add(currentResponsibility);
             Console.WriteLine($"{responsibilitesToAdd.Count} responsibilities added: {string.Join(", ", responsibilitesToAdd)}");
         }
+        employee.AddResponsibilities(responsibilitesToAdd);
+    }
 
-        private void ChangePositionOfEmployee(IEmployee employee, string position)
+    private void ChangePositionOfEmployee(IEmployee employee, string position)
+    {
+        employee.ChangePosition(position);
+
+        Console.WriteLine(
+            $"Position of employee {employee.FirstName} {employee.LastName} was successfully set to {position}");
+    }
+
+    private void ListEmployeesAtDepartment(DepartmentType department)
+    {
+        var employeesInDepartment = this.employees.Where(x => x.Department == department).ToArray();
+        if (employeesInDepartment.Length == 0)
         {
-            employee.ChangePosition(position);
-
-            Console.WriteLine(
-                $"Position of employee {employee.FirstName} {employee.LastName} was successfully set to {position}");
+            throw new ArgumentException($"The are no employees at department: {department}!");
         }
 
-        private void ListEmployeesAtDepartment(DepartmentType department)
+        StringBuilder str = new StringBuilder();
+
+        str.AppendLine($"Employees at: {department} department:");
+        var counter = 1;
+
+        foreach (var employee in employeesInDepartment)
         {
-            var employeesInDepartment = this.employees.Where(x => x.Department == department).ToArray();
-            if (employeesInDepartment.Length == 0)
-            {
-                throw new ArgumentException($"The are no employees at department: {department}!");
-            }
+            str.AppendLine($"{counter}. {employee.ToString()}");
+            counter++;
+        }
+        Console.WriteLine(str.ToString());
+    }
 
-            StringBuilder str = new StringBuilder();
+    private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute)
+    {
+        employee.ChangeRate(ratePerMinute);
+        Console.WriteLine(
+            $"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
+    }
 
-            str.AppendLine($"Employees at: {department} department:");
-            var counter = 1;
-
-            foreach (var employee in employeesInDepartment)
-            {
-                str.AppendLine($"{counter}. {employee.ToString()}");
-                counter++;
-            }
-            Console.WriteLine(str.ToString());
+    private void OrderStockFromSupplier(IStock stock)
+    {
+        if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
+            stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
+            stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
+        {
+            IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.Supplier, stock);
+            this.warehouse.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required repsonsibilities to register asset {stock.Name}");
         }
 
-        private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute)
+        Console.WriteLine($"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+    }
+
+    private void SellStockToClient(IStock stock, IClient client, IVehicle vehicle)
+    {
+        ISell sellStock;
+        if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Sell) ||
+            stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
         {
-            employee.ChangeRate(ratePerMinute);
-            Console.WriteLine(
-                $"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
+            sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock);
+
+            this.warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee, vehicle);
+            //sellStock.SellToClientVehicle(sellStock, stock);
+
+            //record the Sell in the notInvoicedSells Dictionary
+            AddSellToNotInvoicedItems(client, sellStock);
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
         }
 
-        private void OrderStockFromSupplier(IStock stock)
-        {
-            if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
-                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
-                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
-            {
-                IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.Supplier, stock);
-                this.warehouse.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required repsonsibilities to register asset {stock.Name}");
-            }
+        Console.WriteLine($"{stock.Name} purchased from {stock.Supplier.Name} was sold to {client.Name} for the amount of {sellStock.SellPrice}" + Environment.NewLine
+            + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+    }
 
-            Console.WriteLine($"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+    private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName, int durationInMinutes)
+    {
+        ISellService sellService;
+        if (responsibleEmployee.Responsibiities.Contains(ResponsibilityType.Repair) ||
+            responsibleEmployee.Responsibiities.Contains(ResponsibilityType.SellService))
+        {
+            sellService = (ISellService)factory.CreateSellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes);
+            //sellService.SellToClientVehicle(sellService, null);
+
+            //record the Sell in the notInvoicedSells Dictionary
+            AddSellToNotInvoicedItems(client, sellService);
+
+        }
+        else
+        {
+            throw new ArgumentException(
+                $"Employee {responsibleEmployee.FirstName} {responsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
         }
 
-        private void SellStockToClient(IStock stock, IClient client, IVehicle vehicle)
+        Console.WriteLine($"{serviceName} was performed to {client.Name} for the amount of {sellService.SellPrice}" + Environment.NewLine
+                          + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
+    }
+
+    private void AddSellToNotInvoicedItems(IClient client, ISell sellService)
+    {
+        if (!this.notInvoicedSells.ContainsKey(client))
         {
-            ISell sellStock;
-            if (stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Sell) ||
-                stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
+            this.notInvoicedSells[client] = new List<ISell>();
+        }
+        this.notInvoicedSells[client].Add(sellService);
+    }
+
+    private void ShowEmployees()
+    {
+        int hiredCounter = 1;
+        if (this.employees.Where(e => e.IsHired).Count() > 0)
+        {
+            Console.WriteLine("Current active employees:");
+            foreach (var currentEmployee in this.employees.Where(e => e.IsHired))
             {
-                sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock);
-
-                this.warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee, vehicle);
-                //sellStock.SellToClientVehicle(sellStock, stock);
-
-                //record the Sell in the notInvoicedSells Dictionary
-                AddSellToNotInvoicedItems(client, sellStock);
+                Console.WriteLine(hiredCounter + ". " + currentEmployee);
+                hiredCounter++;
             }
-            else
-            {
-                throw new ArgumentException(
-                    $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
-            }
-
-            Console.WriteLine($"{stock.Name} purchased from {stock.Supplier.Name} was sold to {client.Name} for the amount of {sellStock.SellPrice}" + Environment.NewLine
-                + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+            int counter = 1;
+        }
+        else
+        {
+            Console.WriteLine("No active employees!");
         }
 
-        private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName, int durationInMinutes)
+        int firedCounter = 1;
+
+        if (this.employees.Where(e => !e.IsHired).Count() > 0)
         {
-            ISellService sellService;
-            if (responsibleEmployee.Responsibiities.Contains(ResponsibilityType.Repair) ||
-                responsibleEmployee.Responsibiities.Contains(ResponsibilityType.SellService))
+            Console.WriteLine("Current fired employees:");
+            foreach (var currentEmployee in this.employees.Where(e => !e.IsHired))
             {
-                sellService = (ISellService)factory.CreateSellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes);
-                //sellService.SellToClientVehicle(sellService, null);
 
-                //record the Sell in the notInvoicedSells Dictionary
-                AddSellToNotInvoicedItems(client, sellService);
-
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Employee {responsibleEmployee.FirstName} {responsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
-            }
-
-            Console.WriteLine($"{serviceName} was performed to {client.Name} for the amount of {sellService.SellPrice}" + Environment.NewLine
-                              + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
-        }
-
-        private void AddSellToNotInvoicedItems(IClient client, ISell sellService)
-        {
-            if (!this.notInvoicedSells.ContainsKey(client))
-            {
-                this.notInvoicedSells[client] = new List<ISell>();
-            }
-            this.notInvoicedSells[client].Add(sellService);
-        }
-
-        private void ShowEmployees()
-        {
-            int hiredCounter = 1;
-            if (this.employees.Where(e => e.IsHired).Count() > 0)
-            {
-                Console.WriteLine("Current active employees:");
-                foreach (var currentEmployee in this.employees.Where(e => e.IsHired))
-                {
-                    Console.WriteLine(hiredCounter + ". " + currentEmployee);
-                    hiredCounter++;
-                }
-                int counter = 1;
-            }
-            else
-            {
-                Console.WriteLine("No active employees!");
-            }
-
-            int firedCounter = 1;
-
-            if (this.employees.Where(e => !e.IsHired).Count() > 0)
-            {
-                Console.WriteLine("Current fired employees:");
-                foreach (var currentEmployee in this.employees.Where(e => !e.IsHired))
-                {
-
-                    Console.WriteLine(firedCounter + ". " + currentEmployee.ToString());
-                    firedCounter++;
-                }
-            }
-            else
-            {
-                Console.WriteLine("No fired employees!");
+                Console.WriteLine(firedCounter + ". " + currentEmployee.ToString());
+                firedCounter++;
             }
         }
-
-        private void IssueInvoices()
+        else
         {
-            int invoiceCount = 0;
-            foreach (var client in this.notInvoicedSells.OrderBy(o => o.Key.Name).Distinct())
-            {
-                this.lastInvoiceNumber++;
-                invoiceCount++;
-                string invoiceNumber = this.lastInvoiceNumber.ToString().PadLeft(10, '0');
-                this.lastInvoiceDate.AddDays(1);
-                IInvoice invoice = new Invoice(invoiceNumber, this.lastInvoiceDate, client.Key);
-
-                foreach (var sell in client.Value)
-                {
-                    invoice.InvoiceItems.Add(sell);
-                }
-                var clientToAddInvoice =
-                    this.clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
-                clientToAddInvoice.Invoices.Add(invoice);
-            }
-
-            this.notInvoicedSells.Clear();
-            Console.WriteLine($"{invoiceCount} invoices were successfully issued!");
-        }
-
-        private void FireEmployee(IEmployee employee)
-        {
-            Validate.CheckNullObject(employee);
-            employee.FireEmployee();
-
-            Console.WriteLine($"Employee {employee.FirstName} {employee.LastName} was fired!");
-        }
-
-        private void AddEmployee(string firstName, string lastName, string position, decimal salary,
-            decimal ratePerMinute, DepartmentType department)
-        {
-            IEmployee employee =
-                this.factory.CreateEmployee(firstName, lastName, position, salary, ratePerMinute, department);
-
-            this.employees.Add(employee);
-            Console.WriteLine(employee);
-            Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
-        }
-
-        private void AddSupplier(string name, string address, string uniqueNumber)
-        {
-            ICounterparty supplier = this.factory.CreateSupplier(name, address, uniqueNumber);
-            if (suppliers.FirstOrDefault(x => x.UniqueNumber == uniqueNumber) != null)
-            {
-                throw new ArgumentException("Supplier with the same unique number already exist. Please check the number and try again!");
-            }
-            this.suppliers.Add(supplier);
-            Console.WriteLine(supplier);
-            //Console.WriteLine($"Supplier {name} added successfully with Id {this.suppliers.Count}!");
-        }
-
-        private void AddClient(string name, string address, string uniqueNumber)
-        {
-            if (clients.Any(x => x.UniqueNumber == uniqueNumber))
-            {
-                var clientExisting = this.clients.First(f => f.UniqueNumber == uniqueNumber);
-                throw new ArgumentException($"Client with the same unique number {clientExisting.Name} already exists. Please check the number and try again!");
-            }
-
-            ICounterparty client = this.factory.CreateClient(name, address, uniqueNumber);
-
-            this.clients.Add(client);
-            Console.WriteLine(client);
-            //Console.WriteLine($"Client {name} added successfully with Id {this.clients.Count}!");
-        }
-
-        private void RemoveSupplier(string supplierName)
-        {
-            ICounterparty supplierToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == supplierName);
-            if (supplierToBeRemoved == null)
-            {
-                throw new ArgumentException($"Supplier with name {supplierName} cannot be removed - no such supplier found");
-            }
-            else if (this.suppliers.Where(x => x.Name == supplierName).Count() > 1)
-            {
-                throw new ArgumentException($"More than one supplier with name {supplierName} exists." + Environment.NewLine + "Please provide both name and unique number of the supplier you want to remove");
-            }
-            this.suppliers.Remove(supplierToBeRemoved);
-            //Console.WriteLine(supplierToBeRemoved);
-            Console.WriteLine($"Supplier {supplierName} removed successfully!");
-        }
-
-        private void RemoveCounterparty(string name, string uniqueNumber, string counterpartyType)
-        {
-            switch (counterpartyType)
-            {
-                case "client":
-
-            }
-            ICounterparty counterpartyToBeRemoved = this.suppliers.FirstOrDefault(x => x.Name == name && x.UniqueNumber == uniqueNumber);
-            if (counterpartyToBeRemoved == null)
-            {
-                throw new ArgumentException($"{counterpartyType} with name {name} and uniquie number {uniqueNumber} cannot be removed - no such {counterpartyType} found");
-            }
-            this.suppliers.Remove(counterpartyToBeRemoved);
-            Console.WriteLine($"{counterpartyType} {name} removed successfully!");
-        }
-
-        private void RemoveClient(string name)
-        {
-            ICounterparty clientToBeRemoved = this.clients.FirstOrDefault(x => x.Name == name);
-            if (clientToBeRemoved == null)
-            {
-                throw new ArgumentException($"Client with name {name} cannot be removed - no such client found!");
-            }
-            else if (this.clients.Select(x => x.Name == name).Count() > 1)
-            {
-                throw new ArgumentException($"More than one client with name {name} exist." + Environment.NewLine + "Please provide both name and unique number");
-            }
-            this.clients.Remove(clientToBeRemoved);
-            //Console.WriteLine(clientToBeRemoved);
-            Console.WriteLine($"Client {name} removed successfully!");
-        }
-
-        private void RemoveClient(string name, string uniqueNumber)
-        {
-            ICounterparty clientToBeRemoved = this.clients.FirstOrDefault(x => x.Name == name && x.UniqueNumber == uniqueNumber);
-            if (clientToBeRemoved == null)
-            {
-                throw new ArgumentException($"Client with name {name} and uniquie number {uniqueNumber} cannot be removed - no such client found");
-            }
-            this.clients.Remove(clientToBeRemoved);
-            //Console.WriteLine(clientToBeRemoved);
-            Console.WriteLine($"Supplier {name} removed successfully!");
+            Console.WriteLine("No fired employees!");
         }
     }
+
+    private void IssueInvoices()
+    {
+        int invoiceCount = 0;
+        foreach (var client in this.notInvoicedSells.OrderBy(o => o.Key.Name).Distinct())
+        {
+            this.lastInvoiceNumber++;
+            invoiceCount++;
+            string invoiceNumber = this.lastInvoiceNumber.ToString().PadLeft(10, '0');
+            this.lastInvoiceDate.AddDays(1);
+            IInvoice invoice = new Invoice(invoiceNumber, this.lastInvoiceDate, client.Key);
+
+            foreach (var sell in client.Value)
+            {
+                invoice.InvoiceItems.Add(sell);
+            }
+            var clientToAddInvoice =
+                this.clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
+            clientToAddInvoice.Invoices.Add(invoice);
+        }
+
+        this.notInvoicedSells.Clear();
+        Console.WriteLine($"{invoiceCount} invoices were successfully issued!");
+    }
+
+    private void FireEmployee(IEmployee employee)
+    {
+        Validate.CheckNullObject(employee);
+        employee.FireEmployee();
+
+        Console.WriteLine($"Employee {employee.FirstName} {employee.LastName} was fired!");
+    }
+
+    private void AddEmployee(string firstName, string lastName, string position, decimal salary,
+        decimal ratePerMinute, DepartmentType department)
+    {
+        IEmployee employee =
+            this.factory.CreateEmployee(firstName, lastName, position, salary, ratePerMinute, department);
+
+        this.employees.Add(employee);
+        Console.WriteLine(employee);
+        Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
+    }
+
+    private void AddSupplier(string name, string address, string uniqueNumber)
+    {
+        ICounterparty supplier = this.factory.CreateSupplier(name, address, uniqueNumber);
+        if (suppliers.FirstOrDefault(x => x.UniqueNumber == uniqueNumber) != null)
+        {
+            throw new ArgumentException("Supplier with the same unique number already exist. Please check the number and try again!");
+        }
+        this.suppliers.Add(supplier);
+        Console.WriteLine(supplier);
+        //Console.WriteLine($"Supplier {name} added successfully with Id {this.suppliers.Count}!");
+    }
+
+    private void AddClient(string name, string address, string uniqueNumber)
+    {
+        if (clients.Any(x => x.UniqueNumber == uniqueNumber))
+        {
+            var clientExisting = this.clients.First(f => f.UniqueNumber == uniqueNumber);
+            throw new ArgumentException($"Client with the same unique number {clientExisting.Name} already exists. Please check the number and try again!");
+        }
+
+        ICounterparty client = this.factory.CreateClient(name, address, uniqueNumber);
+
+        this.clients.Add(client);
+        Console.WriteLine(client);
+        //Console.WriteLine($"Client {name} added successfully with Id {this.clients.Count}!");
+    }
+
+    private void RemoveCounterparty(string counterpartyUniqueName, IList<ICounterparty> counterparties)
+    {
+        ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
+        counterparties.Remove(counterparty);
+        Console.WriteLine($"{counterpartyUniqueName} removed successfully!");
+    }
+}
 }
