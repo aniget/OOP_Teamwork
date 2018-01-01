@@ -1,13 +1,11 @@
-﻿using System;
+﻿using AutoService.Models.Assets;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
+using AutoService.Models.CustomExceptions;
+using AutoService.Models.Vehicles.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using AutoService.Core.CustomExceptions;
-using AutoService.Models.Assets;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
-using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Validator
 {

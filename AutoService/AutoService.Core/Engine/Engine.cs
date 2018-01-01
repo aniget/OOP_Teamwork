@@ -1,24 +1,20 @@
-﻿using System;
+﻿using AutoService.Core.Factory;
+using AutoService.Models.Assets;
+using AutoService.Models.Assets.Contracts;
+using AutoService.Models.BusinessProcess.Contracts;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
+using AutoService.Models.Common.Models;
+using AutoService.Models.CustomExceptions;
+using AutoService.Models.Validator;
+using AutoService.Models.Vehicles.Contracts;
+using AutoService.Models.Vehicles.Enums;
+using AutoService.Models.Vehicles.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using AutoService.Core.Factory;
-using AutoService.Models.Assets;
-using AutoService.Models.Assets.Contracts;
-using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
-using AutoService.Models.Vehicles.Contracts;
-using AutoService.Models.Vehicles.Enums;
-using AutoService.Models.Vehicles.Models;
-using AutoService.Core.CustomExceptions;
-using AutoService.Models.Common.Contracts;
-using AutoService.Models.Common.Enums;
-using AutoService.Models.Validator;
-using AutoService.Models.Common.Models;
-using AutoService.Models.CustomExceptions;
 
 namespace AutoService.Core
 {
@@ -431,7 +427,7 @@ namespace AutoService.Core
 
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    //this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
                     Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
                     break;
 
@@ -474,7 +470,7 @@ namespace AutoService.Core
                     supplierUniqueName = commandParameters[1];
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    //this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
                     Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
                     break;
 
