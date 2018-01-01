@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 

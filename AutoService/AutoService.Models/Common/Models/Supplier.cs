@@ -1,6 +1,4 @@
-﻿using AutoService.Models.Common.Models;
-
-namespace AutoService.Models.Assets
+﻿namespace AutoService.Models.Common.Models
 {
     public class Supplier : CounterParty
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoService.Models.Assets.Contracts;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Models.Assets
 {

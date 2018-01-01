@@ -2,11 +2,12 @@
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.BusinessProcess.Models;
-using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
+using AutoService.Models.Common.Models;
 using AutoService.Models.Vehicles.Contracts;
+using AutoService.Models.Vehicles.Enums;
 using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Core.Factory

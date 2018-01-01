@@ -1,7 +1,7 @@
 ﻿using AutoService.Models.Validator;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Models
 {

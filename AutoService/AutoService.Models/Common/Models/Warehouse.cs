@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoService.Models.Assets.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 

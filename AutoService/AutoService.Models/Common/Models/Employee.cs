@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
 using AutoService.Models.Validator;
 
-namespace AutoService.Models.Assets
+namespace AutoService.Models.Common.Models
 {
     public class Employee : IEmployee
     {

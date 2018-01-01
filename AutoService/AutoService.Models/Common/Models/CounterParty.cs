@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Models.Common.Models
 {

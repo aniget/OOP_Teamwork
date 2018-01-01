@@ -7,15 +7,14 @@ using AutoService.Core.Factory;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 using AutoService.Models.Vehicles.Models;
-using AutoService.Core.CustomExceptions;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
 using AutoService.Models.Validator;
 using AutoService.Models.Common.Models;
+using AutoService.Models.CustomExceptions;
 
 namespace AutoService.Core
 {
@@ -128,7 +127,7 @@ namespace AutoService.Core
             DepartmentType department;
             VehicleType vehicleType;
             EngineType engineType;
-            IVehicle newVehicle = null;
+            IVehicle newVehicle;
             string assetName;
             string stockUniqueNumber;
             string bankAccountNumber;
@@ -307,7 +306,10 @@ namespace AutoService.Core
                     DateTime currentAssetDate = this.lastAssetDate.AddDays(5); //fixed date in order to check zero tests
 
                     this.CreateBankAccount(employee, assetName, currentAssetDate, bankAccountNumber);
+
+                    
                     break;
+                    
 
                 case "depositCashInBank":
 
@@ -502,7 +504,7 @@ namespace AutoService.Core
 
                 this.bankAccounts.Add(bankAccountToAdd);
                 Console.WriteLine(
-                    $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
+                    $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName} on {currentAssetDate:dd/MM/yyyy}");
             }
             else
             {
@@ -563,6 +565,7 @@ namespace AutoService.Core
                 responsibilitesToAdd.Add(currentResponsibility);
             }
             employee.AddResponsibilities(responsibilitesToAdd);
+            Console.WriteLine($"{responsibilitesToAdd.Count} responsibilities added: {string.Join(", ", responsibilitesToAdd)}");
         }
 
         private void ChangePositionOfEmployee(IEmployee employee, string position)

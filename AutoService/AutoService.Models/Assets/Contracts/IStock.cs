@@ -1,28 +1,12 @@
-﻿using System;
-using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.Contracts;
+﻿
+using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Models.Assets.Contracts
 {
-    public interface IStock : IAsset/*, ISellStock*/
+    public interface IStock : IAsset
     {
         decimal PurchasePrice { get; }
 
         ICounterparty Supplier { get; }
-
-    
-
-        //void OrderPart();
-
-        //void ReceivePart();
-
-        //void PayPartToSupplier();
-
-        //void MountPart();
-
-        //void ReturnPartToSupplier();
-
-        //decimal GeneratePartSellPrice(decimal partPurchasePrice);
-
     }
 }

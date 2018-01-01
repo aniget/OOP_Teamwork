@@ -1,5 +1,4 @@
-﻿using AutoService.Models.Enums;
-using AutoService.Models.Vehicles.Enums;
+﻿using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Vehicles.Contracts
 {

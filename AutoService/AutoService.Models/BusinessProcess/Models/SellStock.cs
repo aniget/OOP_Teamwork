@@ -2,10 +2,8 @@
 using AutoService.Models.Validator;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
 using AutoService.Models.Vehicles.Contracts;
-using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.BusinessProcess.Models
 {

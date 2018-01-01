@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.Enums;
 
-namespace AutoService.Models.Contracts
+namespace AutoService.Models.Common.Contracts
 {
     public interface IInvoice
     {

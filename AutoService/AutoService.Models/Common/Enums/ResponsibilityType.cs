@@ -1,4 +1,4 @@
-﻿namespace AutoService.Models.BusinessProcess.Enums
+﻿namespace AutoService.Models.Common.Enums
 {
     public enum ResponsibilityType
     {

@@ -1,4 +1,4 @@
-﻿namespace AutoService.Models.Enums
+﻿namespace AutoService.Models.Vehicles.Enums
 {
     public enum EngineType
     {

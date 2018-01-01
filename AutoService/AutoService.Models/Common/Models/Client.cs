@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoService.Models.Common.Models;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Models;
 
-namespace AutoService.Models.Assets
+namespace AutoService.Models.Common.Models
 {
     public class Client : CounterParty, IClient
     {
@@ -24,10 +24,8 @@ namespace AutoService.Models.Assets
             get => this.dueDaysAllowed;
             protected set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Days cannot be negative value!");
-                }
+                Validate.NonNegativeValue(value, "due days allowed");
+
                 this.dueDaysAllowed = value;
             }
         }
@@ -52,19 +50,13 @@ namespace AutoService.Models.Assets
 
         public void AddVehicle(Vehicle vehicle)
         {
-            if (vehicle == null)
-            {
-                throw new ArgumentException("Please provide valid vehicle!");
-            }
+            Validate.CheckNullObject(vehicle);
             this.vehicles.Add(vehicle);
         }
 
         public void RemoveVehicle(Vehicle vehicle)
         {
-            if (vehicle == null)
-            {
-                throw new ArgumentException("Please provide valid vehicle!");
-            }
+            Validate.CheckNullObject(vehicle);
             this.vehicles.Remove(vehicle);
         }
 

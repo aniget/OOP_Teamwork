@@ -1,7 +1,7 @@
 ﻿using AutoService.Models.Assets;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 
 namespace AutoService.Models.BusinessProcess.Models

@@ -1,7 +1,7 @@
 ﻿using System;
 using AutoService.Models.Assets.Contracts;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
 
 namespace AutoService.Models.Assets
 {

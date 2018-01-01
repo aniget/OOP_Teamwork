@@ -1,5 +1,5 @@
 ﻿using System;
-using AutoService.Models.Enums;
+using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 
@@ -21,10 +21,8 @@ namespace AutoService.Models.Vehicles.Models
             get => this.weightAllowedInKilograms;
             protected set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Invalid weight!!");
-                }
+                Validate.NonNegativeValue(value, "Weight in kgs.");
+
                 if (value > 20000)
                 {
                     throw new ArgumentException("Vehicle with weight capacity over 20,000 kgs does not exist!");

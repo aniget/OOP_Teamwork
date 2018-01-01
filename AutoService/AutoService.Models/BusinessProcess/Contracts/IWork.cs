@@ -1,8 +1,7 @@
-﻿using System;
-using System.Dynamic;
-using AutoService.Models.BusinessProcess.Enums;
+﻿using AutoService.Models.BusinessProcess.Enums;
+using AutoService.Models.Common.Contracts;
 
-namespace AutoService.Models.Contracts
+namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface IWork
     {

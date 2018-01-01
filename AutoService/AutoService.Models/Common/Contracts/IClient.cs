@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoService.Models.Vehicles.Models;
 
-namespace AutoService.Models.Contracts
+namespace AutoService.Models.Common.Contracts
 {
     public interface IClient : ICounterparty
     {
@@ -15,6 +15,6 @@ namespace AutoService.Models.Contracts
 
         void RemoveVehicle(Vehicle vehicle);
 
-        void UpdateDueDays(int dueDays); //optional
+        void UpdateDueDays(int dueDays);
     }
 }

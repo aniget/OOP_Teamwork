@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using AutoService.Models.BusinessProcess.Enums;
+using AutoService.Models.Common.Enums;
 
-namespace AutoService.Models.Contracts
+namespace AutoService.Models.Common.Contracts
 {
     public interface IEmployee
     {

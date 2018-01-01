@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace AutoService.Core.CustomExceptions
+namespace AutoService.Models.CustomExceptions
 {
     public class InvalidIdException : ArgumentException
     {

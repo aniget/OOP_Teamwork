@@ -1,5 +1,4 @@
 ﻿using AutoService.Models.Assets.Contracts;
-using AutoService.Models.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {
@@ -7,6 +6,4 @@ namespace AutoService.Models.BusinessProcess.Contracts
     {
         IStock Stock { get; }
     }
-
-
 }

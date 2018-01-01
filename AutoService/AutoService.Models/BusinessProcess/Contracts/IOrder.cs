@@ -1,5 +1,4 @@
-﻿using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
+﻿using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Models.BusinessProcess.Contracts
 {

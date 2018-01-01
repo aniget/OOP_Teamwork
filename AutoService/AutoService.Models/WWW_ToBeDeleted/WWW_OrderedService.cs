@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoService.Models.BusinessProcess.Enums;
+using AutoService.Models.Common.Enums;
 using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 

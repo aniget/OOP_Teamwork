@@ -1,6 +1,5 @@
 ﻿using System;
 using AutoService.Models.Validator;
-using AutoService.Models.Enums;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 

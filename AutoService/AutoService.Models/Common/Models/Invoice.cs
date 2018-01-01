@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.Contracts;
+using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 
-namespace AutoService.Models.Assets
+namespace AutoService.Models.Common.Models
 {
     public class Invoice : IInvoice
     {
@@ -21,15 +21,11 @@ namespace AutoService.Models.Assets
         {
             Validate.StringForNullEmpty(number);
             Validate.InvoiceNumberLength(number.Length);
-
-            this.number = number;
-
             Validate.CheckNullObject(client);
 
+            this.number = number;
             this.client = client;
-
             this.date = date;
-
             this.invoiceItems = new List<ISell>();
         }
 
@@ -86,8 +82,8 @@ namespace AutoService.Models.Assets
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"Invoice amount: {this.Amount} $");
-            sb.AppendLine($"Outstanding amount: {this.GetOutstandingBalance()} $");
+            sb.AppendLine($"Invoice amount: {this.Amount} BGN");
+            sb.AppendLine($"Outstanding amount: {this.GetOutstandingBalance()} BGN");
             sb.AppendLine("Invoiced items:");
 
             foreach (var item in InvoiceItems)

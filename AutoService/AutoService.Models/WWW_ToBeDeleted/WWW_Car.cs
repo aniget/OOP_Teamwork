@@ -1,6 +1,7 @@
 ﻿using AutoService.Models.Contracts;
 using AutoService.Models.Enums;
 using System;
+using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Assets
 {

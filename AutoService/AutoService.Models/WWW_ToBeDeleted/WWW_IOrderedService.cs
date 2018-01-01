@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
+using AutoService.Models.Common.Enums;
 using AutoService.Models.Enums;
 
 namespace AutoService.Models.Contracts

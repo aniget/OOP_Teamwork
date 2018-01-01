@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using AutoService.Core.CustomExceptions;
+using AutoService.Models.CustomExceptions;
 using AutoService.Models.Assets;
-using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
-using AutoService.Models.Enums;
+using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
 using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Models.Validator
@@ -298,11 +296,6 @@ namespace AutoService.Models.Validator
                 throw new ArgumentException("Bank Account IBAN is invalid!");
             }
         }
-
-        //public static void CheckNullObject(object employee)
-        //{
-        //    throw new ArgumentException("Null object provided!");
-        //}
 
         public static void CheckNullObject(params object[] values)
         {

@@ -1,11 +1,10 @@
 ﻿using System;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
-using AutoService.Models.Contracts;
 using AutoService.Models.Assets;
+using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
-using IEmployee = AutoService.Models.Contracts.IEmployee;
 
 namespace AutoService.Models.BusinessProcess.Models
 {
