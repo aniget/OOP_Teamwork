@@ -36,7 +36,7 @@ namespace AutoService.Models.Assets
             {
                 throw new ArgumentException("Responsible employee can't be null!");
             }
-            if (employee.Responsibiities.Contains(ResponsibilityType.Account) || employee.Responsibiities.Contains(ResponsibilityType.Manage))
+            if (employee.Responsibilities.Contains(ResponsibilityType.Account) || employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
                 this.ResponsibleEmployee = employee;
             }
