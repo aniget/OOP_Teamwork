@@ -123,7 +123,6 @@ namespace AutoService.Core
             //IOrderStock orderStock;
             IStock stock;
             string position;
-            string clientNameOrUniqueNumber;
             DepartmentType department;
             VehicleType vehicleType;
             EngineType engineType;
@@ -460,7 +459,7 @@ namespace AutoService.Core
                     ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
                     Console.WriteLine(newVehicle);
 
-                    Console.WriteLine("Default Vehicle added to client {client.Name}");
+                    Console.WriteLine($"Default Vehicle added to client {client.Name}");
 
                     break;
 
@@ -486,10 +485,17 @@ namespace AutoService.Core
                     this.RemoveCounterparty(clientUniqueName, this.clients);
 
                     break;
-
+                case "listWarehouseItems":
+                    this.ListWarehouseItems();
+                    break;
                 default:
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
+        }
+
+        private void ListWarehouseItems()
+        {
+            Console.WriteLine(this.warehouse);
         }
 
         private void ChangeCounterpartyName(string counterpartyName, IList<ICounterparty> counterparties, string counterpartyNewName)
@@ -730,17 +736,18 @@ namespace AutoService.Core
         private void IssueInvoices()
         {
             int invoiceCount = 0;
-            foreach (var client in this.notInvoicedSells.OrderBy(o => o.Key.Name).Distinct())
+            foreach (var client in this.notInvoicedSells.OrderBy(o => o.Key.Name))
             {
                 this.lastInvoiceNumber++;
                 invoiceCount++;
                 string invoiceNumber = this.lastInvoiceNumber.ToString().PadLeft(10, '0');
-                this.lastInvoiceDate.AddDays(1);
+                this.lastInvoiceDate = this.lastInvoiceDate.AddDays(3);
                 IInvoice invoice = new Invoice(invoiceNumber, this.lastInvoiceDate, client.Key);
 
                 foreach (var sell in client.Value)
                 {
                     invoice.InvoiceItems.Add(sell);
+                    invoice.CalculateInvoiceAmount();
                 }
                 var clientToAddInvoice =
                     this.clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
