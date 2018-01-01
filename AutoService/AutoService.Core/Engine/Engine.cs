@@ -105,6 +105,7 @@ namespace AutoService.Core
 
             try
             {
+                Console.WriteLine();
                 commandType = commandParameters[0];
             }
             catch
