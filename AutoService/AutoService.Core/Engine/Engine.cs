@@ -35,7 +35,7 @@ namespace AutoService.Core
         private DateTime lastAssetDate = DateTime.ParseExact("2017-01-30", "yyyy-MM-dd", CultureInfo.InvariantCulture);
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
-        
+
         private static readonly IEngine SingleInstance = new Engine();
 
         //constructor
@@ -86,7 +86,7 @@ namespace AutoService.Core
                                   "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
                                   Environment.NewLine);
                 command = ReadCommand();
-            }        
+            }
         }
 
         private string ReadCommand()
@@ -139,7 +139,7 @@ namespace AutoService.Core
             string vehicleMake;
             string vehicleModel;
             string vehicleRegistrationNumber;
-            
+
 
             switch (commandType)
             {
@@ -336,19 +336,15 @@ namespace AutoService.Core
 
                     clientWeSellStockTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
 
-                    //bool stockExists = Warehouse.ConfirmStockExists(stock, employee);
-
-                    stock = Warehouse.stocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
-
                     //stock we sell must be present in the warehouse :)
-                    if (stock == null)
-                    {
-                        throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse");
-                    }
+                    bool stockExists = Warehouse.ConfirmStockExists(stockUniqueNumber, employee);
+                    if (stockExists == false) { throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse"); }
+                    stock = Warehouse.Stocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
                     //no need to ckech vehicle for null because we create a default vehicle with every client registration
                     vehicle = clientWeSellStockTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
-                    
+
+                    Warehouse.RemoveStockFromWarehouse(stock, employee, vehicle);
                     this.SellStockToClient(stock, clientWeSellStockTo, vehicle);
 
                     break;
@@ -373,7 +369,7 @@ namespace AutoService.Core
                     clientWeSellServiceTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
 
                     vehicle = clientWeSellServiceTo.Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
-                    
+
                     this.SellServiceToClient(employee, clientWeSellServiceTo, vehicle, serviceName, durationInMinutes);
 
                     break;
@@ -470,7 +466,7 @@ namespace AutoService.Core
 
                     Validate.EitherOrParameterLength(commandParameters, 2, 3);
 
-                    clientUniqueName= commandParameters[1];
+                    clientUniqueName = commandParameters[1];
 
                     if (commandParameters.Length == 3)
                     {
@@ -615,8 +611,8 @@ namespace AutoService.Core
                 stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse) ||
                 stock.ResponsibleEmployee.Responsibiities.Contains(ResponsibilityType.Manage))
             {
-                IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.PurchasePrice, TypeOfWork.Ordering, stock.Supplier, stock);
-                orderStock.OrderStockToWarehouse(stock.ResponsibleEmployee.FirstName, stock.Supplier.Name, stock.Name, stock.PurchasePrice);
+                IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.Supplier, stock);
+                Warehouse.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
             }
             else
             {

@@ -55,9 +55,9 @@ namespace AutoService.Core.Factory
             return new SellStock(responsibleEmployee, client, vehicle, stock);
         }
 
-        public IOrderStock CreateOrderStock(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICounterparty supplier, IStock stock)
+        public IOrderStock CreateOrderStock(IEmployee responsibleEmployee, ICounterparty supplier, IStock stock)
         {
-            return new OrderStock(responsibleEmployee, price, job, supplier, stock);
+            return new OrderStock(responsibleEmployee, supplier, stock);
         }
 
         public IVehicle CreateVehicle(string make, string model, string registrationNumber,

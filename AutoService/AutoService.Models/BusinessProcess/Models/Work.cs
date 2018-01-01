@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoService.Core.Validator;
 using AutoService.Models.BusinessProcess.Enums;
 using AutoService.Models.Contracts;
 
@@ -8,39 +9,30 @@ namespace AutoService.Models.Assets
 {
     public abstract class Work : IWork
     {
-        //private readonly ICollection<IEmployee> employees;
-        //private decimal price;
+        private IEmployee responsibleEmployee;
+        private readonly TypeOfWork job;
 
-        public Work(IEmployee responsibleEmployee, /*decimal price, */TypeOfWork job)
+        public Work(IEmployee responsibleEmployee, TypeOfWork job)
         {
-            this.ResponsibleEmployee = responsibleEmployee ?? throw new ArgumentException("Invalid employee provided!");
-
-            this.Job = job;
-
-            //this.price = price;
-
+            this.ResponsibleEmployee = responsibleEmployee;
+            this.job = job;
         }
 
-        //public decimal Price => this.price;
+        public IEmployee ResponsibleEmployee
+        {
+            get => this.responsibleEmployee;
+            protected set
+            {
+                Validate.CheckNullObject(value);
+                this.responsibleEmployee = value;
+            }
+        }
 
-        //public Work(IEmployee responsibleEmployee, decimal price, TypeOfWork job, ICollection<IEmployee> employees) 
-        //    : this(responsibleEmployee, price, job)
-        //{
-        //    this.employees = employees ?? throw new ArgumentException("List of employees cannot be null!");
-        //}
+        public TypeOfWork Job => this.job;
 
-        //Get and Set because if responsible mechanic gets sick a new responsible employee is being set on the job
-        public IEmployee ResponsibleEmployee { get; set; }
-        
-        public TypeOfWork Job { get; protected set; }
-
-        //public decimal GetEmployeeRatePerMinute(IEmployee employee)
-        //{
-        //    if (!employees.Contains(employee))
-        //    {
-        //        throw new ArgumentException("No such emplyee!");
-        //    }
-        //    return employees.FirstOrDefault(x => x == employee).RatePerMinute;
-        //}
+        private void ChangeResponsibleEmployee(IEmployee employee)
+        {
+            this.ResponsibleEmployee = employee;
+        }
     }
 }

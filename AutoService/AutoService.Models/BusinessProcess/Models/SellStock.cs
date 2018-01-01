@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoService.Core.Validator;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
@@ -13,19 +14,21 @@ namespace AutoService.Models.BusinessProcess.Models
         private readonly IStock stock;
 
         public SellStock(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, IStock stock)
-            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, TypeOfWork.Selling, client, vehicle)
+            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, client, vehicle)
         {
+            Validate.CheckNullObject(stock);
             this.stock = stock;
         }
+
         public IStock Stock => this.stock;
 
-        public string Name => this.Stock.Name;
+        public override string AdditionalInfoForServiceType() { return "stock"; }
 
-        public override string AdditionalInfo_ServiceOrPart() { return "autoparts"; }
+        public override string AdditionalInfoForSale() { return this.stock.Name; }
 
-        public override void SellToClientVehicle(ISell sell, IStock stockSelling)
+        public override decimal GetSalePrice()
         {
-            base.SellToClientVehicle(this, Stock);
+            return this.Stock.PurchasePrice * 1.2m * (1 - this.Client.Discount);
         }
 
         public override string ToString()
@@ -33,9 +36,8 @@ namespace AutoService.Models.BusinessProcess.Models
             return base.ToString() + Environment.NewLine +
                    string.Format("The following part was sold: {0}" + Environment.NewLine
                                  + "This part costs: {1} BGN"
-                       , this.Stock, this.Stock.PurchasePrice * 1.2m);
+                       , this.Stock, this.SellPrice);
         }
-
 
     }
 }

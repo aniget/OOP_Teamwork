@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Permissions;
 using AutoService.Core.Validator;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Enums;
@@ -16,6 +18,8 @@ namespace AutoService.Models.Common.Models
         {
             stocks = new List<IStock>();
         }
+
+        public static List<IStock> Stocks => stocks;
 
         public static void AddStockToWarehouse(IStock stock, IEmployee employee)
         {
@@ -48,16 +52,16 @@ namespace AutoService.Models.Common.Models
             }
         }
 
-        public static bool ConfirmStockExists(IStock stock, IEmployee employee)
+        public static bool ConfirmStockExists(string stockUniqueNumber, IEmployee employee)
         {
-            Validate.CheckNullObject(stock, employee);
+            Validate.CheckNullObject(stockUniqueNumber, employee);
             bool exists = false;
             //only employees with right (Responsibility) to SELL can perform this work
             if (employee.Responsibiities.Contains(ResponsibilityType.Sell) ||
                 employee.Responsibiities.Contains(ResponsibilityType.Manage) ||
                 employee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse))
             {
-                if (stocks.Contains(stock))
+                if (stocks.Any(x=>x.UniqueNumber == stockUniqueNumber))
                 {
                     exists = true;
                 }

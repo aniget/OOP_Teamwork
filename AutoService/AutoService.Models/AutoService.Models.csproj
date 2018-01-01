@@ -40,12 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessProcess\Models22222\Order.cs" />
-    <Compile Include="BusinessProcess\Models22222\OrderStock.cs" />
-    <Compile Include="BusinessProcess\Models22222\Sell.cs" />
-    <Compile Include="BusinessProcess\Models22222\SellService.cs" />
-    <Compile Include="BusinessProcess\Models22222\SellStock.cs" />
-    <Compile Include="BusinessProcess\Models22222\Work.cs" />
     <Compile Include="BusinessProcess\Models\OrderStock.cs" />
     <Compile Include="BusinessProcess\Models\SellStock.cs" />
     <Compile Include="CustomExceptions\InvalidIdException.cs" />
