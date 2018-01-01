@@ -420,14 +420,14 @@ namespace AutoService.Core
                     break;
 
                 case "changeSupplierName":
-                    //changeSupplierName; VintchetaBolchetaGaiki
-                    Validate.ExactParameterLength(commandParameters, 2);
-
+                    //changeSupplierName; VintchetaBolchetaGaiki; VintchetaBolchetaGaikiNew
+                    Validate.ExactParameterLength(commandParameters, 3);
                     supplierUniqueName = commandParameters[1];
-
+                    var supplierNewUniqueName = commandParameters[2];
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    //this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers, supplierNewUniqueName);
+
                     Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
                     break;
 
@@ -436,8 +436,7 @@ namespace AutoService.Core
                     Validate.ExactParameterLength(commandParameters, 2);
 
                     supplierUniqueName = commandParameters[1];
-                    supplierUniqueNumber = commandParameters[2];
-
+           
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
                     this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
@@ -464,19 +463,20 @@ namespace AutoService.Core
                     break;
 
                 case "changeClientName":
-                    //changeClientName; ClientSuperDuper
-                    Validate.ExactParameterLength(commandParameters, 2);
+                    //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
+                    Validate.ExactParameterLength(commandParameters, 3);
 
                     supplierUniqueName = commandParameters[1];
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    //this.ChangeCounterpartyName(supplierUniqueName, this.suppliers);
+                    var clientNewUniqueName = commandParameters[2];
+                    this.ChangeCounterpartyName(supplierUniqueName, this.clients, clientNewUniqueName);
                     Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
                     break;
 
                 case "removeClient":
 
-                    Validate.EitherOrParameterLength(commandParameters, 2, 3);
+                    Validate.ExactParameterLength(commandParameters, 2);
 
                     clientUniqueName = commandParameters[1];
 
@@ -490,11 +490,11 @@ namespace AutoService.Core
             }
         }
 
-        private void ChangeCounterpartyName(string counterpartyName, List<ICounterparty> counterparties)
+        private void ChangeCounterpartyName(string counterpartyName, IList<ICounterparty> counterparties, string counterpartyNewName)
         {
             var supplier = counterparties.First(f => f.Name == counterpartyName);
 
-            supplier.ChangeName(counterpartyName);
+            supplier.ChangeName(counterpartyNewName);
         }
 
         private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
