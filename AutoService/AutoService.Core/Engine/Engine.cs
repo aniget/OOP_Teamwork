@@ -428,7 +428,7 @@ namespace AutoService.Core
 
                     this.ChangeCounterpartyName(supplierUniqueName, this.suppliers, supplierNewUniqueName);
 
-                    Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
+                    Console.WriteLine($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}");
                     break;
 
                 case "removeSupplier":
@@ -466,12 +466,12 @@ namespace AutoService.Core
                     //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
                     Validate.ExactParameterLength(commandParameters, 3);
 
-                    supplierUniqueName = commandParameters[1];
-                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    clientUniqueName = commandParameters[1];
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
 
                     var clientNewUniqueName = commandParameters[2];
-                    this.ChangeCounterpartyName(supplierUniqueName, this.clients, clientNewUniqueName);
-                    Console.WriteLine($"Supplier name changed sucessfully to {supplierUniqueName}");
+                    this.ChangeCounterpartyName(clientUniqueName, this.clients, clientNewUniqueName);
+                    Console.WriteLine($"{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
                     break;
 
                 case "removeClient":
