@@ -197,8 +197,8 @@ namespace AutoService.Core
                     Validate.ExactParameterLength(commandParameters, 1);
 
                     this.IssueInvoices();
-                    break;
 
+                    break;
                 case "showAllEmployeesAtDepartment":
 
                     Validate.ExactParameterLength(commandParameters, 2);
@@ -293,7 +293,6 @@ namespace AutoService.Core
                     employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
 
                     employee = Validate.EmployeeById(this.employees, employeeId);
-                    employee = Validate.EmployeeById(this.employees, employeeId);
 
                     assetName = commandParameters[2];
 
@@ -337,7 +336,9 @@ namespace AutoService.Core
 
                     clientWeSellStockTo = (IClient)Validate.CounterpartyByNameOrUniqueNumber(clientNameOrUniqueNumber, clients);
 
-                    stock = Warehouse.Stocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
+                    //bool stockExists = Warehouse.ConfirmStockExists(stock, employee);
+
+                    stock = Warehouse.stocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
                     //stock we sell must be present in the warehouse :)
                     if (stock == null)

@@ -360,5 +360,29 @@ namespace AutoService.Core.Validator
             if (durationInMinutes < minDuration) { throw new ArgumentException($"As per AutoService Policy minimum duration is {minDuration} min."); }
             if (durationInMinutes > maxDuration) { throw new ArgumentException($"Duration of service should be provided in minutes and should not exceed {maxDuration} min. If the provided service took more than {maxDuration} min. please raise two sold service requests."); }
         }
+
+        public static void InvoiceNumberLength(int numberLength)
+        {
+            if (numberLength != 10)
+            {
+                throw new ArgumentException("Invoice number must be 10 digits long!");
+            }
+        }
+
+        public static void InvoicePositiveAmount(decimal value)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException("Invoice amount must be positive!"); // to keep it simple no credit notes :)
+            }
+        }
+
+        public static void InvoiceOverpaid(decimal amount, decimal value)
+        {
+            if (amount < value)
+            {
+                throw new ArgumentException("Invoice is overpaid, please correct the amount to pay!");
+            }
+        }
     }
 }

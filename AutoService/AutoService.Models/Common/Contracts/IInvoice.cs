@@ -18,6 +18,6 @@ namespace AutoService.Models.Contracts
         void IncreasePaidAmount(decimal amount);
         decimal GetOutstandingBalance(); // Calculated property Amount - PaidAmount
 
-        void CalculateInvoiceAmoint();
+        void CalculateInvoiceAmount();
     }
 }
