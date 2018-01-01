@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutoService.Core.Validator;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Contracts;
 
@@ -18,17 +19,12 @@ namespace AutoService.Models.Assets
 
         public Invoice(string number, DateTime date, IClient client)
         {
-            if (string.IsNullOrWhiteSpace(number) || number.Length < 10)
-            {
-                throw new ArgumentException("Invoice number cannot be null!");
-            }
-            
+            Validate.StringForNullEmpty(number);
+            Validate.InvoiceNumberLength(number.Length);
+
             this.number = number;
 
-            if (client == null)
-            {
-                throw new ArgumentException("Client cannot be null!");
-            }
+            Validate.CheckNullObject(client);
 
             this.client = client;
 
@@ -46,10 +42,7 @@ namespace AutoService.Models.Assets
             get => this.amount;
             private set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Invoice amount must be positive!"); // to keep it simple no credit notes :)
-                }
+                Validate.InvoicePositiveAmount(value);
                 this.amount = value;
             }
         }
@@ -59,10 +52,7 @@ namespace AutoService.Models.Assets
             get => this.paidAmount;
             private set
             {
-                if (this.Amount < value)
-                {
-                    throw new ArgumentException("Invoice is overpaid, please correct the amount to pay!");
-                }
+                Validate.InvoiceOverpaid(this.Amount, value);
                 this.paidAmount = value;
             }
         }
@@ -88,9 +78,9 @@ namespace AutoService.Models.Assets
         }
 
         //TODO: Alex, please check it. Once I removed the price from the IWork (because we had a duplication in IWork and IStock) and the commented row below complained
-        public void CalculateInvoiceAmoint()
+        public void CalculateInvoiceAmount()
         {
-            //this.Amount = this.invoiceItems.Select(i => i.Price).Sum();
+            this.Amount = this.invoiceItems.Select(i => i.SellPrice).Sum();
         }
 
         public override string ToString()

@@ -7,7 +7,7 @@ namespace AutoService.Models.BusinessProcess.Contracts
 {
     public interface ISell : IWork
     {
-        ICounterparty Client { get; }
+        IClient Client { get; }
 
         IVehicle Vehicle { get; }
 
