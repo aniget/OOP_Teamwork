@@ -636,11 +636,7 @@ namespace AutoService.Core
                 //sellStock.SellToClientVehicle(sellStock, stock);
 
                 //record the Sell in the notInvoicedSells Dictionary
-                if (!this.notInvoicedSells.ContainsKey(client))
-                {
-                    this.notInvoicedSells[client] = new List<ISell>();
-                }
-                this.notInvoicedSells[client].Add(sellStock);
+                AddSellToNotInvoicedItems(client, sellStock);
             }
             else
             {
@@ -662,11 +658,8 @@ namespace AutoService.Core
                 //sellService.SellToClientVehicle(sellService, null);
 
                 //record the Sell in the notInvoicedSells Dictionary
-                if (!this.notInvoicedSells.ContainsKey(client))
-                {
-                    this.notInvoicedSells[client] = new List<ISell>();
-                }
-                this.notInvoicedSells[client].Add(sellService);
+                AddSellToNotInvoicedItems(client, sellService);
+                
             }
             else
             {
@@ -676,6 +669,15 @@ namespace AutoService.Core
 
             Console.WriteLine($"{serviceName} was performed to {client.Name} for the amount of {sellService.SellPrice}" + Environment.NewLine
                               + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
+        }
+
+        private void AddSellToNotInvoicedItems(IClient client, ISell sellService)
+        {
+            if (!this.notInvoicedSells.ContainsKey(client))
+            {
+                this.notInvoicedSells[client] = new List<ISell>();
+            }
+            this.notInvoicedSells[client].Add(sellService);
         }
 
         private void ShowEmployees()
