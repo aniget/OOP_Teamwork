@@ -1,4 +1,4 @@
-exit
+﻿exit
 showEmployees
 hireEmployee;Jo;Ma;Cleaner;1000;20;Cleaning
 hireEmployee;Jo;Ma;CleanerManager;1000;20;Management
