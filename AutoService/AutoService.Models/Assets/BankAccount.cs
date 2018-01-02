@@ -7,15 +7,18 @@ namespace AutoService.Models.Assets
 {
     public class BankAccount : Asset
     {
-        public event EventHandler<CriticalLimitReachedEventArgs> criticalLimitReached;
+
+        public event EventHandler CriticalLimitReached;
 
         private decimal balance;
         private DateTime registrationDate;
+        private decimal criticalLimit;
 
         public BankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate) : base(name, responsibleEmployee, uniqueNumber)
         {
             this.Balance = 0;
             this.RegistrationDate = registrationDate;
+            this.criticalLimit = 300;
         }
 
         public decimal Balance
@@ -24,6 +27,12 @@ namespace AutoService.Models.Assets
             protected set
             {
                 this.balance = value;
+                if (this.balance <= this.criticalLimit)
+                {
+                    CriticalLimitReachedEventArgs args = new CriticalLimitReachedEventArgs();
+                    args.CriticalLimit = criticalLimit;
+                    OnCriticalLimitReached(args);
+                }
             }
         }
 
@@ -48,10 +57,10 @@ namespace AutoService.Models.Assets
                 throw new ArgumentException($"Employee cannot be responsible for asset {this.GetType().Name}");
             }
         }
-        
+
         public void DepositFunds(decimal amount)
         {
-            if (amount < 0 )
+            if (amount < 0)
             {
                 throw new ArgumentException("Amount cannot be negative!");
             }
@@ -68,10 +77,7 @@ namespace AutoService.Models.Assets
             {
                 throw new ArgumentException("Remaining amount cannot be negative!");
             }
-            CriticalLimitReachedEventArgs args = new CriticalLimitReachedEventArgs();
-            args.CriticalLimit = 100;
 
-            OnCriticalLimitReached(args);
             this.Balance -= amount;
         }
 
@@ -81,9 +87,9 @@ namespace AutoService.Models.Assets
                    $"  - Balance: ${this.Balance}";
         }
 
-        protected virtual void OnCriticalLimitReached(CriticalLimitReachedEventArgs e)
+        public virtual void OnCriticalLimitReached(EventArgs e)
         {
-            EventHandler<CriticalLimitReachedEventArgs> handler = criticalLimitReached;
+            EventHandler handler = CriticalLimitReached;
             if (handler != null)
             {
                 handler(this, e);
