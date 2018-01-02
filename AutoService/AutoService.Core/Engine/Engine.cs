@@ -636,9 +636,8 @@ namespace AutoService.Core
             if (employee.Responsibilities.Contains(ResponsibilityType.Account) ||
                 employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
-                BankAccount bankAccountToAdd =
-                    this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
-
+                BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
+                bankAccountToAdd.CriticalLimitReached += c_CriticalAmountReached;
                 this.bankAccounts.Add(bankAccountToAdd);
                 Console.WriteLine(
                     $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
@@ -648,6 +647,12 @@ namespace AutoService.Core
                 throw new ArgumentException(
                     $"Employee {employee.FirstName} {employee.LastName} does not have the required repsonsibilities to register asset {assetName}");
             }
+
+        }
+
+        static void c_CriticalAmountReached(object sender, EventArgs e)
+        {
+            Console.WriteLine("The minimum threshold of 300 BGN was reached! Please deposit some funds!");
 
         }
 
@@ -946,5 +951,11 @@ namespace AutoService.Core
             counterparties.Remove(counterparty);
             Console.WriteLine($"{counterpartyUniqueName} removed successfully!");
         }
+
+        //static void c_CriticalAmountReached(object sender, CriticalLimitReachedEventArgs e)
+        //{
+        //    Console.WriteLine("The threshold of {0} was reached at", e.CriticalLimit);
+
+        //}
     }
 }
