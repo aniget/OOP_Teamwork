@@ -39,9 +39,9 @@ In the roadmap we have Planes, Submarines and even AlienShips
 
   All spectrum of Stakeholders
 The application provides functionality to register and modify the following stakeholders and their activities:
-	Employees - register, give rights and responsibilities, change their salaries and ofcourse fire them
-	Clients - register them and their vehicles, set discount levels and provide reports for the repairs they've made on their vehicles
-	Suppliers - registration and removal in case they manage poorly with stock delivery
+<<<>>> Employees - register, give rights and responsibilities, change their salaries and ofcourse fire them
+<<<>>> Clients - register them and their vehicles, set discount levels and provide reports for the repairs they've made on their vehicles
+<<<>>> Suppliers - registration and removal in case they manage poorly with stock delivery
 
   The app can also handle payments!
 BitCoins are accepted β 
