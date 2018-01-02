@@ -349,6 +349,8 @@ namespace AutoService.Core
 
                     if (commandParameters.Length == 7)
                     {
+                        employeeLastName = commandParameters[5];
+                        employeeDepartmentName = commandParameters[6];
                         employee = Validate.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
                             employeeDepartmentName);
                     }
@@ -393,8 +395,10 @@ namespace AutoService.Core
 
                     if (commandParameters.Length == 8)
                     {
+                        employeeLastName = commandParameters[6];
+                        employeeDepartment = commandParameters[7];
                         employee = Validate.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
-                            commandParameters[7]);
+                            employeeDepartment);
                     }
                     else
                     {
@@ -424,9 +428,11 @@ namespace AutoService.Core
                     {
                         employee = Validate.EmployeeUnique(this.employees, employeeFirstName, commandParameters[6], commandParameters[7]);
                     }
-
-                    employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
-
+                    else
+                    {
+                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
+                    }
+                    
                     supplierUniqueName = commandParameters[2];
 
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
