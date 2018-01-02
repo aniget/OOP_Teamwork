@@ -20,7 +20,6 @@ namespace AutoService.Models.Common.Models
         public Invoice(string number, DateTime date, IClient client)
         {
             Validate.StringForNullEmpty(number);
-            Validate.InvoiceNumberLength(number.Length);
             Validate.CheckNullObject(client);
 
             this.number = number;

@@ -298,15 +298,7 @@ namespace AutoService.Models.Validator
             if (durationInMinutes > maxDuration) { throw new ArgumentException($"Duration of service should be provided in minutes and should not exceed {maxDuration} min. If the provided service took more than {maxDuration} min. please raise two sold service requests."); }
         }
 
-        public static void InvoiceNumberLength(int numberLength)
-        {
-            if (numberLength != 10)
-            {
-                throw new ArgumentException("Invoice number must be 10 digits long!");
-            }
-        }
-
-        public static void InvoicePositiveAmount(decimal value)
+       public static void InvoicePositiveAmount(decimal value)
         {
             if (value < 0)
             {
@@ -389,6 +381,17 @@ namespace AutoService.Models.Validator
                 isValid = false;
             }
             return isValid;
+        }
+
+        public static IInvoice InvoiceExists(IList<ICounterparty> clients, ICounterparty client, string invoiceNum)
+        {
+            ICounterparty clientFound = clients.FirstOrDefault(fd => fd.UniqueNumber == client.UniqueNumber);
+            IInvoice invoice = clientFound.Invoices.FirstOrDefault(fd => fd.Number == invoiceNum);
+            if (invoice == null)
+            {
+                throw new ArgumentException("Invoice does not exist!");
+            }
+            return invoice;
         }
     }
 }

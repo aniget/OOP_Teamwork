@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using AutoService.Models.Common;
 
 namespace AutoService.Core
 {
@@ -37,6 +38,7 @@ namespace AutoService.Core
         private IAutoServiceFactory factory;
 
         private static readonly IEngine SingleInstance = new Engine();
+
 
         //constructor
         private Engine()
@@ -269,7 +271,7 @@ namespace AutoService.Core
                     string vehicleYear = commandParameters[5];
                     engineType = Validate.EngineTypeFromString(commandParameters[6], "engine type");
                     var additionalParams = Validate.IntFromString(commandParameters[7], "additional parameters");
-                    
+
                     Validate.CounterpartyNotRegistered(this.clients, commandParameters[8], "client");
 
                     clientUniqueName = commandParameters[8];
@@ -278,9 +280,11 @@ namespace AutoService.Core
 
                     if (((IClient)client).Vehicles.Any(x => x.RegistrationNumber == vehicleRegistrationNumber))
                     {
-                        throw new ArgumentException($"This client already has a vehicle with this registration number: {vehicleRegistrationNumber}.");
+                        throw new ArgumentException(
+                            $"This client already has a vehicle with this registration number: {vehicleRegistrationNumber}.");
                     }
-                    newVehicle = CreateVehicle(vehicleType, vehicleMake, vehicleModel, vehicleRegistrationNumber, vehicleYear, engineType, additionalParams);
+                    newVehicle = CreateVehicle(vehicleType, vehicleMake, vehicleModel, vehicleRegistrationNumber,
+                        vehicleYear, engineType, additionalParams);
 
                     ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
                     Console.WriteLine(newVehicle);
@@ -345,11 +349,16 @@ namespace AutoService.Core
 
                     //stock we sell must be present in the warehouse :)
                     bool stockExists = this.warehouse.ConfirmStockExists(stockUniqueNumber, employee);
-                    if (stockExists == false) { throw new ArgumentException($"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse"); }
+                    if (stockExists == false)
+                    {
+                        throw new ArgumentException(
+                            $"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse");
+                    }
                     stock = this.warehouse.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
                     //no need to check vehicle for null because we create a default vehicle with every client registration
-                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x =>
+                       x.RegistrationNumber == vehicleRegistrationNumber);
 
                     this.SellStockToClient(stock, (IClient)client, vehicle);
 
@@ -374,7 +383,8 @@ namespace AutoService.Core
                     Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
-                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x => x.RegistrationNumber == vehicleRegistrationNumber);
+                    vehicle = ((IClient)client).Vehicles.FirstOrDefault(x =>
+                       x.RegistrationNumber == vehicleRegistrationNumber);
 
                     this.SellServiceToClient(employee, (IClient)client, vehicle, serviceName, durationInMinutes);
 
@@ -437,7 +447,7 @@ namespace AutoService.Core
                     Validate.ExactParameterLength(commandParameters, 2);
 
                     supplierUniqueName = commandParameters[1];
-           
+
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
                     this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
@@ -455,7 +465,8 @@ namespace AutoService.Core
 
                     //add default car to the client
                     client = this.clients.FirstOrDefault(x => x.UniqueNumber == clientUniquieNumber);
-                    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol, 5);
+                    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol,
+                        5);
                     ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
                     Console.WriteLine(newVehicle);
 
@@ -488,9 +499,89 @@ namespace AutoService.Core
                 case "listWarehouseItems":
                     this.ListWarehouseItems();
                     break;
+                case "addClientPayment":
+                    //addClientPayment;<clientName>;<bankAccountId>;<invoiceNum>;<amount>
+                    Validate.ExactParameterLength(commandParameters, 5);
+
+                    clientUniqueName = commandParameters[1];
+                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    client = this.clients.FirstOrDefault(f => f.Name == clientUniqueName);
+
+                    bankAccountId = Validate.IntFromString(commandParameters[2], "bankAccountId");
+                    Validate.BankAccountById(this.bankAccounts, bankAccountId);
+                    IInvoice invoiceFound = Validate.InvoiceExists(this.clients, client, commandParameters[3]);
+                    decimal paymentAmount = Validate.DecimalFromString(commandParameters[4], "decimal");
+
+                    this.AddClientPayment(invoiceFound, paymentAmount);
+
+                    break;
+
+                case "listClients":
+                    this.ListClients();
+                    break;
+                case "withdrawCashFromBank":
+                    //withdrawCashFromBank;<employeeId>;<bankAccountId>;<amount>
+
+                    Validate.ExactParameterLength(commandParameters, 4);
+
+                    Validate.BankAccountsCount(this.bankAccounts.Count);
+                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+
+                    employee = Validate.EmployeeById(this.employees, employeeId);
+
+                    bankAccountId = Validate.IntFromString(commandParameters[2], "bankAccountId");
+
+                    bankAccount = Validate.BankAccountById(this.bankAccounts, bankAccountId);
+
+                    decimal withdrawAmount = Validate.DecimalFromString(commandParameters[3], "depositAmount");
+
+                    this.WithdrawCashFromBank(bankAccount, withdrawAmount, employee);
+
+                    break;
+                case "help":
+                    this.HelpThem();
+                    break;
+
                 default:
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
+        }
+
+        private void WithdrawCashFromBank(BankAccount bankAccount, decimal withdrawAmount, IEmployee employee)
+        {
+            if (employee.Responsibilities.Contains(ResponsibilityType.Account) || employee.Responsibilities.Contains(ResponsibilityType.Manage))
+            {
+                bankAccount.WithdrawFunds(withdrawAmount);
+                Console.WriteLine($"{withdrawAmount} BGN were successfully withdrawn by {employee.FirstName} {employee.LastName}");
+            }
+            else
+            {
+                throw new ArgumentException($"Employee {employee.FirstName} {employee.LastName} is not allowed to withdraw!");
+            }
+        }
+
+
+        private void HelpThem()
+        {
+            Console.WriteLine("This is a sample AutoService software written for just 5 days." + Environment.NewLine +
+                              "For suggestions on improvement please send email to holySynod@bg-patriarshia.bg" +
+                              Environment.NewLine +
+                              "Please donate in order to keep us alive! We accept BitCoin, LiteCoin, Ethereum, PitCoin , ShitCoin and any other coin!");
+        }
+
+        private void ListClients()
+        {
+            foreach (var client in this.clients)
+            {
+                Console.WriteLine(client);
+            }
+        }
+
+        private void AddClientPayment(IInvoice invoiceFound, decimal paymentAmount)
+        {
+            invoiceFound.IncreasePaidAmount(paymentAmount);
+            Console.WriteLine(
+                $"amount {paymentAmount} successfully booked to invoice {invoiceFound.Number}. Thank you for your business!");
         }
 
         private void ListWarehouseItems()
@@ -498,7 +589,8 @@ namespace AutoService.Core
             Console.WriteLine(this.warehouse);
         }
 
-        private void ChangeCounterpartyName(string counterpartyName, IList<ICounterparty> counterparties, string counterpartyNewName)
+        private void ChangeCounterpartyName(string counterpartyName, IList<ICounterparty> counterparties,
+            string counterpartyNewName)
         {
             var supplier = counterparties.First(f => f.Name == counterpartyName);
 
@@ -511,12 +603,14 @@ namespace AutoService.Core
             Console.WriteLine($"{depositAmount} BGN were successfully added to bank account {bankAccount.Name}");
         }
 
-        private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate, string uniqueNumber)
+        private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate,
+            string uniqueNumber)
         {
             if (employee.Responsibilities.Contains(ResponsibilityType.Account) ||
                 employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
-                BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
+                BankAccount bankAccountToAdd =
+                    this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
 
                 this.bankAccounts.Add(bankAccountToAdd);
                 Console.WriteLine(
@@ -530,7 +624,8 @@ namespace AutoService.Core
 
         }
 
-        private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleMake, string vehicleModel, string registrationNumber, string vehicleYear, EngineType engineType, int additionalParams)
+        private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleMake, string vehicleModel,
+                string registrationNumber, string vehicleYear, EngineType engineType, int additionalParams)
         //vehicleType, vehicleMake, vehicleModel, registrationNumber, vehicleYear, engineType, additionalParams
 
         {
@@ -538,16 +633,19 @@ namespace AutoService.Core
 
             if (vehicleType == VehicleType.Car)
             {
-                vehicle = (IVehicle)this.factory.CreateVehicle(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
+                vehicle = (IVehicle)this.factory.CreateVehicle(vehicleModel, vehicleMake, registrationNumber,
+                    vehicleYear, engineType, additionalParams);
             }
 
             else if (vehicleType == VehicleType.SmallTruck)
             {
-                vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
+                vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber,
+                    vehicleYear, engineType, additionalParams);
             }
             else if (vehicleType == VehicleType.Truck)
             {
-                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber, vehicleYear, engineType, additionalParams);
+                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber,
+                    vehicleYear, engineType, additionalParams);
             }
             return vehicle;
         }
@@ -637,7 +735,10 @@ namespace AutoService.Core
                     $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required repsonsibilities to register asset {stock.Name}");
             }
 
-            Console.WriteLine($"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." + Environment.NewLine + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+            Console.WriteLine(
+                $"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." +
+                Environment.NewLine +
+                $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
 
         private void SellStockToClient(IStock stock, IClient client, IVehicle vehicle)
@@ -661,17 +762,21 @@ namespace AutoService.Core
                     $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
             }
 
-            Console.WriteLine($"{stock.Name} purchased from {stock.Supplier.Name} was sold to {client.Name} for the amount of {sellStock.SellPrice}" + Environment.NewLine
+            Console.WriteLine(
+                $"{stock.Name} purchased from {stock.Supplier.Name} was sold to {client.Name} for the amount of {sellStock.SellPrice}" +
+                Environment.NewLine
                 + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
 
-        private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName, int durationInMinutes)
+        private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle,
+            string serviceName, int durationInMinutes)
         {
             ISellService sellService;
             if (responsibleEmployee.Responsibilities.Contains(ResponsibilityType.Repair) ||
                 responsibleEmployee.Responsibilities.Contains(ResponsibilityType.SellService))
             {
-                sellService = (ISellService)factory.CreateSellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes);
+                sellService = (ISellService)factory.CreateSellService(responsibleEmployee, client, vehicle,
+                    serviceName, durationInMinutes);
                 //sellService.SellToClientVehicle(sellService, null);
 
                 //record the Sell in the notInvoicedSells Dictionary
@@ -684,8 +789,10 @@ namespace AutoService.Core
                     $"Employee {responsibleEmployee.FirstName} {responsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
             }
 
-            Console.WriteLine($"{serviceName} was performed to {client.Name} for the amount of {sellService.SellPrice}" + Environment.NewLine
-                              + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
+            Console.WriteLine(
+                $"{serviceName} was performed to {client.Name} for the amount of {sellService.SellPrice}" +
+                Environment.NewLine
+                + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
         }
 
         private void AddSellToNotInvoicedItems(IClient client, ISell sell)
@@ -740,7 +847,7 @@ namespace AutoService.Core
             {
                 this.lastInvoiceNumber++;
                 invoiceCount++;
-                string invoiceNumber = this.lastInvoiceNumber.ToString().PadLeft(10, '0');
+                string invoiceNumber = this.lastInvoiceNumber.ToString();
                 this.lastInvoiceDate = this.lastInvoiceDate.AddDays(3);
                 IInvoice invoice = new Invoice(invoiceNumber, this.lastInvoiceDate, client.Key);
 
@@ -782,7 +889,8 @@ namespace AutoService.Core
             ICounterparty supplier = this.factory.CreateSupplier(name, address, uniqueNumber);
             if (suppliers.FirstOrDefault(x => x.UniqueNumber == uniqueNumber) != null)
             {
-                throw new ArgumentException("Supplier with the same unique number already exist. Please check the number and try again!");
+                throw new ArgumentException(
+                    "Supplier with the same unique number already exist. Please check the number and try again!");
             }
             this.suppliers.Add(supplier);
             Console.WriteLine(supplier);
@@ -794,7 +902,8 @@ namespace AutoService.Core
             if (clients.Any(x => x.UniqueNumber == uniqueNumber))
             {
                 var clientExisting = this.clients.First(f => f.UniqueNumber == uniqueNumber);
-                throw new ArgumentException($"Client with the same unique number {clientExisting.Name} already exists. Please check the number and try again!");
+                throw new ArgumentException(
+                    $"Client with the same unique number {clientExisting.Name} already exists. Please check the number and try again!");
             }
 
             ICounterparty client = this.factory.CreateClient(name, address, uniqueNumber);
