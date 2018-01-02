@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoService.Models.Common;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 
@@ -6,6 +7,8 @@ namespace AutoService.Models.Assets
 {
     public class BankAccount : Asset
     {
+        public event EventHandler<CriticalLimitReachedEventArgs> criticalLimitReached;
+
         private decimal balance;
         private DateTime registrationDate;
 
@@ -65,6 +68,10 @@ namespace AutoService.Models.Assets
             {
                 throw new ArgumentException("Remaining amount cannot be negative!");
             }
+            CriticalLimitReachedEventArgs args = new CriticalLimitReachedEventArgs();
+            args.CriticalLimit = 100;
+
+            OnCriticalLimitReached(args);
             this.Balance -= amount;
         }
 
@@ -72,6 +79,15 @@ namespace AutoService.Models.Assets
         {
             return base.ToString() + Environment.NewLine +
                    $"  - Balance: ${this.Balance}";
+        }
+
+        protected virtual void OnCriticalLimitReached(CriticalLimitReachedEventArgs e)
+        {
+            EventHandler<CriticalLimitReachedEventArgs> handler = criticalLimitReached;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
     }
 }
