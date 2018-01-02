@@ -114,36 +114,37 @@ namespace AutoService.Models.Validator
         }
 
 
-        public static void EmployeeExist(IList<IEmployee> employees, string employeeFirstName)
+        public static void EmployeeAlreadyExistOnHire(IList<IEmployee> employees, string employeeFirstName, string employeeLastName, string employeeDepartment)
         {
-            if (!employees.Any(x => x.FirstName == employeeFirstName))
+            if (employees.Any(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment))
             {
-                throw new ArgumentException($"There is no employee called {employeeFirstName} in the AutoService");
+                throw new ArgumentException($"There is already employee called {employeeFirstName} in the AutoService");
             }
         }
 
-        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNameIndex, int maxLength)
+        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string employeeFirstName, string employeeLastName, string employeeDepartment)
         {
             IEmployee employee;
 
-            var employeeFirstName = commandParameters[employeeFirstNameIndex];
-
-            if (commandParameters.Length == maxLength) //employeeFirstName + employeeLastName + employeeDepartment
+            if (!(string.IsNullOrWhiteSpace(employeeLastName) && string.IsNullOrEmpty(employeeDepartment))) //employeeFirstName + employeeLastName + employeeDepartment
             {
-                var employeeLastName = commandParameters[maxLength - 2];
-                var employeeDepartment = commandParameters[maxLength - 1];
-                return employee = employees.Single(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment);
-            }
-            else
-            {
-                if (employees.Where(x => x.FirstName == employeeFirstName).Count() > 1)
+                if (employees.Count(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment) > 1)
                 {
-                    throw new ArgumentException("More than one employee with the same name, please provide first name, last name and department");
+                    throw new ArgumentException("Employees with equal First Name, Last name and Department are not allowed! Please rename one of your employees and buy him/her a shirt!");
+                } else if (employees.Count(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment) == 1)
+                { 
+                    return employee = employees.Single(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment);
                 }
-
-                return employee = employees.Single(x => x.FirstName == employeeFirstName);
+                // count = 0
+                throw new ArgumentException("There is no employee with this name");
             }
 
+            if (employees.Count(x => x.FirstName == employeeFirstName) > 1)
+            {
+                throw new ArgumentException("More than one employee with the same name, please provide first name, last name and department");
+            }
+
+            return employee = employees.Single(x => x.FirstName == employeeFirstName);
         }
 
         //public static ICounterparty ClientByUniqueName(IList<ICounterparty> counterparties, string clientUniqueName)
@@ -298,7 +299,7 @@ namespace AutoService.Models.Validator
             if (durationInMinutes > maxDuration) { throw new ArgumentException($"Duration of service should be provided in minutes and should not exceed {maxDuration} min. If the provided service took more than {maxDuration} min. please raise two sold service requests."); }
         }
 
-       public static void InvoicePositiveAmount(decimal value)
+        public static void InvoicePositiveAmount(decimal value)
         {
             if (value < 0)
             {

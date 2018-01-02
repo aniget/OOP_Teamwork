@@ -133,6 +133,8 @@ namespace AutoService.Core
             string stockUniqueNumber;
             string bankAccountNumber;
             string employeeFirstName;
+            string employeeLastName = "";
+            string employeeDepartment = "";
             string supplierUniqueNumber;
             string supplierUniqueName;
             string supplierAddress;
@@ -157,17 +159,20 @@ namespace AutoService.Core
 
                     Validate.ExactParameterLength(commandParameters, 7);
 
-                    var firstName = commandParameters[1];
-                    var lastName = commandParameters[2];
+                    employeeFirstName = commandParameters[1];
+                    employeeLastName = commandParameters[2];
                     position = commandParameters[3];
 
                     salary = Validate.DecimalFromString(commandParameters[4], "salary");
 
                     ratePerMinute = Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
 
-                    department = Validate.DepartmentTypeFromString(commandParameters[6], "department");
+                    employeeDepartment = commandParameters[6];
+                    department = Validate.DepartmentTypeFromString(employeeDepartment, "department");
 
-                    this.AddEmployee(firstName, lastName, position, salary, ratePerMinute, department);
+                    Validate.EmployeeAlreadyExistOnHire(this.employees, employeeFirstName, employeeLastName, employeeDepartment);
+
+                    this.AddEmployee(employeeFirstName, employeeLastName, position, salary, ratePerMinute, department);
 
                     break;
 
@@ -339,10 +344,19 @@ namespace AutoService.Core
                     clientUniqueName = commandParameters[2];
                     vehicleRegistrationNumber = commandParameters[3];
                     stockUniqueNumber = commandParameters[4];
+                    employeeLastName = "";
+                    string employeeDepartmentName = "";
 
-                    Validate.EmployeeExist(this.employees, employeeFirstName);
-                    employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 7);
-
+                    if (commandParameters.Length == 7)
+                    {
+                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
+                            employeeDepartmentName);
+                    }
+                    else
+                    {
+                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
+                    }
+                    
                     Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
 
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
@@ -377,8 +391,15 @@ namespace AutoService.Core
 
                     int durationInMinutes = Validate.IntFromString(commandParameters[5], "duration in minutes");
 
-                    Validate.EmployeeExist(this.employees, employeeFirstName);
-                    employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
+                    if (commandParameters.Length == 8)
+                    {
+                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
+                            commandParameters[7]);
+                    }
+                    else
+                    {
+                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
+                    }
 
                     Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
@@ -396,9 +417,15 @@ namespace AutoService.Core
 
                     Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
+                    
+
                     employeeFirstName = commandParameters[1];
-                    Validate.EmployeeExist(this.employees, employeeFirstName);
-                    employee = Validate.EmployeeUnique(this.employees, commandParameters, 1, 8);
+                    if (commandParameters.Length == 8)
+                    {
+                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, commandParameters[6], commandParameters[7]);
+                    }
+
+                    employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
 
                     supplierUniqueName = commandParameters[2];
 
@@ -815,7 +842,7 @@ namespace AutoService.Core
                     Console.WriteLine(hiredCounter + ". " + currentEmployee);
                     hiredCounter++;
                 }
-                int counter = 1;
+                //int counter = 1;
             }
             else
             {
