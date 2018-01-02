@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="AutoService.Models.Assets.Work">
-    <Position X="3.75" Y="0.5" Width="2" />
+    <Position X="2.25" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAQAAAAAAAAAIAAAAAgACAAAAAAAAQAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAIAIgACAAAAAAAAAAAAAAA=</HashCode>
       <FileName>BusinessProcess\Models\Work.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AutoService.Models.BusinessProcess.Models.Order">
-    <Position X="2.75" Y="3.5" Width="1.25" />
+    <Position X="0.5" Y="3.75" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>BusinessProcess\Models\Order.cs</FileName>
@@ -17,17 +17,104 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="AutoService.Models.BusinessProcess.Models.Sell">
-    <Position X="5.5" Y="3.5" Width="1.75" />
+    <Position X="4.5" Y="3.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAAAQEEAAAAAAABAAAAAAAAABAAAAAAAY=</HashCode>
+      <HashCode>AAIAAAAABAAAAAQkAAAAAAAAJAAAAAQAAAAABAAAAAQ=</HashCode>
       <FileName>BusinessProcess\Models\Sell.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="AutoService.Models.BusinessProcess.Models.SellService">
-    <Position X="8.5" Y="4.75" Width="1.25" />
+    <Position X="6.5" Y="8" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAEAICAAAAAAAAEAAAAAAAAAAAAAAIAAABAAAAABgI=</HashCode>
+      <HashCode>AAIEAICAAAAAAAAkAAAAAAAAIAAAAAIAAAAAAAAABgA=</HashCode>
       <FileName>BusinessProcess\Models\SellService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.BusinessProcess.Models.SellStock">
+    <Position X="2" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAkAAAAAAAAoAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessProcess\Models\SellStock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.BusinessProcess.Models.OrderStock" Collapsed="true">
+    <Position X="0.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>BusinessProcess\Models\OrderStock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.Vehicles.Models.Vehicle">
+    <Position X="9" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgIEAAAABAAAAAAEAAAAAAAAAAAAAEAABAhAAAYKAAA=</HashCode>
+      <FileName>Vehicles\Models\Vehicle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.Vehicles.Models.Car">
+    <Position X="8" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAEAAAABAA=</HashCode>
+      <FileName>Vehicles\Models\Car.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.Vehicles.Models.Truck">
+    <Position X="10.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAgAAAAIAAAAAAAA=</HashCode>
+      <FileName>Vehicles\Models\Truck.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.Common.Models.CounterParty">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAgEAAAAAAQAAAIEAAgCAAAAAGAAAAA=</HashCode>
+      <FileName>Common\Models\CounterParty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.Common.Models.Client">
+    <Position X="12.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkBACAAAAAgAAEAAAABAAAAAAAAAAAAgAAAAIAAAA=</HashCode>
+      <FileName>Common\Models\Client.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.Common.Models.Supplier">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\Models\Supplier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoService.Models.Assets.Asset">
+    <Position X="18.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgEAAACAAQAIgAEAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Asset.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AutoService.Models.Assets.BankAccount">
+    <Position X="17" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAEgBAAAIIQAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\BankAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AutoService.Models.Assets.Stock">
+    <Position X="20.25" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgMAEAADAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Stock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

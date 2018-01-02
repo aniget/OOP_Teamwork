@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.Validator;
@@ -98,7 +99,7 @@ namespace AutoService.Models.Common.Models
             private set { this.isHired = value; }
         }
 
-        public List<ResponsibilityType> Responsibiities
+        public List<ResponsibilityType> Responsibilities
         {
             get => this.responsibilities;
         }
@@ -110,30 +111,30 @@ namespace AutoService.Models.Common.Models
 
         public void AddResponsibilities(List<ResponsibilityType> value)
         {
-            List<ResponsibilityType> result = new List<ResponsibilityType>();
-            List<ResponsibilityType> hasResp = new List<ResponsibilityType>();
+            List<ResponsibilityType> resposibilityToBeAdded = new List<ResponsibilityType>();
+            List<ResponsibilityType> alreadyHasResponsibilities = new List<ResponsibilityType>();
 
             foreach (var resp in value)
             {
-                if (!responsibilities.Contains(resp))
+                if (this.Responsibilities.Any(a => a.Equals(resp)))
                 {
-                    this.responsibilities.Add(resp);
-                    result.Add(resp);
+                    alreadyHasResponsibilities.Add(resp);
                 }
                 else
                 {
-                    hasResp.Add(resp);
+                    this.Responsibilities.Add(resp);
+                    resposibilityToBeAdded.Add(resp);
                 }
             }
 
-            if (result.Count > 0)
+            if (resposibilityToBeAdded.Count > 0)
             {
-                Console.WriteLine($"To Employee {this.FirstName} {this.LastName} were successfully added responsibilities {string.Join(", ", result)}");
+                Console.WriteLine($"To Employee {this.FirstName} {this.LastName} were successfully added responsibilities {string.Join(", ", resposibilityToBeAdded)}");
             }
-            if (hasResp.Count > 0)
+            if (alreadyHasResponsibilities.Count > 0)
 
             {
-                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has these responsibilities: {string.Join(", ", hasResp)} ");
+                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has these responsibilities: {string.Join(", ", alreadyHasResponsibilities)} ");
             }
         }
 
@@ -164,7 +165,7 @@ namespace AutoService.Models.Common.Models
         {
             if (IsHired)
             {
-                this.Responsibiities.Clear();
+                this.Responsibilities.Clear();
                 this.IsHired = false;
             }
             else
@@ -184,7 +185,7 @@ namespace AutoService.Models.Common.Models
                    $"+++ Position: {this.Position}" + Environment.NewLine +
                    $"+++ Rate per minute: {this.RatePerMinute} $" + Environment.NewLine +
                    $"+++ Department: {this.Department}" + Environment.NewLine +
-                   string.Format("+++ Responsibilites: {0}", this.Responsibiities.Count == 0 ? "No repsonsibilites" : string.Join(", ", this.Responsibiities));
+                   string.Format("+++ Responsibilites: {0}", this.Responsibilities.Count == 0 ? "No repsonsibilites" : string.Join(", ", this.Responsibilities));
         }
     }
 }

@@ -46,7 +46,7 @@ namespace AutoService.Models.Assets
             {
                 throw new ArgumentException("Responsible employee can't be null!");
             }
-            if (employee.Responsibiities.Contains(ResponsibilityType.BuyPartForClient) || employee.Responsibiities.Contains(ResponsibilityType.BuyPartForWarehouse) || employee.Responsibiities.Contains(ResponsibilityType.WorkInWarehouse))
+            if (employee.Responsibilities.Contains(ResponsibilityType.BuyPartForClient) || employee.Responsibilities.Contains(ResponsibilityType.BuyPartForWarehouse) || employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
             {
                 this.ResponsibleEmployee = employee;
             }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoService.Models.CustomExceptions;
-using AutoService.Models.Assets;
+﻿using AutoService.Models.Assets;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
+using AutoService.Models.CustomExceptions;
 using AutoService.Models.Vehicles.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoService.Models.Validator
 {
@@ -122,11 +122,11 @@ namespace AutoService.Models.Validator
             }
         }
 
-        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNemaIndex, int maxLength)
+        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string[] commandParameters, int employeeFirstNameIndex, int maxLength)
         {
             IEmployee employee;
 
-            var employeeFirstName = commandParameters[employeeFirstNemaIndex];
+            var employeeFirstName = commandParameters[employeeFirstNameIndex];
 
             if (commandParameters.Length == maxLength) //employeeFirstName + employeeLastName + employeeDepartment
             {
@@ -136,9 +136,9 @@ namespace AutoService.Models.Validator
             }
             else
             {
-                if (employees.Select(x => x.FirstName == employeeFirstName).Count() > 1)
+                if (employees.Where(x => x.FirstName == employeeFirstName).Count() > 1)
                 {
-                    throw new ArgumentException("More than one emplyee with same name, please provide first name, last name and department");
+                    throw new ArgumentException("More than one employee with the same name, please provide first name, last name and department");
                 }
 
                 return employee = employees.Single(x => x.FirstName == employeeFirstName);
@@ -146,19 +146,19 @@ namespace AutoService.Models.Validator
 
         }
 
-        public static ICounterparty ClientByUniqueName(IList<ICounterparty> counterparties, string clientUniqueName)
-        {
-            if (string.IsNullOrWhiteSpace(clientUniqueName))
-            {
-                throw new InvalidIdException("Please provide a valid counterparty name value");
-            }
+        //public static ICounterparty ClientByUniqueName(IList<ICounterparty> counterparties, string clientUniqueName)
+        //{
+        //    if (string.IsNullOrWhiteSpace(clientUniqueName))
+        //    {
+        //        throw new InvalidIdException("Please provide a valid counterparty name value");
+        //    }
 
-            ICounterparty counterparty = counterparties.Count(x => x.Name == clientUniqueName) == 1
-                ? counterparties.FirstOrDefault(x=>x.Name == clientUniqueName)
-                : throw new ArgumentException("This counterparty does not exist!");
+        //    ICounterparty counterparty = counterparties.Count(x => x.Name == clientUniqueName) == 1
+        //        ? counterparties.FirstOrDefault(x => x.Name == clientUniqueName)
+        //        : throw new ArgumentException("This counterparty does not exist!");
 
-            return counterparty;
-        }
+        //    return counterparty;
+        //}
 
         public static DepartmentType DepartmentTypeFromString(string commandParameter, string department)
         {
@@ -172,41 +172,6 @@ namespace AutoService.Models.Validator
             }
             return departmentFound;
         }
-
-        ////this is validatete in the class
-        //public static void VehicleMakeModelRegNumber(string vehicleMake, string vehicleModel, string vehicleRegistrationNumber)
-        //{
-        //    //validate All for null
-        //    if (string.IsNullOrWhiteSpace(vehicleMake) || string.IsNullOrWhiteSpace(vehicleModel) || string.IsNullOrWhiteSpace(vehicleRegistrationNumber))
-        //    {
-        //        throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
-        //    }
-        //    //validate Make
-        //    if (vehicleMake.Length < 3 || vehicleMake.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
-        //    //validate Model
-        //    if (vehicleModel.Length < 2 || vehicleModel.Length > 20) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
-
-        //    //validate Reg Number
-        //    if (vehicleRegistrationNumber.Length < 6){ throw new ArgumentException("Invalid registration number. Must be at least 6 characters!"); }
-
-        //}
-
-        //public static void CounterpartyCreate(string counterpartyName, string counterpartyAddress, string counterpartyUniqueNumber)
-        //{
-        //    //validate All for null
-        //    if (string.IsNullOrWhiteSpace(counterpartyName) || string.IsNullOrWhiteSpace(counterpartyAddress) || string.IsNullOrWhiteSpace(counterpartyUniqueNumber))
-        //    {
-        //        throw new ArgumentException("Vehicle parameters: null value provided for Make, Model or Registration Number!");
-        //    }
-        //    //validate Name
-        //    if (counterpartyName.Length < 3 || counterpartyName.Length > 20) { throw new ArgumentException("Vehicle Make must be between 3 and 20 characters long"); }
-        //    //validate Address
-        //    if (counterpartyAddress.Length < 10 || counterpartyAddress.Length > 200) { throw new ArgumentException("Vehicle Model must be between 2 and 20 characters long"); }
-
-        //    //validate UniqueNumber
-        //    if (counterpartyUniqueNumber.Length != 9 || counterpartyUniqueNumber.Any(a => !char.IsDigit(a))) { throw new ArgumentException("Invalid unique number. Must be exactly 9 characters and only digits!"); }
-
-        //}
 
         public static VehicleType VehicleTypeFromString(string commandParameter, string vehicleType)
         {
@@ -233,31 +198,6 @@ namespace AutoService.Models.Validator
             }
             return engineTypeFound;
         }
-
-        //public static ICounterparty CounterpartyByNameOrUniqueNumber(string counterpartyNameOrUniqueNumber, IList<ICounterparty> counterparties)
-        //{
-        //    if (!counterparties.Any(x => x.Name == counterpartyNameOrUniqueNumber || x.UniqueNumber == counterpartyNameOrUniqueNumber))
-        //    {
-        //        throw new ArgumentException($"Our AutoService does not work with supplier {counterpartyNameOrUniqueNumber}");
-        //    }
-        //    //iF INFO provided is not the Unique number but the name
-        //    if (counterparties.Any(x => x.UniqueNumber != counterpartyNameOrUniqueNumber))
-        //    {
-        //        if (counterparties.Select(x => x.Name == counterpartyNameOrUniqueNumber).Count() > 1)
-        //        {
-        //            throw new ArgumentException(
-        //                "More than one registered supplier with same name, please provide unique number INSTEAD of name");
-        //        }
-        //        else
-        //        {
-        //            return counterparties.Single(x => x.Name == counterpartyNameOrUniqueNumber);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return counterparties.Single(x => x.UniqueNumber == counterpartyNameOrUniqueNumber);
-        //    }
-        //}
 
         public static void ValidateBankAccount(string bankAccount)
         {
@@ -319,34 +259,32 @@ namespace AutoService.Models.Validator
             }
         }
 
-        public static bool CounterpartyExists(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType, bool throwErrorMessage)
+        public static void CounterpartyAlreadyRegistered(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType)
         {
-            bool exist = false;
+            if (string.IsNullOrWhiteSpace(counterpartyName))
+            {
+                throw new InvalidIdException($"Please provide a valid {counterpartyType} name");
+            }
+
             if (counterparties.Any(a => a.Name == counterpartyName))
             {
-                if (throwErrorMessage)
-                {
-                    throw new ArgumentException($"{counterpartyName} is already registered. If an existing counterparty has changed it's name use command \"change{counterpartyType}Name\"");
-                }
-                exist = true;
+                throw new ArgumentException($"{counterpartyName} is already registered. If an existing counterparty has changed it's name use command \"change{counterpartyType}Name\"");
             }
-            return exist;
         }
 
-        public static void ExistingSupplierFromUniqueNumber(IList<ICounterparty> suppliers, string supplierUniqueNumber)
+        public static void CounterpartyNotRegistered(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType)
         {
-            if (suppliers.All(a => a.UniqueNumber != supplierUniqueNumber))
+            Validate.StringForNullEmpty(counterpartyName);
+
+            if (counterparties.All(a => a.Name != counterpartyName))
             {
-                throw new ArgumentException("This supplier is not found. Please check if the correct Unique number was used!");
+                throw new ArgumentException($"{counterpartyType} is not registered.");
             }
         }
 
         public static void SellPrice(decimal sellPrice)
         {
-            if (sellPrice < 0)
-            {
-                throw new ArgumentException("Sell price must be positive number");
-            }
+            Validate.NonNegativeValue(sellPrice, "sell price");
         }
 
         public static void ServiceNameLength(string serviceName)
@@ -360,15 +298,7 @@ namespace AutoService.Models.Validator
             if (durationInMinutes > maxDuration) { throw new ArgumentException($"Duration of service should be provided in minutes and should not exceed {maxDuration} min. If the provided service took more than {maxDuration} min. please raise two sold service requests."); }
         }
 
-        public static void InvoiceNumberLength(int numberLength)
-        {
-            if (numberLength != 10)
-            {
-                throw new ArgumentException("Invoice number must be 10 digits long!");
-            }
-        }
-
-        public static void InvoicePositiveAmount(decimal value)
+       public static void InvoicePositiveAmount(decimal value)
         {
             if (value < 0)
             {
@@ -439,6 +369,29 @@ namespace AutoService.Models.Validator
             {
                 throw new ArgumentException($"{parameter} cannot be negative!");
             }
+        }
+
+        public static bool IsValidResponsibilityTypeFromString(string responsibility)
+        {
+            bool isValid = true;
+            ResponsibilityType currentResponsibility;
+            if (!Enum.TryParse(responsibility, out currentResponsibility))
+            {
+                Console.WriteLine($"Responsibility {responsibility} not valid!");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        public static IInvoice InvoiceExists(IList<ICounterparty> clients, ICounterparty client, string invoiceNum)
+        {
+            ICounterparty clientFound = clients.FirstOrDefault(fd => fd.UniqueNumber == client.UniqueNumber);
+            IInvoice invoice = clientFound.Invoices.FirstOrDefault(fd => fd.Number == invoiceNum);
+            if (invoice == null)
+            {
+                throw new ArgumentException("Invoice does not exist!");
+            }
+            return invoice;
         }
     }
 }
