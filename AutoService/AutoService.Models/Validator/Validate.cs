@@ -146,21 +146,7 @@ namespace AutoService.Models.Validator
 
             return employee = employees.Single(x => x.FirstName == employeeFirstName);
         }
-
-        //public static ICounterparty ClientByUniqueName(IList<ICounterparty> counterparties, string clientUniqueName)
-        //{
-        //    if (string.IsNullOrWhiteSpace(clientUniqueName))
-        //    {
-        //        throw new InvalidIdException("Please provide a valid counterparty name value");
-        //    }
-
-        //    ICounterparty counterparty = counterparties.Count(x => x.Name == clientUniqueName) == 1
-        //        ? counterparties.FirstOrDefault(x => x.Name == clientUniqueName)
-        //        : throw new ArgumentException("This counterparty does not exist!");
-
-        //    return counterparty;
-        //}
-
+        
         public static DepartmentType DepartmentTypeFromString(string commandParameter, string department)
         {
             DepartmentType departmentFound;

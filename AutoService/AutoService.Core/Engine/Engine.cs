@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using AutoService.Models.Common;
 
 namespace AutoService.Core
@@ -62,33 +64,30 @@ namespace AutoService.Core
             var command = ReadCommand();
             var commandParameters = new string[] { string.Empty };
 
+
+
             while (command != "exit")
             {
+
                 commandParameters = ParseCommand(command);
                 try
                 {
                     ExecuteSingleCommand(commandParameters);
                 }
-                catch (NotSupportedException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                catch (InvalidIdException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                catch (ArgumentException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+
+                catch (NotSupportedException e) { Console.WriteLine(e.Message); }
+                catch (InvalidOperationException e) { Console.WriteLine(e.Message); }
+                catch (InvalidIdException e) { Console.WriteLine(e.Message); }
+                catch (ArgumentException e) { Console.WriteLine(e.Message); }
+
                 Console.WriteLine(Environment.NewLine +
                                   "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
                                   Environment.NewLine);
+
+                Console.WriteLine("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+                Console.Write("   ");
                 command = ReadCommand();
+
             }
         }
 
@@ -102,14 +101,17 @@ namespace AutoService.Core
             return command.Split(new string[] { ";" }, StringSplitOptions.None);
         }
 
+
+
         private void ExecuteSingleCommand(string[] commandParameters)
         {
             string commandType = string.Empty;
-
             try
             {
+                Console.WriteLine("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
                 Console.WriteLine();
                 commandType = commandParameters[0];
+
             }
             catch
             {
@@ -144,7 +146,6 @@ namespace AutoService.Core
             string vehicleMake;
             string vehicleModel;
             string vehicleRegistrationNumber;
-
 
             switch (commandType)
             {
@@ -358,7 +359,7 @@ namespace AutoService.Core
                     {
                         employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
                     }
-                    
+
                     Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
 
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
@@ -421,7 +422,7 @@ namespace AutoService.Core
 
                     Validate.EitherOrParameterLength(commandParameters, 6, 8);
 
-                    
+
 
                     employeeFirstName = commandParameters[1];
                     if (commandParameters.Length == 8)
@@ -432,7 +433,7 @@ namespace AutoService.Core
                     {
                         employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
                     }
-                    
+
                     supplierUniqueName = commandParameters[2];
 
                     Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");

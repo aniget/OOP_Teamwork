@@ -7,7 +7,7 @@ namespace AutoService.Models.Assets
 {
     public class BankAccount : Asset
     {
-
+        //declaration of the event
         public event EventHandler CriticalLimitReached;
 
         private decimal balance;
