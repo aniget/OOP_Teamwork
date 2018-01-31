@@ -22,7 +22,7 @@ namespace AutoService.Models.Assets
             this.purchasePrice = purchasePrice;
             if (supplier == null)
             {
-                throw new ArgumentException("Null ");
+                throw new ArgumentException(/*"Null "*/);
             }
             this.supplier = supplier;
 

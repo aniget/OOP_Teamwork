@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 
@@ -45,6 +46,10 @@ namespace AutoService.Models.Assets
                     throw new ArgumentException("Null employee provided!");
                 }
                 this.responsibleEmployee = value;
+
+                // ctn.RegisterNamed<Engine>().As<IEngine>("engine")
+                // ctn.RegisterNamed<MyEngine>().As<IEngine>("myEngine")
+                //
             }
         }
 
@@ -73,4 +78,16 @@ namespace AutoService.Models.Assets
                 $"  - Responsible employee: {this.ResponsibleEmployee.FirstName} {this.ResponsibleEmployee.LastName} - {this.ResponsibleEmployee.Position}";
         }
     }
+
+    //class CommandFactory
+    //{
+    //    public CommandFactory(ContainerBuilder builder)
+    //    {
+
+    //    }
+    //    ICommand Create(string name)
+    //    {
+    //        this.builder.RegisterNamed<ICommand>(name);
+    //    }
+    //}
 }

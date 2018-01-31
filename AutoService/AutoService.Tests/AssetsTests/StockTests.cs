@@ -9,12 +9,13 @@ namespace AutoService.Tests.AssetsTests
     public class StockTests
     {
         [TestMethod]
-        public void Stock_Constructor_ShouldThrow_WhenSuppliersIsNull()
+        public void Stock_Constructor_ShouldThrowArgumentException_WhenSuppliersIsNull()
         {
             //Arrange
-            //Act
-            //Assert
-            Assert.ThrowsException<ArgumentException>(() => new Stock("stock name", null, "uniqueNumber", 15.5m, null));
+            FakeEmployee testEmployee = new FakeEmployee();
+
+            //Act & Assert
+            Assert.ThrowsException<ArgumentException>(() => new Stock("stock name", testEmployee, "uniqueNumber", 15.5m, null));
         }
     }
 }
