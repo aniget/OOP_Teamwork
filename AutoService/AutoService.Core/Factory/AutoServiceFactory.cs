@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoService.Core.Contracts;
 using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;

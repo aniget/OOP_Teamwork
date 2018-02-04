@@ -1,5 +1,4 @@
-﻿using AutoService.Core.Factory;
-using AutoService.Models.Assets;
+﻿using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Common.Contracts;
@@ -15,9 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using AutoService.Models.Common;
+using AutoService.Core.Contracts;
 
 namespace AutoService.Core
 {
@@ -39,40 +36,36 @@ namespace AutoService.Core
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
-        private static readonly IEngine SingleInstance = new Engine();
-
-
         //constructor
-        private Engine()
+        public Engine(ICommandFactory commandFactory, IAutoServiceFactory autoServiceFactory, IDatabase database, Warehouse warehouse)
         {
-            this.factory = new AutoServiceFactory();
-            this.employees = new List<IEmployee>();
-            this.bankAccounts = new List<BankAccount>();
-            this.clients = new List<ICounterparty>();
-            this.suppliers = new List<ICounterparty>();
+            this.factory = autoServiceFactory;
+            this.employees = database.Employees;
+            this.bankAccounts = database.BankAccounts;
+            this.clients = database.Clients;
+            this.suppliers = database.Suppliers;
             this.notInvoicedSells = new Dictionary<IClient, IList<ISell>>();
-            this.warehouse = new Warehouse();
+            this.warehouse = warehouse;
+            this.CommandFactory = commandFactory;
         }
 
-        public static IEngine Instance
-        {
-            get { return SingleInstance; }
-        }
+        public ICommandFactory CommandFactory { get; }
 
         public void Run()
         {
-            var command = ReadCommand();
+            var inputLine = ReadCommand();
             var commandParameters = new string[] { string.Empty };
 
 
-
-            while (command != "exit")
+            while (inputLine != "exit")
             {
 
-                commandParameters = ParseCommand(command);
+                commandParameters = ParseCommand(inputLine);
+                ICommand command = this.CommandFactory.CreateCommand(commandParameters[0]);
+          
                 try
                 {
-                    ExecuteSingleCommand(commandParameters);
+                    command.ExecuteThisCommand(commandParameters);
                 }
 
                 catch (NotSupportedException e) { Console.WriteLine(e.Message); }
@@ -86,7 +79,7 @@ namespace AutoService.Core
 
                 Console.WriteLine("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
                 Console.Write("   ");
-                command = ReadCommand();
+                inputLine = ReadCommand();
 
             }
         }
@@ -100,8 +93,6 @@ namespace AutoService.Core
         {
             return command.Split(new string[] { ";" }, StringSplitOptions.None);
         }
-
-
 
         private void ExecuteSingleCommand(string[] commandParameters)
         {
@@ -123,7 +114,6 @@ namespace AutoService.Core
             ICounterparty supplier;
             ICounterparty client;
             IVehicle vehicle;
-            decimal salary;
             //IOrderStock orderStock;
             IStock stock;
             string position;
@@ -156,26 +146,26 @@ namespace AutoService.Core
                     this.ShowEmployees();
                     break;
 
-                case "hireEmployee":
+                //case "hireEmployee":
 
-                    Validate.ExactParameterLength(commandParameters, 7);
+                //    Validate.ExactParameterLength(commandParameters, 7);
 
-                    employeeFirstName = commandParameters[1];
-                    employeeLastName = commandParameters[2];
-                    position = commandParameters[3];
+                //    employeeFirstName = commandParameters[1];
+                //    employeeLastName = commandParameters[2];
+                //    position = commandParameters[3];
 
-                    salary = Validate.DecimalFromString(commandParameters[4], "salary");
+                //    salary = Validate.DecimalFromString(commandParameters[4], "salary");
 
-                    ratePerMinute = Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
+                //    ratePerMinute = Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
 
-                    employeeDepartment = commandParameters[6];
-                    department = Validate.DepartmentTypeFromString(employeeDepartment, "department");
+                //    employeeDepartment = commandParameters[6];
+                //    department = Validate.DepartmentTypeFromString(employeeDepartment, "department");
 
-                    Validate.EmployeeAlreadyExistOnHire(this.employees, employeeFirstName, employeeLastName, employeeDepartment);
+                //    Validate.EmployeeAlreadyExistOnHire(this.employees, employeeFirstName, employeeLastName, employeeDepartment);
 
-                    this.AddEmployee(employeeFirstName, employeeLastName, position, salary, ratePerMinute, department);
+                //    this.AddEmployee(employeeFirstName, employeeLastName, position, salary, ratePerMinute, department);
 
-                    break;
+                //    break;
 
                 case "fireEmployee":
 

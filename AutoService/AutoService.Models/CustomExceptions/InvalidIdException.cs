@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace AutoService.Models.CustomExceptions
 {
+    [Serializable]
     public class InvalidIdException : ArgumentException
     {
         public InvalidIdException()

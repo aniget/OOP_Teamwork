@@ -48,10 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\Database.cs" />
+    <Compile Include="Commands\HireEmployeeCommand.cs" />
+    <Compile Include="Contracts\IDatabase.cs" />
+    <Compile Include="Factory\CommandFactory.cs" />
     <Compile Include="Engine\Engine.cs" />
-    <Compile Include="Engine\IEngine.cs" />
+    <Compile Include="Contracts\ICommand.cs" />
+    <Compile Include="Contracts\IEngine.cs" />
     <Compile Include="Factory\AutoServiceFactory.cs" />
-    <Compile Include="Factory\IAutoServiceFactory.cs" />
+    <Compile Include="Contracts\IAutoServiceFactory.cs" />
+    <Compile Include="Contracts\ICommandFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,5 +69,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -114,13 +114,14 @@ namespace AutoService.Models.Validator
         }
 
 
-        public static void EmployeeAlreadyExistOnHire(IList<IEmployee> employees, string employeeFirstName, string employeeLastName, string employeeDepartment)
-        {
-            if (employees.Any(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment))
-            {
-                throw new ArgumentException($"There is already employee called {employeeFirstName} in the AutoService");
-            }
-        }
+        //TODO: to be completed after Validate class is refactored
+        //public static void EmployeeAlreadyExistOnHire(/*IList<IEmployee> employees*/IDatabase database, string employeeFirstName, string employeeLastName, string employeeDepartment)
+        //{
+        //    if (employees.Any(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment))
+        //    {
+        //        throw new ArgumentException($"There is already employee called {employeeFirstName} in the AutoService");
+        //    }
+        //}
 
         public static IEmployee EmployeeUnique(IList<IEmployee> employees, string employeeFirstName, string employeeLastName, string employeeDepartment)
         {
