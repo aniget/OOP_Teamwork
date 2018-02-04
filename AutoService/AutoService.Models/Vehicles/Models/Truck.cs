@@ -21,7 +21,7 @@ namespace AutoService.Models.Vehicles.Models
             get => this.weightAllowedInKilograms;
             protected set
             {
-                Validate.NonNegativeValue(value, "Weight in kgs.");
+                ValidateModel.NonNegativeValue(value, "Weight in kgs.");
 
                 if (value > 20000)
                 {

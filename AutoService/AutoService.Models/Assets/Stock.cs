@@ -10,8 +10,8 @@ namespace AutoService.Models.Assets
         private readonly decimal purchasePrice;
         private ICounterparty supplier;
 
-        private static int minLen = 3;
-        private static int maxLen = 10;
+        private const int minLen = 3;
+        private const int maxLen = 10;
 
         public Stock(string name, IEmployee responsibleEmployee, string uniqueNumber, decimal purchasePrice, ICounterparty supplier) : base(name, responsibleEmployee, uniqueNumber)
         {
@@ -40,23 +40,7 @@ namespace AutoService.Models.Assets
             get => this.supplier;
         }
 
-        protected override void ChangeResponsibleEmployee(IEmployee employee)
-        {
-            if (employee == null)
-            {
-                throw new ArgumentException("Responsible employee can't be null!");
-            }
-            if (employee.Responsibilities.Contains(ResponsibilityType.BuyPartForClient) || employee.Responsibilities.Contains(ResponsibilityType.BuyPartForWarehouse) || employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
-            {
-                this.ResponsibleEmployee = employee;
-            }
-            else
-            {
-                throw new ArgumentException($"Employee cannot be responsible for asset {this.GetType().Name}");
-            }
-        }
-
-        public override string ToString()
+       public override string ToString()
         {
             return base.ToString() + Environment.NewLine +
                    $"  - Purchase price: {this.PurchasePrice}" + Environment.NewLine +

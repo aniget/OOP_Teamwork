@@ -19,10 +19,10 @@ namespace AutoService.Models.Vehicles.Models
         public Vehicle(string make, string model, string registrationNumber,
             string year, EngineType engine)
         {
-            Validate.StringForNullEmpty(make, model, registrationNumber, year);
-            Validate.MakeAndModelLength(make, model);
-            Validate.RegistrationNumber(registrationNumber);
-            Validate.VehicleYear(year);
+            ValidateModel.StringForNullEmpty(make, model, registrationNumber, year);
+            ValidateModel.MakeAndModelLength(make, model);
+            ValidateModel.RegistrationNumber(registrationNumber);
+            ValidateModel.VehicleYear(year);
 
             this.model = model;
             this.make = make;

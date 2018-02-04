@@ -24,7 +24,7 @@ namespace AutoService.Models.Common.Models
             get => this.dueDaysAllowed;
             protected set
             {
-                Validate.NonNegativeValue(value, "due days allowed");
+                ValidateModel.NonNegativeValue(value, "due days allowed");
 
                 this.dueDaysAllowed = value;
             }
@@ -50,13 +50,13 @@ namespace AutoService.Models.Common.Models
 
         public void AddVehicle(Vehicle vehicle)
         {
-            Validate.CheckNullObject(vehicle);
+            ValidateModel.CheckNullObject(vehicle);
             this.vehicles.Add(vehicle);
         }
 
         public void RemoveVehicle(Vehicle vehicle)
         {
-            Validate.CheckNullObject(vehicle);
+            ValidateModel.CheckNullObject(vehicle);
             this.vehicles.Remove(vehicle);
         }
 

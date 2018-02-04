@@ -1,5 +1,5 @@
 ﻿using System;
-using AutoService.Models.Common;
+using AutoService.Models.Assets.Events;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 
@@ -42,22 +42,7 @@ namespace AutoService.Models.Assets
             set { this.registrationDate = value; }
         }
 
-        protected override void ChangeResponsibleEmployee(IEmployee employee)
-        {
-            if (employee == null)
-            {
-                throw new ArgumentException("Responsible employee can't be null!");
-            }
-            if (employee.Responsibilities.Contains(ResponsibilityType.Account) || employee.Responsibilities.Contains(ResponsibilityType.Manage))
-            {
-                this.ResponsibleEmployee = employee;
-            }
-            else
-            {
-                throw new ArgumentException($"Employee cannot be responsible for asset {this.GetType().Name}");
-            }
-        }
-
+        
         public void DepositFunds(decimal amount)
         {
             if (amount < 0)

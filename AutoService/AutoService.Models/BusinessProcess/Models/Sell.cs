@@ -17,8 +17,8 @@ namespace AutoService.Models.BusinessProcess.Models
         protected Sell(IEmployee responsibleEmployee, decimal sellPrice, IClient client, IVehicle vehicle)
             : base(responsibleEmployee, TypeOfWork.Selling)
         {
-            Validate.CheckNullObject(new object[] { client, vehicle });
-            Validate.SellPrice(sellPrice);
+            ValidateModel.CheckNullObject(new object[] { client, vehicle });
+            ValidateModel.SellPrice(sellPrice);
 
             this.client = client;
             this.sellPrice = sellPrice;

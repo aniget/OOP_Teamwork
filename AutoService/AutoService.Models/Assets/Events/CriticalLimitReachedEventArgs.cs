@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AutoService.Models.Common
+namespace AutoService.Models.Assets.Events
 {
     public class CriticalLimitReachedEventArgs : EventArgs
     {

@@ -21,18 +21,18 @@ namespace AutoService.Core.Commands
 
         public void ExecuteThisCommand(string[] commandParameters)
         {
-            Validate.ExactParameterLength(commandParameters, 7);
+            ValidateModel.ExactParameterLength(commandParameters, 7);
 
             var employeeFirstName = commandParameters[1];
             var employeeLastName = commandParameters[2];
             var position = commandParameters[3];
 
-            var salary = Validate.DecimalFromString(commandParameters[4], "salary");
+            var salary = ValidateModel.DecimalFromString(commandParameters[4], "salary");
 
-            var ratePerMinute = Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
+            var ratePerMinute = ValidateModel.DecimalFromString(commandParameters[5], "ratePerMinute");
 
             var employeeDepartment = commandParameters[6];
-            var department = Validate.DepartmentTypeFromString(employeeDepartment, "department");
+            var department = ValidateModel.DepartmentTypeFromString(employeeDepartment, "department");
 
             ///TODO: make separate validation for models and Core section
             //Validate.EmployeeAlreadyExistOnHire(database, employeeFirstName, employeeLastName, employeeDepartment);

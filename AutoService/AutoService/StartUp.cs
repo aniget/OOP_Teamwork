@@ -22,6 +22,7 @@ namespace AutoService
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
             
             builder.RegisterType<HireEmployeeCommand>().Named<ICommand>("hireEmployee");
+            builder.RegisterType<ShowEmployeesCommand>().Named<ICommand>("showEmployees");
             
             //the other commands will follow below
 

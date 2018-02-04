@@ -21,16 +21,11 @@ namespace AutoService.Models.Assets
             get => this.responsibleEmployee;
             protected set
             {
-                Validate.CheckNullObject(value);
+                ValidateModel.CheckNullObject(value);
                 this.responsibleEmployee = value;
             }
         }
 
         public TypeOfWork Job => this.job;
-
-        private void ChangeResponsibleEmployee(IEmployee employee)
-        {
-            this.ResponsibleEmployee = employee;
-        }
     }
 }

@@ -19,8 +19,8 @@ namespace AutoService.Models.Common.Models
 
         public Invoice(string number, DateTime date, IClient client)
         {
-            Validate.StringForNullEmpty(number);
-            Validate.CheckNullObject(client);
+            ValidateModel.StringForNullEmpty(number);
+            ValidateModel.CheckNullObject(client);
 
             this.number = number;
             this.client = client;
@@ -37,7 +37,7 @@ namespace AutoService.Models.Common.Models
             get => this.amount;
             private set
             {
-                Validate.InvoicePositiveAmount(value);
+                ValidateModel.InvoicePositiveAmount(value);
                 this.amount = value;
             }
         }
@@ -47,7 +47,7 @@ namespace AutoService.Models.Common.Models
             get => this.paidAmount;
             private set
             {
-                Validate.InvoiceOverpaid(this.Amount, value);
+                ValidateModel.InvoiceOverpaid(this.Amount, value);
                 this.paidAmount = value;
             }
         }
@@ -69,7 +69,7 @@ namespace AutoService.Models.Common.Models
 
         public decimal GetOutstandingBalance()
         {
-           return this.Amount - this.PaidAmount;
+            return this.Amount - this.PaidAmount;
         }
 
         public void CalculateInvoiceAmount()
@@ -87,7 +87,6 @@ namespace AutoService.Models.Common.Models
 
             foreach (var item in InvoiceItems)
             {
-                ;
                 sb.AppendLine("===" + Environment.NewLine + item + Environment.NewLine + "===");
             }
 

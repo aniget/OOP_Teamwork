@@ -36,8 +36,8 @@ namespace AutoService.Models.Common.Models
             get => this.firstName;
             private set
             {
-                Validate.StringForNullEmpty(value);
-                Validate.HasDigitInString(value, "first name");
+                ValidateModel.StringForNullEmpty(value);
+                ValidateModel.HasDigitInString(value, "first name");
                 this.firstName = value;
             }
         }
@@ -48,8 +48,8 @@ namespace AutoService.Models.Common.Models
 
             private set
             {
-                Validate.StringForNullEmpty(value);
-                Validate.HasDigitInString(value, "last name");
+                ValidateModel.StringForNullEmpty(value);
+                ValidateModel.HasDigitInString(value, "last name");
 
                 this.lastName = value;
             }
@@ -61,7 +61,7 @@ namespace AutoService.Models.Common.Models
 
             private set
             {
-                Validate.NonNegativeValue(value, "salary");
+                ValidateModel.NonNegativeValue(value, "salary");
                 
                 this.salary = value;
             }
@@ -71,7 +71,7 @@ namespace AutoService.Models.Common.Models
             get => this.position;
             private set
             {
-                Validate.StringForNullEmpty(value);
+                ValidateModel.StringForNullEmpty(value);
                 this.position = value;
             }
         }
@@ -81,7 +81,7 @@ namespace AutoService.Models.Common.Models
             get => this.ratePerMinute;
             private set
             {
-                Validate.NonNegativeValue(value, "rate per minute");
+                ValidateModel.NonNegativeValue(value, "rate per minute");
 
                 this.ratePerMinute = value;
             }

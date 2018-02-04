@@ -12,7 +12,7 @@ namespace AutoService.Models.Vehicles.Models
         public Car(string model, string make, string registrationNumber, string year, EngineType engine, int passengerCapacity) 
             : base(model, make, registrationNumber, year, engine)
         {
-            Validate.PassengerCapacity(passengerCapacity);
+            ValidateModel.PassengerCapacity(passengerCapacity);
             this.passengerCapacity = passengerCapacity;
             this.VehicleType = VehicleType.Car;
         }

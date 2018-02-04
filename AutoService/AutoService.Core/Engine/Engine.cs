@@ -20,8 +20,6 @@ namespace AutoService.Core
 {
     public sealed class Engine : IEngine
     {
-        //TODO CHECK WHOLE DOCUMENT FOR REPETITIVE CODE
-
         private readonly IList<IEmployee> employees;
         private readonly IList<BankAccount> bankAccounts;
         private readonly IList<ICounterparty> clients;
@@ -139,86 +137,59 @@ namespace AutoService.Core
 
             switch (commandType)
             {
-                case "showEmployees":
-
-                    Validate.EmployeeCount(this.employees.Count);
-
-                    this.ShowEmployees();
-                    break;
-
-                //case "hireEmployee":
-
-                //    Validate.ExactParameterLength(commandParameters, 7);
-
-                //    employeeFirstName = commandParameters[1];
-                //    employeeLastName = commandParameters[2];
-                //    position = commandParameters[3];
-
-                //    salary = Validate.DecimalFromString(commandParameters[4], "salary");
-
-                //    ratePerMinute = Validate.DecimalFromString(commandParameters[5], "ratePerMinute");
-
-                //    employeeDepartment = commandParameters[6];
-                //    department = Validate.DepartmentTypeFromString(employeeDepartment, "department");
-
-                //    Validate.EmployeeAlreadyExistOnHire(this.employees, employeeFirstName, employeeLastName, employeeDepartment);
-
-                //    this.AddEmployee(employeeFirstName, employeeLastName, position, salary, ratePerMinute, department);
-
-                //    break;
-
+           
                 case "fireEmployee":
 
-                    Validate.ExactParameterLength(commandParameters, 2);
+                    ValidateModel.ExactParameterLength(commandParameters, 2);
 
-                    Validate.EmployeeCount(this.employees.Count);
+                    ValidateModel.EmployeeCount(this.employees.Count);
 
-                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+                    employeeId = ValidateModel.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = Validate.EmployeeById(this.employees, employeeId);
+                    employee = ValidateModel.EmployeeById(this.employees, employeeId);
 
                     this.FireEmployee(employee);
                     break;
 
                 case "changeEmployeeRate":
 
-                    Validate.ExactParameterLength(commandParameters, 3);
+                    ValidateModel.ExactParameterLength(commandParameters, 3);
 
-                    Validate.EmployeeCount(this.employees.Count);
+                    ValidateModel.EmployeeCount(this.employees.Count);
 
-                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+                    employeeId = ValidateModel.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = Validate.EmployeeById(this.employees, employeeId);
+                    employee = ValidateModel.EmployeeById(this.employees, employeeId);
 
-                    ratePerMinute = Validate.DecimalFromString(commandParameters[2], "ratePerMinute");
+                    ratePerMinute = ValidateModel.DecimalFromString(commandParameters[2], "ratePerMinute");
 
                     this.ChangeRateOfEmployee(employee, ratePerMinute);
                     break;
 
                 case "issueInvoices":
-                    Validate.ExactParameterLength(commandParameters, 1);
+                    ValidateModel.ExactParameterLength(commandParameters, 1);
 
                     this.IssueInvoices();
 
                     break;
                 case "showAllEmployeesAtDepartment":
 
-                    Validate.ExactParameterLength(commandParameters, 2);
+                    ValidateModel.ExactParameterLength(commandParameters, 2);
 
-                    department = Validate.DepartmentTypeFromString(commandParameters[1], "department");
+                    department = ValidateModel.DepartmentTypeFromString(commandParameters[1], "department");
 
                     this.ListEmployeesAtDepartment(department);
                     break;
 
                 case "changeEmployeePosition":
 
-                    Validate.ExactParameterLength(commandParameters, 3);
+                    ValidateModel.ExactParameterLength(commandParameters, 3);
 
-                    Validate.EmployeeCount(this.employees.Count);
+                    ValidateModel.EmployeeCount(this.employees.Count);
 
-                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+                    employeeId = ValidateModel.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = Validate.EmployeeById(this.employees, employeeId);
+                    employee = ValidateModel.EmployeeById(this.employees, employeeId);
 
                     position = commandParameters[2];
 
@@ -227,13 +198,13 @@ namespace AutoService.Core
 
                 case "addEmployeeResponsibility":
 
-                    Validate.MinimumParameterLength(commandParameters, 3);
+                    ValidateModel.MinimumParameterLength(commandParameters, 3);
 
-                    Validate.EmployeeCount(this.employees.Count);
+                    ValidateModel.EmployeeCount(this.employees.Count);
 
-                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+                    employeeId = ValidateModel.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = Validate.EmployeeById(this.employees, employeeId);
+                    employee = ValidateModel.EmployeeById(this.employees, employeeId);
 
                     var responsibilitiesToAdd = commandParameters.Skip(2).ToArray();
                     this.AddResponsibilitiesToEmployee(employee, responsibilitiesToAdd);
@@ -242,13 +213,13 @@ namespace AutoService.Core
 
                 case "removeEmpoloyeeResponsibility":
 
-                    Validate.MinimumParameterLength(commandParameters, 3);
+                    ValidateModel.MinimumParameterLength(commandParameters, 3);
 
-                    Validate.EmployeeCount(this.employees.Count);
+                    ValidateModel.EmployeeCount(this.employees.Count);
 
-                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+                    employeeId = ValidateModel.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = Validate.EmployeeById(this.employees, employeeId);
+                    employee = ValidateModel.EmployeeById(this.employees, employeeId);
 
                     var responsibilitiesToRemove = commandParameters.Skip(2).ToArray();
 
@@ -258,17 +229,17 @@ namespace AutoService.Core
 
                 case "addVehicleToClient":
                     //addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;TelerikAcademy
-                    Validate.ExactParameterLength(commandParameters, 9);
+                    ValidateModel.ExactParameterLength(commandParameters, 9);
 
-                    vehicleType = Validate.VehicleTypeFromString(commandParameters[1], "vehicle type");
+                    vehicleType = ValidateModel.VehicleTypeFromString(commandParameters[1], "vehicle type");
                     vehicleMake = commandParameters[2];
                     vehicleModel = commandParameters[3];
                     vehicleRegistrationNumber = commandParameters[4];
                     string vehicleYear = commandParameters[5];
-                    engineType = Validate.EngineTypeFromString(commandParameters[6], "engine type");
-                    var additionalParams = Validate.IntFromString(commandParameters[7], "additional parameters");
+                    engineType = ValidateModel.EngineTypeFromString(commandParameters[6], "engine type");
+                    var additionalParams = ValidateModel.IntFromString(commandParameters[7], "additional parameters");
 
-                    Validate.CounterpartyNotRegistered(this.clients, commandParameters[8], "client");
+                    ValidateModel.CounterpartyNotRegistered(this.clients, commandParameters[8], "client");
 
                     clientUniqueName = commandParameters[8];
 
@@ -290,7 +261,7 @@ namespace AutoService.Core
 
                 case "createBankAccount":
 
-                    Validate.ExactParameterLength(commandParameters, 4);
+                    ValidateModel.ExactParameterLength(commandParameters, 4);
 
                     if (this.employees.Count == 0)
                     {
@@ -298,13 +269,13 @@ namespace AutoService.Core
                             "No employees currently in the service! You need to hire one then open the bank account :)");
                     }
 
-                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+                    employeeId = ValidateModel.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = Validate.EmployeeById(this.employees, employeeId);
+                    employee = ValidateModel.EmployeeById(this.employees, employeeId);
 
                     assetName = commandParameters[2];
 
-                    Validate.ValidateBankAccount(commandParameters[3]);
+                    ValidateModel.ValidateBankAccount(commandParameters[3]);
                     bankAccountNumber = commandParameters[3];
 
                     DateTime currentAssetDate = this.lastAssetDate.AddDays(5); //fixed date in order to check zero tests
@@ -314,22 +285,22 @@ namespace AutoService.Core
 
                 case "depositCashInBank":
 
-                    Validate.ExactParameterLength(commandParameters, 3);
+                    ValidateModel.ExactParameterLength(commandParameters, 3);
 
-                    Validate.BankAccountsCount(this.bankAccounts.Count);
+                    ValidateModel.BankAccountsCount(this.bankAccounts.Count);
 
-                    int bankAccountId = Validate.IntFromString(commandParameters[1], "bankAccountId");
+                    int bankAccountId = ValidateModel.IntFromString(commandParameters[1], "bankAccountId");
 
-                    BankAccount bankAccount = Validate.BankAccountById(this.bankAccounts, bankAccountId);
+                    BankAccount bankAccount = ValidateModel.BankAccountById(this.bankAccounts, bankAccountId);
 
-                    decimal depositAmount = Validate.DecimalFromString(commandParameters[2], "depositAmount");
+                    decimal depositAmount = ValidateModel.DecimalFromString(commandParameters[2], "depositAmount");
 
                     this.DepositCashInBankAccount(bankAccount, depositAmount);
                     break;
 
                 case "sellStockToClientVehicle":
                     //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
-                    Validate.EitherOrParameterLength(commandParameters, 5, 7);
+                    ValidateModel.EitherOrParameterLength(commandParameters, 5, 7);
 
                     employeeFirstName = commandParameters[1];
                     clientUniqueName = commandParameters[2];
@@ -342,15 +313,15 @@ namespace AutoService.Core
                     {
                         employeeLastName = commandParameters[5];
                         employeeDepartmentName = commandParameters[6];
-                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
+                        employee = ValidateModel.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
                             employeeDepartmentName);
                     }
                     else
                     {
-                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
+                        employee = ValidateModel.EmployeeUnique(this.employees, employeeFirstName, null, null);
                     }
 
-                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    ValidateModel.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
 
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
@@ -375,28 +346,28 @@ namespace AutoService.Core
                     //sellServiceToClientVehicle; Jo; 123456789; CA1234AC; Disk change; 240; Manarino; Management
 
                     //we can sell services to client without vehicle, e.g. client brings old tire rim for repair
-                    Validate.EitherOrParameterLength(commandParameters, 6, 8);
+                    ValidateModel.EitherOrParameterLength(commandParameters, 6, 8);
 
                     employeeFirstName = commandParameters[1];
                     clientUniqueName = commandParameters[2];
                     vehicleRegistrationNumber = commandParameters[3];
                     var serviceName = commandParameters[4];
 
-                    int durationInMinutes = Validate.IntFromString(commandParameters[5], "duration in minutes");
+                    int durationInMinutes = ValidateModel.IntFromString(commandParameters[5], "duration in minutes");
 
                     if (commandParameters.Length == 8)
                     {
                         employeeLastName = commandParameters[6];
                         employeeDepartment = commandParameters[7];
-                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
+                        employee = ValidateModel.EmployeeUnique(this.employees, employeeFirstName, employeeLastName,
                             employeeDepartment);
                     }
                     else
                     {
-                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
+                        employee = ValidateModel.EmployeeUnique(this.employees, employeeFirstName, null, null);
                     }
 
-                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    ValidateModel.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
                     vehicle = ((IClient)client).Vehicles.FirstOrDefault(x =>
@@ -410,30 +381,30 @@ namespace AutoService.Core
                 case "orderStockToWarehouse":
                     //orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;RT20134HP;180;Manarino;Management
 
-                    Validate.EitherOrParameterLength(commandParameters, 6, 8);
+                    ValidateModel.EitherOrParameterLength(commandParameters, 6, 8);
 
 
 
                     employeeFirstName = commandParameters[1];
                     if (commandParameters.Length == 8)
                     {
-                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, commandParameters[6], commandParameters[7]);
+                        employee = ValidateModel.EmployeeUnique(this.employees, employeeFirstName, commandParameters[6], commandParameters[7]);
                     }
                     else
                     {
-                        employee = Validate.EmployeeUnique(this.employees, employeeFirstName, null, null);
+                        employee = ValidateModel.EmployeeUnique(this.employees, employeeFirstName, null, null);
                     }
 
                     supplierUniqueName = commandParameters[2];
 
-                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    ValidateModel.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
                     supplier = this.suppliers.FirstOrDefault(x => x.Name == supplierUniqueName);
 
                     var stockName = commandParameters[3];
 
                     stockUniqueNumber = commandParameters[4];
 
-                    decimal purchasePrice = Validate.DecimalFromString(commandParameters[5], "purchasePrice");
+                    decimal purchasePrice = ValidateModel.DecimalFromString(commandParameters[5], "purchasePrice");
 
                     stock = new Stock(stockName, employee, stockUniqueNumber, purchasePrice, supplier);
 
@@ -442,13 +413,13 @@ namespace AutoService.Core
 
                 case "registerSupplier":
                     //registerSupplier;AXM - AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
-                    Validate.ExactParameterLength(commandParameters, 4);
+                    ValidateModel.ExactParameterLength(commandParameters, 4);
 
                     supplierUniqueName = commandParameters[1];
                     supplierAddress = commandParameters[2];
                     supplierUniqueNumber = commandParameters[3];
 
-                    Validate.CounterpartyAlreadyRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    ValidateModel.CounterpartyAlreadyRegistered(this.suppliers, supplierUniqueName, "supplier");
 
                     this.AddSupplier(supplierUniqueName, supplierAddress, supplierUniqueNumber);
                     Console.WriteLine("Supplier registered sucessfully");
@@ -456,10 +427,10 @@ namespace AutoService.Core
 
                 case "changeSupplierName":
                     //changeSupplierName; VintchetaBolchetaGaiki; VintchetaBolchetaGaikiNew
-                    Validate.ExactParameterLength(commandParameters, 3);
+                    ValidateModel.ExactParameterLength(commandParameters, 3);
                     supplierUniqueName = commandParameters[1];
                     var supplierNewUniqueName = commandParameters[2];
-                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    ValidateModel.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
 
                     this.ChangeCounterpartyName(supplierUniqueName, this.suppliers, supplierNewUniqueName);
 
@@ -468,23 +439,23 @@ namespace AutoService.Core
 
                 case "removeSupplier":
 
-                    Validate.ExactParameterLength(commandParameters, 2);
+                    ValidateModel.ExactParameterLength(commandParameters, 2);
 
                     supplierUniqueName = commandParameters[1];
 
-                    Validate.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    ValidateModel.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
                     this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
 
                 case "registerClient":
 
-                    Validate.ExactParameterLength(commandParameters, 4);
+                    ValidateModel.ExactParameterLength(commandParameters, 4);
 
                     clientUniqueName = commandParameters[1];
                     clientAddress = commandParameters[2];
                     clientUniquieNumber = commandParameters[3];
 
-                    Validate.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
+                    ValidateModel.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
                     this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
 
                     //add default car to the client
@@ -500,10 +471,10 @@ namespace AutoService.Core
 
                 case "changeClientName":
                     //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
-                    Validate.ExactParameterLength(commandParameters, 3);
+                    ValidateModel.ExactParameterLength(commandParameters, 3);
 
                     clientUniqueName = commandParameters[1];
-                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    ValidateModel.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
 
                     var clientNewUniqueName = commandParameters[2];
                     this.ChangeCounterpartyName(clientUniqueName, this.clients, clientNewUniqueName);
@@ -512,11 +483,11 @@ namespace AutoService.Core
 
                 case "removeClient":
 
-                    Validate.ExactParameterLength(commandParameters, 2);
+                    ValidateModel.ExactParameterLength(commandParameters, 2);
 
                     clientUniqueName = commandParameters[1];
 
-                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    ValidateModel.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
                     this.RemoveCounterparty(clientUniqueName, this.clients);
 
                     break;
@@ -525,16 +496,16 @@ namespace AutoService.Core
                     break;
                 case "addClientPayment":
                     //addClientPayment;<clientName>;<bankAccountId>;<invoiceNum>;<amount>
-                    Validate.ExactParameterLength(commandParameters, 5);
+                    ValidateModel.ExactParameterLength(commandParameters, 5);
 
                     clientUniqueName = commandParameters[1];
-                    Validate.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                    ValidateModel.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
                     client = this.clients.FirstOrDefault(f => f.Name == clientUniqueName);
 
-                    bankAccountId = Validate.IntFromString(commandParameters[2], "bankAccountId");
-                    Validate.BankAccountById(this.bankAccounts, bankAccountId);
-                    IInvoice invoiceFound = Validate.InvoiceExists(this.clients, client, commandParameters[3]);
-                    decimal paymentAmount = Validate.DecimalFromString(commandParameters[4], "decimal");
+                    bankAccountId = ValidateModel.IntFromString(commandParameters[2], "bankAccountId");
+                    ValidateModel.BankAccountById(this.bankAccounts, bankAccountId);
+                    IInvoice invoiceFound = ValidateModel.InvoiceExists(this.clients, client, commandParameters[3]);
+                    decimal paymentAmount = ValidateModel.DecimalFromString(commandParameters[4], "decimal");
 
                     this.AddClientPayment(invoiceFound, paymentAmount);
 
@@ -546,18 +517,18 @@ namespace AutoService.Core
                 case "withdrawCashFromBank":
                     //withdrawCashFromBank;<employeeId>;<bankAccountId>;<amount>
 
-                    Validate.ExactParameterLength(commandParameters, 4);
+                    ValidateModel.ExactParameterLength(commandParameters, 4);
 
-                    Validate.BankAccountsCount(this.bankAccounts.Count);
-                    employeeId = Validate.IntFromString(commandParameters[1], "employeeId");
+                    ValidateModel.BankAccountsCount(this.bankAccounts.Count);
+                    employeeId = ValidateModel.IntFromString(commandParameters[1], "employeeId");
 
-                    employee = Validate.EmployeeById(this.employees, employeeId);
+                    employee = ValidateModel.EmployeeById(this.employees, employeeId);
 
-                    bankAccountId = Validate.IntFromString(commandParameters[2], "bankAccountId");
+                    bankAccountId = ValidateModel.IntFromString(commandParameters[2], "bankAccountId");
 
-                    bankAccount = Validate.BankAccountById(this.bankAccounts, bankAccountId);
+                    bankAccount = ValidateModel.BankAccountById(this.bankAccounts, bankAccountId);
 
-                    decimal withdrawAmount = Validate.DecimalFromString(commandParameters[3], "depositAmount");
+                    decimal withdrawAmount = ValidateModel.DecimalFromString(commandParameters[3], "depositAmount");
 
                     this.WithdrawCashFromBank(bankAccount, withdrawAmount, employee);
 
@@ -684,7 +655,7 @@ namespace AutoService.Core
             var responsibilitesToRemove = new List<ResponsibilityType>();
             foreach (var responsibility in responsibilitiesToRemove)
             {
-                bool isValid = Validate.IsValidResponsibilityTypeFromString(responsibility);
+                bool isValid = ValidateModel.IsValidResponsibilityTypeFromString(responsibility);
 
                 if (isValid)
                 {
@@ -701,7 +672,7 @@ namespace AutoService.Core
             var responsibilitesToAdd = new List<ResponsibilityType>();
             foreach (var responsibility in responsibilities)
             {
-                bool isValid = Validate.IsValidResponsibilityTypeFromString(responsibility);
+                bool isValid = ValidateModel.IsValidResponsibilityTypeFromString(responsibility);
 
                 if (isValid)
                 {
@@ -833,43 +804,7 @@ namespace AutoService.Core
             this.notInvoicedSells[client].Add(sell);
         }
 
-        private void ShowEmployees()
-        {
-            int hiredCounter = 1;
-            if (this.employees.Where(e => e.IsHired).Count() > 0)
-            {
-                Console.WriteLine("Current active employees:");
-                foreach (var currentEmployee in this.employees.Where(e => e.IsHired))
-                {
-                    Console.WriteLine(hiredCounter + ". " + currentEmployee);
-                    hiredCounter++;
-                }
-                //int counter = 1;
-            }
-            else
-            {
-                Console.WriteLine("No active employees!");
-            }
-
-            int firedCounter = 1;
-
-            if (this.employees.Where(e => !e.IsHired).Count() > 0)
-            {
-                Console.WriteLine("Current fired employees:");
-                foreach (var currentEmployee in this.employees.Where(e => !e.IsHired))
-                {
-
-                    Console.WriteLine(firedCounter + ". " + currentEmployee.ToString());
-                    firedCounter++;
-                }
-            }
-            else
-            {
-                Console.WriteLine("No fired employees!");
-            }
-        }
-
-        private void IssueInvoices()
+       private void IssueInvoices()
         {
             int invoiceCount = 0;
             foreach (var client in this.notInvoicedSells.OrderBy(o => o.Key.Name))
@@ -896,7 +831,7 @@ namespace AutoService.Core
 
         private void FireEmployee(IEmployee employee)
         {
-            Validate.CheckNullObject(employee);
+            ValidateModel.CheckNullObject(employee);
             employee.FireEmployee();
 
             Console.WriteLine($"Employee {employee.FirstName} {employee.LastName} was fired!");

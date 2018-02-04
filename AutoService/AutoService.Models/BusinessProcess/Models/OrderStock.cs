@@ -12,7 +12,7 @@ namespace AutoService.Models.BusinessProcess.Models
         public OrderStock(IEmployee responsibleEmployee, ICounterparty supplier, IStock stock) 
             : base(responsibleEmployee, supplier)
         {
-            Validate.CheckNullObject(stock);
+            ValidateModel.CheckNullObject(stock);
             this.stock = stock;
         }
 
