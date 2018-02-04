@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoService.Models.Assets;
+using AutoService.Models.Common.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -9,13 +10,23 @@ namespace AutoService.Tests.AssetsTests
     public class StockTests
     {
         [TestMethod]
-        public void Stock_Constructor_ShouldThrowArgumentException_WhenSuppliersIsNull()
+        public void Stock_Constructor_ShouldThrowArgumentException_WhenSupplierIsNull()
         {
             //Arrange
-            FakeEmployee testEmployee = new FakeEmployee();
+            var fakeEmployee = new Mock<IEmployee>();
 
             //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new Stock("stock name", testEmployee, "uniqueNumber", 15.5m, null));
+            Assert.ThrowsException<ArgumentException>(() => new Stock("stock name", fakeEmployee.Object, "uniqueNumber", 15.5m, null));
+        }
+
+        [TestMethod]
+        public void Stock_Constructor_ShouldThrowArgumentException_WhenEmployeeIsNull()
+        {
+            //Arrange
+            var fakeSupplier = new Mock<ICounterparty>();
+
+            //Act & Assert
+            Assert.ThrowsException<ArgumentException>(() => new Stock("stock name", null, "uniqueNumber", 15.5m, fakeSupplier.Object));
         }
     }
 }
