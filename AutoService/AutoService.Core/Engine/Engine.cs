@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using AutoService.Core.Contracts;
+using AutoService.Core.Manager;
 
 namespace AutoService.Core
 {
@@ -24,8 +25,9 @@ namespace AutoService.Core
         private readonly IList<BankAccount> bankAccounts;
         private readonly IList<ICounterparty> clients;
         private readonly IList<ICounterparty> suppliers;
-        private readonly IDictionary<IClient, IList<ISell>> notInvoicedSells;
-        private readonly Warehouse warehouse;
+        private readonly IDictionary<IClient, IList<ISell>> notInvoicedSales;
+        private readonly IWarehouse warehouse;
+        private readonly IStockManager stockManager;
 
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -35,16 +37,17 @@ namespace AutoService.Core
         private IAutoServiceFactory factory;
 
         //constructor
-        public Engine(ICommandFactory commandFactory, IAutoServiceFactory autoServiceFactory, IDatabase database, Warehouse warehouse)
+        public Engine(ICommandFactory commandFactory, IAutoServiceFactory autoServiceFactory, IDatabase database, IWarehouse warehouse, IStockManager stockManager)
         {
             this.factory = autoServiceFactory;
             this.employees = database.Employees;
             this.bankAccounts = database.BankAccounts;
             this.clients = database.Clients;
             this.suppliers = database.Suppliers;
-            this.notInvoicedSells = new Dictionary<IClient, IList<ISell>>();
+            this.notInvoicedSales = database.NotInvoicedSales;
             this.warehouse = warehouse;
             this.CommandFactory = commandFactory;
+            this.stockManager = stockManager;
         }
 
         public ICommandFactory CommandFactory { get; }
@@ -60,7 +63,7 @@ namespace AutoService.Core
 
                 commandParameters = ParseCommand(inputLine);
                 ICommand command = this.CommandFactory.CreateCommand(commandParameters[0]);
-          
+
                 try
                 {
                     command.ExecuteThisCommand(commandParameters);
@@ -137,7 +140,7 @@ namespace AutoService.Core
 
             switch (commandType)
             {
-           
+
                 case "fireEmployee":
 
                     ValidateModel.ExactParameterLength(commandParameters, 2);
@@ -172,14 +175,15 @@ namespace AutoService.Core
                     this.IssueInvoices();
 
                     break;
-                case "showAllEmployeesAtDepartment":
+                //case "showAllEmployeesAtDepartment":
+                //    //showAllEmployeesAtDepartment;ServicesForClients
 
-                    ValidateModel.ExactParameterLength(commandParameters, 2);
+                //    ValidateModel.ExactParameterLength(commandParameters, 2);
 
-                    department = ValidateModel.DepartmentTypeFromString(commandParameters[1], "department");
+                //    department = ValidateModel.DepartmentTypeFromString(commandParameters[1], "department");
 
-                    this.ListEmployeesAtDepartment(department);
-                    break;
+                //    this.ListEmployeesAtDepartment(department);
+                //    break;
 
                 case "changeEmployeePosition":
 
@@ -326,7 +330,7 @@ namespace AutoService.Core
                     client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
                     //stock we sell must be present in the warehouse :)
-                    bool stockExists = this.warehouse.ConfirmStockExists(stockUniqueNumber, employee);
+                    bool stockExists = stockManager.ConfirmStockExists(stockUniqueNumber, employee/*, warehouse*/);
                     if (stockExists == false)
                     {
                         throw new ArgumentException(
@@ -413,15 +417,22 @@ namespace AutoService.Core
 
                 case "registerSupplier":
                     //registerSupplier;AXM - AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
-                    ValidateModel.ExactParameterLength(commandParameters, 4);
+                    ValidateModel.ExactParameterLength(commandParameters, 5);
 
                     supplierUniqueName = commandParameters[1];
                     supplierAddress = commandParameters[2];
                     supplierUniqueNumber = commandParameters[3];
+                    
+                    //TODO: add to validate class once refactored
+                    bool interfaceIsAvailable;
+                    if (commandParameters[4] is null)
+                        interfaceIsAvailable = false;
+                    else
+                        interfaceIsAvailable = bool.Parse(commandParameters[4]);
 
                     ValidateModel.CounterpartyAlreadyRegistered(this.suppliers, supplierUniqueName, "supplier");
 
-                    this.AddSupplier(supplierUniqueName, supplierAddress, supplierUniqueNumber);
+                    this.AddSupplier(supplierUniqueName, supplierAddress, supplierUniqueNumber, interfaceIsAvailable);
                     Console.WriteLine("Supplier registered sucessfully");
                     break;
 
@@ -692,26 +703,26 @@ namespace AutoService.Core
                 $"Position of employee {employee.FirstName} {employee.LastName} was successfully set to {position}");
         }
 
-        private void ListEmployeesAtDepartment(DepartmentType department)
-        {
-            var employeesInDepartment = this.employees.Where(x => x.Department == department).ToArray();
-            if (employeesInDepartment.Length == 0)
-            {
-                throw new ArgumentException($"The are no employees at department: {department}!");
-            }
+        //private void ListEmployeesAtDepartment(DepartmentType department)
+        //{
+        //    var employeesInDepartment = this.employees.Where(x => x.Department == department).ToList();
+        //    if (employeesInDepartment.Count == 0)
+        //    {
+        //        throw new ArgumentException($"The are no employees at department: {department}!");
+        //    }
 
-            StringBuilder str = new StringBuilder();
+        //    StringBuilder str = new StringBuilder();
 
-            str.AppendLine($"Employees at: {department} department:");
-            var counter = 1;
+        //    str.AppendLine($"Employees at: {department} department:");
+        //    var counter = 1;
 
-            foreach (var employee in employeesInDepartment)
-            {
-                str.AppendLine($"{counter}. {employee.ToString()}");
-                counter++;
-            }
-            Console.WriteLine(str.ToString());
-        }
+        //    foreach (var employee in employeesInDepartment)
+        //    {
+        //        str.AppendLine($"{counter}. {employee.ToString()}");
+        //        counter++;
+        //    }
+        //    Console.WriteLine(str.ToString());
+        //}
 
         private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute)
         {
@@ -727,7 +738,10 @@ namespace AutoService.Core
                 stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
                 IOrderStock orderStock = factory.CreateOrderStock(stock.ResponsibleEmployee, stock.Supplier, stock);
-                this.warehouse.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
+                if (((Supplier)stock.Supplier).InterfaceIsAvailable)
+                    stockManager.AddStockToWarehouse(stock/*, warehouse*/);
+                else
+                    stockManager.AddStockToWarehouse(stock, stock.ResponsibleEmployee/*, warehouse*/);
             }
             else
             {
@@ -749,7 +763,7 @@ namespace AutoService.Core
             {
                 sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock);
 
-                this.warehouse.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee);
+                stockManager.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee/*, warehouse*/);
 
                 //sellStock.SellToClientVehicle(sellStock, stock);
 
@@ -797,17 +811,17 @@ namespace AutoService.Core
 
         private void AddSellToNotInvoicedItems(IClient client, ISell sell)
         {
-            if (!this.notInvoicedSells.ContainsKey(client))
+            if (!this.notInvoicedSales.ContainsKey(client))
             {
-                this.notInvoicedSells[client] = new List<ISell>();
+                this.notInvoicedSales[client] = new List<ISell>();
             }
-            this.notInvoicedSells[client].Add(sell);
+            this.notInvoicedSales[client].Add(sell);
         }
 
-       private void IssueInvoices()
+        private void IssueInvoices()
         {
             int invoiceCount = 0;
-            foreach (var client in this.notInvoicedSells.OrderBy(o => o.Key.Name))
+            foreach (var client in this.notInvoicedSales.OrderBy(o => o.Key.Name))
             {
                 this.lastInvoiceNumber++;
                 invoiceCount++;
@@ -825,7 +839,7 @@ namespace AutoService.Core
                 clientToAddInvoice.Invoices.Add(invoice);
             }
 
-            this.notInvoicedSells.Clear();
+            this.notInvoicedSales.Clear();
             Console.WriteLine($"{invoiceCount} invoices were successfully issued!");
         }
 
@@ -837,20 +851,20 @@ namespace AutoService.Core
             Console.WriteLine($"Employee {employee.FirstName} {employee.LastName} was fired!");
         }
 
-        private void AddEmployee(string firstName, string lastName, string position, decimal salary,
-            decimal ratePerMinute, DepartmentType department)
-        {
-            IEmployee employee =
-                this.factory.CreateEmployee(firstName, lastName, position, salary, ratePerMinute, department);
+        //private void AddEmployee(string firstName, string lastName, string position, decimal salary,
+        //    decimal ratePerMinute, DepartmentType department)
+        //{
+        //    IEmployee employee =
+        //        this.factory.CreateEmployee(firstName, lastName, position, salary, ratePerMinute, department);
 
-            this.employees.Add(employee);
-            Console.WriteLine(employee);
-            Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
-        }
+        //    this.employees.Add(employee);
+        //    Console.WriteLine(employee);
+        //    Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
+        //}
 
-        private void AddSupplier(string name, string address, string uniqueNumber)
+        private void AddSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable = false)
         {
-            ICounterparty supplier = this.factory.CreateSupplier(name, address, uniqueNumber);
+            ICounterparty supplier = this.factory.CreateSupplier(name, address, uniqueNumber, interfaceIsAvailable);
             if (suppliers.FirstOrDefault(x => x.UniqueNumber == uniqueNumber) != null)
             {
                 throw new ArgumentException(

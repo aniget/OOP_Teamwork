@@ -20,9 +20,9 @@ namespace AutoService.Core.Factory
             return new Client(name, address, uniqueNumber);
         }
 
-        public ICounterparty CreateSupplier(string name, string address, string uniqueNumber)
+        public ICounterparty CreateSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable)
         {
-            return new Supplier(name, address, uniqueNumber);
+            return new Supplier(name, address, uniqueNumber, interfaceIsAvailable);
         }
 
         public IEmployee CreateEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
@@ -82,5 +82,12 @@ namespace AutoService.Core.Factory
             IVehicle newTruck = new Truck(model, make, registrationNumber, year, engine, weightAllowedInKilograms);
             return newTruck;
         }
+
+        IEmployee IAutoServiceFactory.CreateEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute, DepartmentType department)
+        {
+            IEmployee newEmployee = new Employee(firstName, lastName, position, salary, ratePerMinute, department);
+            return newEmployee;
+        }
+        
     }
 }

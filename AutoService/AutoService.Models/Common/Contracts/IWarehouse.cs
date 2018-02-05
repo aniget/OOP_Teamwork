@@ -5,6 +5,6 @@ namespace AutoService.Models.Common.Contracts
 {
     public interface IWarehouse
     {
-        List<IStock> AvailableStocks { get; }
+        IList<IStock> AvailableStocks { get; }
     }
 }

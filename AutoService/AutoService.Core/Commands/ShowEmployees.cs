@@ -7,12 +7,12 @@ using AutoService.Models.Validator;
 
 namespace AutoService.Core.Commands
 {
-    public class ShowEmployeesCommand : ICommand
+    public class ShowEmployees : ICommand
     {
         private readonly IDatabase database;
 
         
-        public ShowEmployeesCommand(IDatabase database)
+        public ShowEmployees(IDatabase database)
         {
             this.database = database;
             }

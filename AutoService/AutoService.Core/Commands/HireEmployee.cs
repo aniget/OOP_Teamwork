@@ -5,7 +5,7 @@ using System;
 
 namespace AutoService.Core.Commands
 {
-    public class HireEmployeeCommand : ICommand
+    public class HireEmployee : ICommand
     {
         private readonly IDatabase database;
 
@@ -13,7 +13,7 @@ namespace AutoService.Core.Commands
 
         private readonly IAutoServiceFactory autoServiceFactory;
 
-        public HireEmployeeCommand(IAutoServiceFactory autoServiceFactory, IDatabase database)
+        public HireEmployee(IAutoServiceFactory autoServiceFactory, IDatabase database)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;

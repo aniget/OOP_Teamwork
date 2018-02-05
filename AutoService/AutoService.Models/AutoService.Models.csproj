@@ -51,7 +51,6 @@
     <Compile Include="BusinessProcess\Models\SellStock.cs" />
     <Compile Include="Assets\Events\CriticalLimitReachedEventArgs.cs" />
     <Compile Include="Common\Contracts\IWarehouse.cs" />
-    <Compile Include="Common\Models\WarehouseModifier.cs" />
     <Compile Include="CustomExceptions\InvalidIdException.cs" />
     <Compile Include="Validator\ValidateModel.cs" />
     <Compile Include="Vehicles\Contracts\IVehicle.cs" />

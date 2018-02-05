@@ -9,14 +9,18 @@ namespace AutoService.Models.Common.Models
 {
     public class Warehouse : IWarehouse
     {
-        private List<IStock> availableStocks;
+        //public Warehouse()
+        //{
+        //}
+
+        //private IList<IStock> availableStocks;
 
         public Warehouse()
         {
-            this.availableStocks = new List<IStock>();
+            this.AvailableStocks = new List<IStock>();
         }
 
-        public List<IStock> AvailableStocks => this.availableStocks;
+        public IList<IStock> AvailableStocks { get; set; }
 
 
         public override string ToString()

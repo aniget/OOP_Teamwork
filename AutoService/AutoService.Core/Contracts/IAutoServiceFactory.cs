@@ -13,7 +13,7 @@ namespace AutoService.Core.Contracts
     {
         ICounterparty CreateClient(string name, string address, string uniqueNumber);
 
-        ICounterparty CreateSupplier(string name, string address, string uniqueNumber);
+        ICounterparty CreateSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable);
 
         IEmployee CreateEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
             DepartmentType department);

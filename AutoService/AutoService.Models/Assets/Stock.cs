@@ -40,7 +40,7 @@ namespace AutoService.Models.Assets
             get => this.supplier;
         }
 
-       public override string ToString()
+        public override string ToString()
         {
             return base.ToString() + Environment.NewLine +
                    $"  - Purchase price: {this.PurchasePrice}" + Environment.NewLine +

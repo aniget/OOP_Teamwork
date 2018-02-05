@@ -5,7 +5,7 @@ namespace AutoService.Models.Common.Contracts
 {
     public interface IEmployee
     {
-        string FirstName { get; }
+       string FirstName { get; }
         string LastName { get; }
         string Position { get; }
         decimal Salary { get; }
