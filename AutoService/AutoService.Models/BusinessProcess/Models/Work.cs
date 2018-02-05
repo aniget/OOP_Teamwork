@@ -9,11 +9,13 @@ namespace AutoService.Models.Assets
     {
         private IEmployee responsibleEmployee;
         private readonly TypeOfWork job;
+        private readonly IValidateModel modelValidator;
 
-        public Work(IEmployee responsibleEmployee, TypeOfWork job)
+        public Work(IEmployee responsibleEmployee, TypeOfWork job, IValidateModel modelValidator)
         {
             this.ResponsibleEmployee = responsibleEmployee;
             this.job = job;
+            this.modelValidator = modelValidator;
         }
 
         public IEmployee ResponsibleEmployee
@@ -21,11 +23,13 @@ namespace AutoService.Models.Assets
             get => this.responsibleEmployee;
             protected set
             {
-                ValidateModel.CheckNullObject(value);
+                this.ModelValidator.CheckNullObject(value);
                 this.responsibleEmployee = value;
             }
         }
 
         public TypeOfWork Job => this.job;
+
+        public IValidateModel ModelValidator { get; }
     }
 }

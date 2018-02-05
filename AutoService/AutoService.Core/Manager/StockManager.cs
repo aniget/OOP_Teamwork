@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoService.Core.Contracts;
+using AutoService.Core.Validator;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Models;
@@ -15,15 +16,20 @@ namespace AutoService.Core.Manager
     {
         private IWarehouse warehouse;
         private IDatabase database;
+        private readonly IValidateModel modelValidator;
 
         //DI: initialize the singleInstance objects that are used in the methods
         //properties not needed for now
-        public StockManager(IWarehouse warehouse, IDatabase database)
+        public StockManager(IWarehouse warehouse, IDatabase database, IValidateModel modelValidator)
         {
             this.warehouse = warehouse;
             this.database = database;
+            this.modelValidator = modelValidator;
         }
-        
+
+
+        public IValidateModel ModelValidator { get => this.modelValidator; }
+
         //once ordered the stock is automatically added (without Employee intervention) to warehouse 
         //thanks to integration of our application with the supplier's system
         public void AddStockToWarehouse(IStock stock/*, IWarehouse warehouse, ICounterparty supplier*/)
@@ -38,7 +44,7 @@ namespace AutoService.Core.Manager
         //stock is recorded in warehouse by authorized employee
         public void AddStockToWarehouse(IStock stock, IEmployee employee/*, IWarehouse warehouse*/)
         {
-            ValidateModel.CheckNullObject(stock, employee);
+            this.ModelValidator.CheckNullObject(stock, employee);
             //only employees with right (Responsibility) to BUY can perform this work
             //if (employee.Responsibilities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
             //                    employee.Responsibilities.Contains(ResponsibilityType.Manage) ||
@@ -61,13 +67,13 @@ namespace AutoService.Core.Manager
             {
                 database.NotInvoicedSales[client] = new List<ISell>();
             }
-            ISell sell = new SellStock(employee, client, vehicle, stock); /*  { Client = client, Vehicle = vehicle, stock.PurchasePrice };*/
+            ISell sell = new SellStock(employee, client, vehicle, stock, modelValidator); /*  { Client = client, Vehicle = vehicle, stock.PurchasePrice };*/
             database.NotInvoicedSales[client].Add(sell);
         }
 
         public void RemoveStockFromWarehouse(IStock stock, IEmployee employee/*, IWarehouse warehouse*/)
         {
-            ValidateModel.CheckNullObject(stock, employee);
+            this.ModelValidator.CheckNullObject(stock, employee);
 
             //only employees with right (Responsibility) to SELL can perform this work
             //if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||
@@ -82,7 +88,7 @@ namespace AutoService.Core.Manager
 
         public bool ConfirmStockExists(string stockUniqueNumber, IEmployee employee/*, IWarehouse warehouse*/)
         {
-            ValidateModel.CheckNullObject(stockUniqueNumber, employee);
+            this.ModelValidator.CheckNullObject(stockUniqueNumber, employee);
             bool exists = false;
             //only employees with right (Responsibility) to SELL can perform this work
             //if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||

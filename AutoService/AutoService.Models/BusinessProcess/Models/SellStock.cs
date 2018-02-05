@@ -11,10 +11,10 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         private readonly IStock stock;
 
-        public SellStock(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, IStock stock)
-            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, client, vehicle)
+        public SellStock(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, IStock stock, IValidateModel modelValidator)
+            : base(responsibleEmployee, stock.PurchasePrice * 1.2m, client, vehicle, modelValidator)
         {
-            ValidateModel.CheckNullObject(stock);
+            this.ModelValidator.CheckNullObject(stock);
             this.stock = stock;
         }
 

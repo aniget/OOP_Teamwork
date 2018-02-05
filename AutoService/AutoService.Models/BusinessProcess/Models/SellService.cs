@@ -15,12 +15,12 @@ namespace AutoService.Models.BusinessProcess.Models
         private readonly int durationInMinutes;
         private readonly string serviceName;
 
-        public SellService(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName, int durationInMinutes)
-            : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute * (1 - client.Discount), client, vehicle)
+        public SellService(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, string serviceName, int durationInMinutes, IValidateModel modelValidator)
+            : base(responsibleEmployee, durationInMinutes * responsibleEmployee.RatePerMinute * (1 - client.Discount), client, vehicle, modelValidator)
         {
-            ValidateModel.StringForNullEmpty(serviceName);
-            ValidateModel.ServiceNameLength(serviceName);
-            ValidateModel.ServiceDurationInMinutes(durationInMinutes, minDuration, maxDuration);
+            this.ModelValidator.StringForNullEmpty(serviceName);
+            this.ModelValidator.ServiceNameLength(serviceName);
+            this.ModelValidator.ServiceDurationInMinutes(durationInMinutes, minDuration, maxDuration);
 
             this.serviceName = serviceName.Trim();
             this.durationInMinutes = durationInMinutes;

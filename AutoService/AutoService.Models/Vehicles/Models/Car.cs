@@ -9,10 +9,10 @@ namespace AutoService.Models.Vehicles.Models
     {
         private readonly int passengerCapacity;
 
-        public Car(string model, string make, string registrationNumber, string year, EngineType engine, int passengerCapacity) 
-            : base(model, make, registrationNumber, year, engine)
+        public Car(string model, string make, string registrationNumber, string year, EngineType engine, int passengerCapacity, IValidateModel modelValidator) 
+            : base(model, make, registrationNumber, year, engine, modelValidator)
         {
-            ValidateModel.PassengerCapacity(passengerCapacity);
+            this.ModelValidator.PassengerCapacity(passengerCapacity);
             this.passengerCapacity = passengerCapacity;
             this.VehicleType = VehicleType.Car;
         }

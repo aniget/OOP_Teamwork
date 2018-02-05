@@ -9,10 +9,10 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         private readonly IStock stock;
 
-        public OrderStock(IEmployee responsibleEmployee, ICounterparty supplier, IStock stock) 
-            : base(responsibleEmployee, supplier)
+        public OrderStock(IEmployee responsibleEmployee, ICounterparty supplier, IStock stock, IValidateModel modelValidator) 
+            : base(responsibleEmployee, supplier, modelValidator)
         {
-            ValidateModel.CheckNullObject(stock);
+            this.ModelValidator.CheckNullObject(stock);
             this.stock = stock;
         }
 

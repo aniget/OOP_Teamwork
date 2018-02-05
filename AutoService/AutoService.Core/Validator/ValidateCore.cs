@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoService.Core.Contracts;
 using AutoService.Models.Assets;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
@@ -10,10 +11,14 @@ using AutoService.Models.Vehicles.Enums;
 
 namespace AutoService.Core.Validator
 {
-    public class ValidateCore
+    public class ValidateCore : IValidateCore
     {
+        public ValidateCore()
+        {
+            
+        }
 
-        public static int IntFromString(string commandParameter, string parameterName)
+        public int IntFromString(string commandParameter, string parameterName)
         {
             int parsedValue = int.TryParse(commandParameter, out parsedValue)
                 ? parsedValue
@@ -22,7 +27,7 @@ namespace AutoService.Core.Validator
             return parsedValue;
         }
 
-        public static decimal DecimalFromString(string commandParameter, string parameterName)
+        public decimal DecimalFromString(string commandParameter, string parameterName)
         {
             decimal parsedValue = decimal.TryParse(commandParameter, out parsedValue)
                 ? parsedValue
@@ -31,15 +36,15 @@ namespace AutoService.Core.Validator
             return parsedValue;
         }
 
-        public static void EmployeeCount(int count)
+        public void EmployeeCount(int count)
         {
             if (count == 0)
             {
-                throw new ArgumentException("There are no employees! Do you want to hire them?");
+                throw new ArgumentException("There are no employees! Do you want to hire any?");
             }
         }
 
-        public static void ExactParameterLength(string[] parameters, int length)
+        public void ExactParameterLength(string[] parameters, int length)
         {
             if (parameters.Length != length)
             {
@@ -48,7 +53,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void MinimumParameterLength(string[] parameters, int length)
+        public void MinimumParameterLength(string[] parameters, int length)
         {
             if (parameters.Length < length)
             {
@@ -57,7 +62,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void BetweenParameterLength(string[] parameters, int minLength, int maxLength)
+        public void BetweenParameterLength(string[] parameters, int minLength, int maxLength)
         {
             if (parameters.Length < minLength || parameters.Length > maxLength)
             {
@@ -66,7 +71,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void EitherOrParameterLength(string[] parameters, int length1, int length2)
+        public void EitherOrParameterLength(string[] parameters, int length1, int length2)
         {
             if (parameters.Length == Math.Min(length1, length2) || parameters.Length == Math.Max(length1, length2))
             {
@@ -77,7 +82,7 @@ namespace AutoService.Core.Validator
                 $"Parameter length for command {parameters[0]} must be either {length1} or {length2}");
         }
 
-        public static void BankAccountsCount(int count)
+        public void BankAccountsCount(int count)
         {
             if (count == 0)
             {
@@ -85,7 +90,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static IEmployee EmployeeById(IList<IEmployee> employees, int id)
+        public IEmployee EmployeeById(IList<IEmployee> employees, int id)
         {
             if (id <= 0)
             {
@@ -100,7 +105,7 @@ namespace AutoService.Core.Validator
             return employee;
         }
 
-        public static BankAccount BankAccountById(IList<BankAccount> bankAccounts, int id)
+        public BankAccount BankAccountById(IList<BankAccount> bankAccounts, int id)
         {
             if (id <= 0)
             {
@@ -115,17 +120,16 @@ namespace AutoService.Core.Validator
             return bankAccount;
         }
 
+        //TODO: to be completed after Validate class is refactored 
+        public void EmployeeAlreadyExistOnHire(IDatabase database, string employeeFirstName, string employeeLastName, string employeeDepartment)
+        {
+            if (database.Employees.Any(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment))
+            {
+                throw new ArgumentException($"There is already employee called {employeeFirstName} in the AutoService");
+            }
+        }
 
-        //TODO: to be completed after Validate class is refactored
-        //public static void EmployeeAlreadyExistOnHire(/*IList<IEmployee> employees*/IDatabase database, string employeeFirstName, string employeeLastName, string employeeDepartment)
-        //{
-        //    if (employees.Any(x => x.FirstName == employeeFirstName && x.LastName == employeeLastName && x.Department.ToString() == employeeDepartment))
-        //    {
-        //        throw new ArgumentException($"There is already employee called {employeeFirstName} in the AutoService");
-        //    }
-        //}
-
-        public static IEmployee EmployeeUnique(IList<IEmployee> employees, string employeeFirstName, string employeeLastName, string employeeDepartment)
+        public IEmployee EmployeeUnique(IList<IEmployee> employees, string employeeFirstName, string employeeLastName, string employeeDepartment)
         {
             IEmployee employee;
 
@@ -151,7 +155,7 @@ namespace AutoService.Core.Validator
             return employee = employees.Single(x => x.FirstName == employeeFirstName);
         }
 
-        public static DepartmentType DepartmentTypeFromString(string commandParameter, string department)
+        public DepartmentType DepartmentTypeFromString(string commandParameter, string department)
         {
             DepartmentType departmentFound;
             if (!Enum.TryParse(commandParameter, out departmentFound))
@@ -164,7 +168,7 @@ namespace AutoService.Core.Validator
             return departmentFound;
         }
 
-        public static VehicleType VehicleTypeFromString(string commandParameter, string vehicleType)
+        public VehicleType VehicleTypeFromString(string commandParameter, string vehicleType)
         {
             VehicleType vehicleTypeFound;
             if (!Enum.TryParse(commandParameter, out vehicleTypeFound))
@@ -177,7 +181,7 @@ namespace AutoService.Core.Validator
             return vehicleTypeFound;
         }
 
-        public static EngineType EngineTypeFromString(string commandParameter, string engineType)
+        public EngineType EngineTypeFromString(string commandParameter, string engineType)
         {
             EngineType engineTypeFound;
             if (!Enum.TryParse(commandParameter, out engineTypeFound))
@@ -190,7 +194,7 @@ namespace AutoService.Core.Validator
             return engineTypeFound;
         }
 
-        public static void ValidateBankAccount(string bankAccount)
+        public void ValidateBankAccount(string bankAccount)
         {
             //Special thanks for the ValidateBankAccount code to
             //https://www.codeproject.com/Tips/775696/IBAN-Validator
@@ -228,7 +232,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void CheckNullObject(params object[] values)
+        public void CheckNullObject(params object[] values)
         {
             foreach (var value in values)
             {
@@ -239,7 +243,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void StringForNullEmpty(params string[] values)
+        public void StringForNullEmpty(params string[] values)
         {
             foreach (var value in values)
             {
@@ -250,7 +254,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void CounterpartyAlreadyRegistered(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType)
+        public void CounterpartyAlreadyRegistered(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType)
         {
             if (string.IsNullOrWhiteSpace(counterpartyName))
             {
@@ -263,9 +267,9 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void CounterpartyNotRegistered(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType)
+        public void CounterpartyNotRegistered(IList<ICounterparty> counterparties, string counterpartyName, string counterpartyType)
         {
-            ValidateModel.StringForNullEmpty(counterpartyName);
+            this.StringForNullEmpty(counterpartyName);
 
             if (counterparties.All(a => a.Name != counterpartyName))
             {
@@ -273,23 +277,23 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void SellPrice(decimal sellPrice)
+        public void SellPrice(decimal sellPrice)
         {
-            ValidateModel.NonNegativeValue(sellPrice, "sell price");
+            this.NonNegativeValue(sellPrice, "sell price");
         }
 
-        public static void ServiceNameLength(string serviceName)
+        public void ServiceNameLength(string serviceName)
         {
             if (serviceName.Length < 5 || serviceName.Length > 500) { throw new ArgumentException("ServiceName should be between 5 and 500 characters long"); }
         }
 
-        public static void ServiceDurationInMinutes(int durationInMinutes, int minDuration, int maxDuration)
+        public void ServiceDurationInMinutes(int durationInMinutes, int minDuration, int maxDuration)
         {
             if (durationInMinutes < minDuration) { throw new ArgumentException($"As per AutoService Policy minimum duration is {minDuration} min."); }
             if (durationInMinutes > maxDuration) { throw new ArgumentException($"Duration of service should be provided in minutes and should not exceed {maxDuration} min. If the provided service took more than {maxDuration} min. please raise two sold service requests."); }
         }
 
-        public static void InvoicePositiveAmount(decimal value)
+        public void InvoicePositiveAmount(decimal value)
         {
             if (value < 0)
             {
@@ -297,7 +301,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void InvoiceOverpaid(decimal amount, decimal value)
+        public void InvoiceOverpaid(decimal amount, decimal value)
         {
             if (amount < value)
             {
@@ -305,7 +309,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void PassengerCapacity(int passengerCapacity)
+        public void PassengerCapacity(int passengerCapacity)
         {
             if (passengerCapacity < 1 || passengerCapacity > 9)
             {
@@ -313,7 +317,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void MakeAndModelLength(params string[] values)
+        public void MakeAndModelLength(params string[] values)
         {
             foreach (var value in values)
             {
@@ -324,7 +328,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void RegistrationNumber(string registrationNumber)
+        public void RegistrationNumber(string registrationNumber)
         {
             if (registrationNumber.Length < 6)
             {
@@ -332,21 +336,21 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void VehicleYear(string year)
+        public void VehicleYear(string year)
         {
             if (year.Any(a => !char.IsDigit(a)))
             {
                 throw new ArgumentException("Invalid year!");
             }
 
-            ValidateModel.IntFromString(year, "Vehicle Year");
+            this.IntFromString(year, "Vehicle Year");
             if (int.Parse(year) < 1900 || int.Parse(year) > DateTime.Now.Year)
             {
                 throw new ArgumentException($"Invalid year! Cars are produced between 1900 and {DateTime.Now.Year}");
             }
         }
 
-        public static void HasDigitInString(string value, string parameter)
+        public void HasDigitInString(string value, string parameter)
         {
             if (value.Any(char.IsDigit))
             {
@@ -354,7 +358,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static void NonNegativeValue(decimal value, string parameter)
+        public void NonNegativeValue(decimal value, string parameter)
         {
             if (value < 0)
             {
@@ -362,7 +366,7 @@ namespace AutoService.Core.Validator
             }
         }
 
-        public static bool IsValidResponsibilityTypeFromString(string responsibility)
+        public bool IsValidResponsibilityTypeFromString(string responsibility)
         {
             bool isValid = true;
             ResponsibilityType currentResponsibility;
@@ -374,7 +378,7 @@ namespace AutoService.Core.Validator
             return isValid;
         }
 
-        public static IInvoice InvoiceExists(IList<ICounterparty> clients, ICounterparty client, string invoiceNum)
+        public IInvoice InvoiceExists(IList<ICounterparty> clients, ICounterparty client, string invoiceNum)
         {
             ICounterparty clientFound = clients.FirstOrDefault(fd => fd.UniqueNumber == client.UniqueNumber);
             IInvoice invoice = clientFound.Invoices.FirstOrDefault(fd => fd.Number == invoiceNum);

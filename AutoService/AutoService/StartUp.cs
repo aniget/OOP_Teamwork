@@ -4,13 +4,11 @@ using AutoService.Core.Commands;
 using AutoService.Core.Contracts;
 using AutoService.Core.Factory;
 using AutoService.Core.Manager;
-using AutoService.Models.Assets;
-using AutoService.Models.Assets.Contracts;
+using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Models;
-using AutoService.Models.Vehicles.Contracts;
-using AutoService.Models.Vehicles.Models;
-using System.Threading.Tasks;
+using AutoService.Models.Validator;
+
 
 namespace AutoService
 {
@@ -26,11 +24,14 @@ namespace AutoService
             builder.RegisterType<Warehouse>().As<IWarehouse>().SingleInstance();
             
             builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
+            builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
+            builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
 
             builder.RegisterType<HireEmployee>().Named<ICommand>("hireEmployee");
             builder.RegisterType<ShowEmployees>().Named<ICommand>("showEmployees");
             builder.RegisterType<ShowAllEmployeesAtDepartment> ().Named<ICommand>("showAllEmployeesAtDepartment");
+            builder.RegisterType<FireEmployee> ().Named<ICommand>("fireEmployee");
 
             //the other commands will follow below
 

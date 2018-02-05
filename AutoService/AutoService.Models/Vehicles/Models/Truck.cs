@@ -9,8 +9,8 @@ namespace AutoService.Models.Vehicles.Models
     {
         private int weightAllowedInKilograms;
 
-        public Truck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms)
-            : base(model, make, registrationNumber, year, engine)
+        public Truck(string model, string make, string registrationNumber, string year, EngineType engine, int weightAllowedInKilograms, IValidateModel modelValidator)
+            : base(model, make, registrationNumber, year, engine, modelValidator)
         {
             this.WeightAllowedInKilograms = weightAllowedInKilograms;
             this.VehicleType = VehicleType.Truck;
@@ -21,7 +21,7 @@ namespace AutoService.Models.Vehicles.Models
             get => this.weightAllowedInKilograms;
             protected set
             {
-                ValidateModel.NonNegativeValue(value, "Weight in kgs.");
+                this.ModelValidator.NonNegativeValue(value, "Weight in kgs.");
 
                 if (value > 20000)
                 {

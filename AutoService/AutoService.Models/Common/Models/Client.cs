@@ -11,20 +11,23 @@ namespace AutoService.Models.Common.Models
         private int dueDaysAllowed;
         private decimal discount;
         private IList<Vehicle> vehicles;
+        private readonly IValidateModel modelValidator;
 
-        public Client(string name, string address, string uniqueNumber) : base(name, address, uniqueNumber)
+        public Client(string name, string address, string uniqueNumber, IValidateModel modelValidator) : base(name, address, uniqueNumber)
         {
+            this.modelValidator = modelValidator;
             this.dueDaysAllowed = 5;
             this.discount = 0;
             this.vehicles = new List<Vehicle>();
         }
 
+        public IValidateModel ModelValidator { get => this.modelValidator; }
         public int DueDaysAllowed
         {
             get => this.dueDaysAllowed;
             protected set
             {
-                ValidateModel.NonNegativeValue(value, "due days allowed");
+                this.ModelValidator.NonNegativeValue(value, "due days allowed");
 
                 this.dueDaysAllowed = value;
             }
@@ -50,13 +53,13 @@ namespace AutoService.Models.Common.Models
 
         public void AddVehicle(Vehicle vehicle)
         {
-            ValidateModel.CheckNullObject(vehicle);
+            this.ModelValidator.CheckNullObject(vehicle);
             this.vehicles.Add(vehicle);
         }
 
         public void RemoveVehicle(Vehicle vehicle)
         {
-            ValidateModel.CheckNullObject(vehicle);
+            this.ModelValidator.CheckNullObject(vehicle);
             this.vehicles.Remove(vehicle);
         }
 

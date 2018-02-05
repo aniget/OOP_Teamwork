@@ -17,10 +17,12 @@ namespace AutoService.Models.Common.Models
         private DepartmentType department;
         private bool isHired;
         private List<ResponsibilityType> responsibilities;
+        private readonly IValidateModel modelValidator;
 
         public Employee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
-            DepartmentType department)
+            DepartmentType department, IValidateModel modelValidator)
         {
+            this.modelValidator = modelValidator;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Position = position;
@@ -31,13 +33,18 @@ namespace AutoService.Models.Common.Models
             this.responsibilities = new List<ResponsibilityType>();
         }
 
+        public IValidateModel ModelValidator
+        {
+            get => this.modelValidator;
+        }
+
         public string FirstName
         {
             get => this.firstName;
             private set
             {
-                ValidateModel.StringForNullEmpty(value);
-                ValidateModel.HasDigitInString(value, "first name");
+                this.ModelValidator.StringForNullEmpty(value);
+                this.ModelValidator.HasDigitInString(value, "first name");
                 this.firstName = value;
             }
         }
@@ -48,8 +55,8 @@ namespace AutoService.Models.Common.Models
 
             private set
             {
-                ValidateModel.StringForNullEmpty(value);
-                ValidateModel.HasDigitInString(value, "last name");
+                this.ModelValidator.StringForNullEmpty(value);
+                this.ModelValidator.HasDigitInString(value, "last name");
 
                 this.lastName = value;
             }
@@ -61,7 +68,7 @@ namespace AutoService.Models.Common.Models
 
             private set
             {
-                ValidateModel.NonNegativeValue(value, "salary");
+                this.ModelValidator.NonNegativeValue(value, "salary");
                 
                 this.salary = value;
             }
@@ -71,7 +78,7 @@ namespace AutoService.Models.Common.Models
             get => this.position;
             private set
             {
-                ValidateModel.StringForNullEmpty(value);
+                this.ModelValidator.StringForNullEmpty(value);
                 this.position = value;
             }
         }
@@ -81,7 +88,7 @@ namespace AutoService.Models.Common.Models
             get => this.ratePerMinute;
             private set
             {
-                ValidateModel.NonNegativeValue(value, "rate per minute");
+                this.ModelValidator.NonNegativeValue(value, "rate per minute");
 
                 this.ratePerMinute = value;
             }

@@ -1,24 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using AutoService.Core.Contracts;
-using AutoService.Models.Common.Contracts;
-using AutoService.Models.Validator;
+using AutoService.Core.Validator;
 
 namespace AutoService.Core.Commands
 {
     public class ShowEmployees : ICommand
     {
         private readonly IDatabase database;
+        private readonly IValidateCore coreValidator;
 
-        
-        public ShowEmployees(IDatabase database)
+
+        public ShowEmployees(IDatabase database, IValidateCore coreValidator)
         {
             this.database = database;
-            }
+            this.coreValidator = coreValidator;
+        }
+
+        public IValidateCore CoreValidator
+        {
+            get => this.coreValidator;
+        }
         public void ExecuteThisCommand(string[] commandParameters)
         {
-            ValidateModel.EmployeeCount(this.database.Employees.Count);
+            this.CoreValidator.EmployeeCount(this.database.Employees.Count);
 
             int hiredCounter = 1;
             if (this.database.Employees.Where(e => e.IsHired).Count() > 0)

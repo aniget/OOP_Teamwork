@@ -15,14 +15,16 @@ namespace AutoService.Models.Vehicles.Models
         private readonly string registrationNumber;
         private readonly string year;
         private readonly EngineType engine;
+        private readonly IValidateModel modelValidator;
 
         public Vehicle(string make, string model, string registrationNumber,
-            string year, EngineType engine)
+            string year, EngineType engine, IValidateModel modelValidator)
         {
-            ValidateModel.StringForNullEmpty(make, model, registrationNumber, year);
-            ValidateModel.MakeAndModelLength(make, model);
-            ValidateModel.RegistrationNumber(registrationNumber);
-            ValidateModel.VehicleYear(year);
+            this.modelValidator = modelValidator;
+            this.ModelValidator.StringForNullEmpty(make, model, registrationNumber, year);
+            this.ModelValidator.MakeAndModelLength(make, model);
+            this.ModelValidator.RegistrationNumber(registrationNumber);
+            this.ModelValidator.VehicleYear(year);
 
             this.model = model;
             this.make = make;
@@ -30,6 +32,8 @@ namespace AutoService.Models.Vehicles.Models
             this.year = year;
             this.engine = engine;
         }
+
+        public IValidateModel ModelValidator { get => this.modelValidator; }
 
         public string Make { get => this.make; }
 

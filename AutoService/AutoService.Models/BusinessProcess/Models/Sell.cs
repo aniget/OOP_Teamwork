@@ -13,12 +13,12 @@ namespace AutoService.Models.BusinessProcess.Models
         private decimal sellPrice;
         private IClient client;
         private IVehicle vehicle;
-
-        protected Sell(IEmployee responsibleEmployee, decimal sellPrice, IClient client, IVehicle vehicle)
-            : base(responsibleEmployee, TypeOfWork.Selling)
+        
+        protected Sell(IEmployee responsibleEmployee, decimal sellPrice, IClient client, IVehicle vehicle, IValidateModel modelValidator)
+            : base(responsibleEmployee, TypeOfWork.Selling, modelValidator)
         {
-            ValidateModel.CheckNullObject(new object[] { client, vehicle });
-            ValidateModel.SellPrice(sellPrice);
+           this.ModelValidator.CheckNullObject(new object[] { client, vehicle });
+            this.ModelValidator.SellPrice(sellPrice);
 
             this.client = client;
             this.sellPrice = sellPrice;

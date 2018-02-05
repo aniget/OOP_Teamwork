@@ -16,11 +16,13 @@ namespace AutoService.Models.Common.Models
         private decimal amount;
         private decimal paidAmount;
         private ICollection<ISell> invoiceItems;
+        private readonly IValidateModel modelValidator;
 
-        public Invoice(string number, DateTime date, IClient client)
+        public Invoice(string number, DateTime date, IClient client, IValidateModel modelValidator)
         {
-            ValidateModel.StringForNullEmpty(number);
-            ValidateModel.CheckNullObject(client);
+            this.modelValidator = modelValidator;
+            this.ModelValidator.StringForNullEmpty(number);
+            this.ModelValidator.CheckNullObject(client);
 
             this.number = number;
             this.client = client;
@@ -32,12 +34,17 @@ namespace AutoService.Models.Common.Models
 
         public DateTime Date { get => this.date; }
 
+        public IValidateModel ModelValidator
+        {
+            get => this.modelValidator;
+        }
+
         public decimal Amount
         {
             get => this.amount;
             private set
             {
-                ValidateModel.InvoicePositiveAmount(value);
+             this.ModelValidator.InvoicePositiveAmount(value);
                 this.amount = value;
             }
         }
@@ -47,7 +54,7 @@ namespace AutoService.Models.Common.Models
             get => this.paidAmount;
             private set
             {
-                ValidateModel.InvoiceOverpaid(this.Amount, value);
+                this.ModelValidator.InvoiceOverpaid(this.Amount, value);
                 this.paidAmount = value;
             }
         }

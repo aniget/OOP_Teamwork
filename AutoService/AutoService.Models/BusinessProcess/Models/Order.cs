@@ -10,10 +10,10 @@ namespace AutoService.Models.BusinessProcess.Models
     {
         private readonly ICounterparty supplier;
         
-        protected Order(IEmployee responsibleEmployee, ICounterparty supplier) 
-            : base(responsibleEmployee, TypeOfWork.Ordering)
+        protected Order(IEmployee responsibleEmployee, ICounterparty supplier, IValidateModel modelValidator) 
+            : base(responsibleEmployee, TypeOfWork.Ordering, modelValidator)
         {
-            ValidateModel.CheckNullObject(supplier);
+            this.ModelValidator.CheckNullObject(supplier);
             this.supplier = supplier;
         }
 
