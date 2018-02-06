@@ -29,7 +29,7 @@ namespace AutoService.Core
         private readonly IStockManager stockManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
-        private  readonly IIOWrapper wrapper;
+        private readonly IIOWrapper wrapper;
         
 
         private DateTime lastInvoiceDate =

@@ -37,10 +37,10 @@ namespace AutoService
             builder.RegisterType<ShowEmployees>().Named<ICommand>("showEmployees");
             builder.RegisterType<ShowAllEmployeesAtDepartment> ().Named<ICommand>("showAllEmployeesAtDepartment");
             builder.RegisterType<FireEmployee> ().Named<ICommand>("fireEmployee");
-
+            builder.RegisterType<RegisterClient>().Named<ICommand>("registerClient");
             //the other commands will follow below
 
-            //IContainer containerToRegister = null;
+            //IContainer containerToRegister = null
             //builder.Register(c => containerToRegister);
             //builder.RegisterBuildCallback(c => containerToRegister = c);
 

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\FireEmployee.cs" />
+    <Compile Include="Commands\RegisterClient.cs" />
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />
     <Compile Include="Commands\ShowEmployees.cs" />
     <Compile Include="Contracts\IIOWrapper.cs" />
