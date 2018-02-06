@@ -85,17 +85,17 @@ namespace AutoService.Core
                     command.ExecuteThisCommand(commandParameters);
                 }
 
-                catch (NotSupportedException e) { Console.WriteLine(e.Message); }
-                catch (InvalidOperationException e) { Console.WriteLine(e.Message); }
-                catch (InvalidIdException e) { Console.WriteLine(e.Message); }
-                catch (ArgumentException e) { Console.WriteLine(e.Message); }
+                catch (NotSupportedException e) { wrapper.WriteWithWrapper(e.Message); }
+                catch (InvalidOperationException e) { wrapper.WriteLineWithWrapper(e.Message); }
+                catch (InvalidIdException e) { wrapper.WriteLineWithWrapper(e.Message); }
+                catch (ArgumentException e) { wrapper.WriteLineWithWrapper(e.Message); }
 
                 wrapper.WriteLineWithWrapper(Environment.NewLine +
                                   "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
                                   Environment.NewLine);
 
                 wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                wrapper.WriteWithWrapper("   ");
+                //wrapper.WriteWithWrapper("   ");
                 inputLine = ReadCommand();
 
             }
@@ -461,39 +461,39 @@ namespace AutoService.Core
                     this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
 
-                case "registerClient":
+                //case "registerClient":
 
-                    this.coreValidator.ExactParameterLength(commandParameters, 4);
+                //    this.coreValidator.ExactParameterLength(commandParameters, 4);
 
-                    clientUniqueName = commandParameters[1];
-                    clientAddress = commandParameters[2];
-                    clientUniquieNumber = commandParameters[3];
+                //    clientUniqueName = commandParameters[1];
+                //    clientAddress = commandParameters[2];
+                //    clientUniquieNumber = commandParameters[3];
 
-                    this.coreValidator.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
-                    this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
+                //    this.coreValidator.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
+                //    this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
 
-                    //add default car to the client
-                    client = this.clients.FirstOrDefault(x => x.UniqueNumber == clientUniquieNumber);
-                    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol,
-                        5);
-                    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
-                    Console.WriteLine(newVehicle);
+                //    //add default car to the client
+                //    client = this.clients.FirstOrDefault(x => x.UniqueNumber == clientUniquieNumber);
+                //    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol,
+                //        5);
+                //    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
+                //    Console.WriteLine(newVehicle);
 
-                    Console.WriteLine($"Default Vehicle added to client {client.Name}");
+                //    Console.WriteLine($"Default Vehicle added to client {client.Name}");
 
-                    break;
+                //    break;
 
-                case "changeClientName":
-                    //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
-                    this.coreValidator.ExactParameterLength(commandParameters, 3);
+                //case "changeClientName":
+                //    //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
+                //    this.coreValidator.ExactParameterLength(commandParameters, 3);
 
-                    clientUniqueName = commandParameters[1];
-                    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                //    clientUniqueName = commandParameters[1];
+                //    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
 
-                    var clientNewUniqueName = commandParameters[2];
-                    this.ChangeCounterpartyName(clientUniqueName, this.clients, clientNewUniqueName);
-                    Console.WriteLine($"{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
-                    break;
+                //    var clientNewUniqueName = commandParameters[2];
+                //    this.ChangeCounterpartyName(clientUniqueName, this.clients, clientNewUniqueName);
+                //    Console.WriteLine($"{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
+                //    break;
 
                 case "removeClient":
 

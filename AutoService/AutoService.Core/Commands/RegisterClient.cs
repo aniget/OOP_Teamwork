@@ -47,7 +47,7 @@ namespace AutoService.Core.Commands
 
             wrapper.WriteLineWithWrapper(client);
             wrapper.WriteLineWithWrapper($"Client {clientUniqueName} added successfully with unique number {clientUniquieNumber}");
-            wrapper.WriteLineWithWrapper($"To the client {clientUniqueName} were succesfuly added default vehicle");
+            wrapper.WriteLineWithWrapper($"Default Vehicle added to client {client.Name}");
         }
     }
 }

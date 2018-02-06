@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using AutoService.Core;
 using AutoService.Core.Commands;
+using AutoService.Core.Commandsа;
 using AutoService.Core.Contracts;
 using AutoService.Core.Factory;
 using AutoService.Core.Manager;
@@ -38,6 +39,8 @@ namespace AutoService
             builder.RegisterType<ShowAllEmployeesAtDepartment> ().Named<ICommand>("showAllEmployeesAtDepartment");
             builder.RegisterType<FireEmployee> ().Named<ICommand>("fireEmployee");
             builder.RegisterType<RegisterClient>().Named<ICommand>("registerClient");
+            builder.RegisterType<ChangeClientName>().Named<ICommand>("changeClientName");
+
             //the other commands will follow below
 
             //IContainer containerToRegister = null

@@ -4,7 +4,7 @@ using AutoService.Models.Validator;
 using System;
 using AutoService.Core.Validator;
 
-namespace AutoService.Core.Commands
+namespace AutoService.Core.Commandsа
 {
     public class HireEmployee : ICommand
     {
