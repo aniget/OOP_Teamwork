@@ -32,6 +32,12 @@ namespace AutoService
             builder.RegisterType<ShowEmployees>().Named<ICommand>("showEmployees");
             builder.RegisterType<ShowAllEmployeesAtDepartment> ().Named<ICommand>("showAllEmployeesAtDepartment");
             builder.RegisterType<FireEmployee> ().Named<ICommand>("fireEmployee");
+            builder.RegisterType<RegisterSupplier> ().Named<ICommand>("registerSupplier");
+            builder.RegisterType<RemoveSupplier> ().Named<ICommand>("removeSupplier");
+            builder.RegisterType<CreateBankAccount> ().Named<ICommand>("createBankAccount");
+            builder.RegisterType<DepositCashInBank> ().Named<ICommand>("depositCashInBank");
+            builder.RegisterType<WithdrawCashFromBank> ().Named<ICommand>("withdrawCashFromBank");
+            builder.RegisterType<IssueInvoices> ().Named<ICommand>("issueInvoices");
 
             //the other commands will follow below
 

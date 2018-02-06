@@ -48,9 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddVehicleToClient.cs" />
+    <Compile Include="Commands\CreateBankAccount.cs" />
+    <Compile Include="Commands\DepositCashInBank.cs" />
     <Compile Include="Commands\FireEmployee.cs" />
+    <Compile Include="Commands\IssueInvoices.cs" />
+    <Compile Include="Commands\RegisterSupplier.cs" />
+    <Compile Include="Commands\RemoveSupplier.cs" />
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />
     <Compile Include="Commands\ShowEmployees.cs" />
+    <Compile Include="Commands\WithdrawCashFromBank.cs" />
     <Compile Include="Contracts\IStockManager.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Commands\HireEmployee.cs" />
