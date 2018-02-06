@@ -664,6 +664,7 @@ namespace AutoService.Core
                     Enum.TryParse(responsibility, out currentResponsibility);
                     responsibilitesToRemove.Add(currentResponsibility);
                 }
+                 
             }
             employee.RemoveResponsibilities(responsibilitesToRemove);
         }
