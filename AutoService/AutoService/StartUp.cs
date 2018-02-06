@@ -4,6 +4,7 @@ using AutoService.Core.Commands;
 using AutoService.Core.Contracts;
 using AutoService.Core.Factory;
 using AutoService.Core.Manager;
+using AutoService.Core.Providers;
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Models;
@@ -22,12 +23,16 @@ namespace AutoService
             builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>().SingleInstance();
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
             builder.RegisterType<Warehouse>().As<IWarehouse>().SingleInstance();
-            
+            builder.RegisterType<Writer>().As<IWriter>().SingleInstance();
+            builder.RegisterType<Reader>().As<IReader>().SingleInstance();
+            builder.RegisterType<IOWrapper>().As<IIOWrapper>().SingleInstance();
+
+
             builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
             builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
             builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
-
+            //Commands
             builder.RegisterType<HireEmployee>().Named<ICommand>("hireEmployee");
             builder.RegisterType<ShowEmployees>().Named<ICommand>("showEmployees");
             builder.RegisterType<ShowAllEmployeesAtDepartment> ().Named<ICommand>("showAllEmployeesAtDepartment");

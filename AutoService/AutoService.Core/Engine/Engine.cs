@@ -29,6 +29,8 @@ namespace AutoService.Core
         private readonly IStockManager stockManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
+        private  readonly IIOWrapper wrapper;
+        
 
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -38,7 +40,16 @@ namespace AutoService.Core
         private IAutoServiceFactory factory;
 
         //constructor
-        public Engine(ICommandFactory commandFactory, IAutoServiceFactory autoServiceFactory, IDatabase database, IWarehouse warehouse, IStockManager stockManager, IValidateCore coreValidator, IValidateModel modelValidator)
+        public Engine
+            (
+            ICommandFactory commandFactory, 
+            IAutoServiceFactory autoServiceFactory, 
+            IDatabase database, IWarehouse warehouse, 
+            IStockManager stockManager, 
+            IValidateCore coreValidator, 
+            IValidateModel modelValidator, 
+            IIOWrapper wrapper
+            )
         {
             this.factory = autoServiceFactory;
             this.employees = database.Employees;
@@ -51,6 +62,8 @@ namespace AutoService.Core
             this.stockManager = stockManager;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
+            this.wrapper = wrapper;
+
         }
 
         public ICommandFactory CommandFactory { get; }
@@ -77,12 +90,12 @@ namespace AutoService.Core
                 catch (InvalidIdException e) { Console.WriteLine(e.Message); }
                 catch (ArgumentException e) { Console.WriteLine(e.Message); }
 
-                Console.WriteLine(Environment.NewLine +
+                wrapper.WriteLineWithWrapper(Environment.NewLine +
                                   "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
                                   Environment.NewLine);
 
-                Console.WriteLine("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                Console.Write("   ");
+                wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+                wrapper.WriteWithWrapper("   ");
                 inputLine = ReadCommand();
 
             }
@@ -90,7 +103,7 @@ namespace AutoService.Core
 
         private string ReadCommand()
         {
-            return Console.ReadLine();
+            return wrapper.ReadWithWrapper();
         }
 
         private string[] ParseCommand(string command)
@@ -103,8 +116,8 @@ namespace AutoService.Core
             string commandType = string.Empty;
             try
             {
-                Console.WriteLine("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                Console.WriteLine();
+                wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+                wrapper.WriteLineWithWrapper();
                 commandType = commandParameters[0];
 
             }
