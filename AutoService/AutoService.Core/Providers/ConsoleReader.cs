@@ -7,7 +7,7 @@ using AutoService.Core.Contracts;
 
 namespace AutoService.Core.Providers
 {
-    public class Reader : IReader
+    public class ConsoleReader : IReader
     {
         public string Read()
         {

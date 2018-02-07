@@ -13,13 +13,15 @@ namespace AutoService.Core.Commandsа
         private readonly IAutoServiceFactory autoServiceFactory;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
+        private readonly IWriter consoleWriter;
 
-        public HireEmployee(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator)
+        public HireEmployee(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator, IWriter consoleWriter)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
+            this.consoleWriter = consoleWriter;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -37,16 +39,16 @@ namespace AutoService.Core.Commandsа
             var employeeDepartment = commandParameters[6];
             var department = this.coreValidator.DepartmentTypeFromString(employeeDepartment, "department");
 
-            ///TODO: make separate validation for models and Core section
-            //Validate.EmployeeAlreadyExistOnHire(database, employeeFirstName, employeeLastName, employeeDepartment);
+            coreValidator.EmployeeAlreadyExistOnHire(database, employeeFirstName, employeeLastName, employeeDepartment);
 
-            //To be replaced with AddEmployee method in SERVICES layer
-            //this.AddEmployee(employeeFirstName, employeeLastName, position, salary, ratePerMinute, department);
             IEmployee employee = autoServiceFactory.CreateEmployee(employeeFirstName, employeeLastName, position, salary, ratePerMinute, department, modelValidator);
 
             this.database.Employees.Add(employee);
-            Console.WriteLine(employee);
-            Console.WriteLine($"Employee {employeeFirstName} {employeeLastName} added successfully with Id {this.database.Employees.Count}");
+
+            consoleWriter.Write(employee.ToString());
+            consoleWriter.Write($"Employee {employeeFirstName} {employeeLastName} added successfully with Id {this.database.Employees.Count}");
+            //Console.WriteLine(employee);
+            //Console.WriteLine($"Employee {employeeFirstName} {employeeLastName} added successfully with Id {this.database.Employees.Count}");
 
         }
     }
