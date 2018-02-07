@@ -431,16 +431,16 @@ namespace AutoService.Core
                 //    Console.WriteLine($"{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
                 //    break;
 
-                case "removeClient":
+                //case "removeClient":
 
-                    this.coreValidator.ExactParameterLength(commandParameters, 2);
+                //    this.coreValidator.ExactParameterLength(commandParameters, 2);
 
-                    clientUniqueName = commandParameters[1];
+                //    clientUniqueName = commandParameters[1];
 
-                    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
-                    this.RemoveCounterparty(clientUniqueName, this.clients);
+                //    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                //    this.RemoveCounterparty(clientUniqueName, this.clients);
 
-                    break;
+                //    break;
                 case "listWarehouseItems":
                     this.ListWarehouseItems();
                     break;
