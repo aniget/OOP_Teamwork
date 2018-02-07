@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddVehicleToClient.cs" />
+    <Compile Include="Commands\ChangeSupplierName.cs" />
     <Compile Include="Commands\CreateBankAccount.cs" />
     <Compile Include="Commands\DepositCashInBank.cs" />
     <Compile Include="Commands\ChangeClientName.cs" />

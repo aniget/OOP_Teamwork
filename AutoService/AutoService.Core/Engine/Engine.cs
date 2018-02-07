@@ -94,7 +94,7 @@ namespace AutoService.Core
                                   Environment.NewLine);
 
                 wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                //wrapper.WriteWithWrapper("   ");
+                wrapper.WriteWithWrapper("   ");
                 inputLine = ReadCommand();
 
             }
