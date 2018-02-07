@@ -441,9 +441,9 @@ namespace AutoService.Core
                 //    this.RemoveCounterparty(clientUniqueName, this.clients);
 
                 //    break;
-                case "listWarehouseItems":
-                    this.ListWarehouseItems();
-                    break;
+                //case "listWarehouseItems":
+                //    this.ListWarehouseItems();
+                //    break;
                 case "addClientPayment":
                     //addClientPayment;<clientName>;<bankAccountId>;<invoiceNum>;<amount>
                     this.coreValidator.ExactParameterLength(commandParameters, 5);
@@ -497,10 +497,10 @@ namespace AutoService.Core
                 $"amount {paymentAmount} successfully booked to invoice {invoiceFound.Number}. Thank you for your business!");
         }
 
-        private void ListWarehouseItems()
-        {
-            Console.WriteLine(this.warehouse);
-        }
+        //private void ListWarehouseItems()
+        //{
+        //    Console.WriteLine(this.warehouse);
+        //}
 
         private void ChangeCounterpartyName(string counterpartyName, IList<ICounterparty> counterparties,
             string counterpartyNewName)
