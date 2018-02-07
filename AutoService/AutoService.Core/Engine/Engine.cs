@@ -33,7 +33,6 @@ namespace AutoService.Core
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-        private DateTime lastAssetDate = DateTime.ParseExact("2017-01-30", "yyyy-MM-dd", CultureInfo.InvariantCulture);
         private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
@@ -121,19 +120,14 @@ namespace AutoService.Core
             //IOrderStock orderStock;
             IStock stock;
             string position;
-            DepartmentType department;
             VehicleType vehicleType;
             EngineType engineType;
             IVehicle newVehicle = null;
-            string assetName;
             string stockUniqueNumber;
-            string bankAccountNumber;
             string employeeFirstName;
             string employeeLastName = "";
             string employeeDepartment = "";
-            string supplierUniqueNumber;
             string supplierUniqueName;
-            string supplierAddress;
             string clientUniquieNumber;
             string clientUniqueName;
             string clientAddress;
@@ -159,13 +153,7 @@ namespace AutoService.Core
                     this.ChangeRateOfEmployee(employee, ratePerMinute);
                     break;
 
-                case "issueInvoices":
-                    this.coreValidator.ExactParameterLength(commandParameters, 1);
-
-                    this.IssueInvoices();
-
-                    break;
-                //case "showAllEmployeesAtDepartment":
+               //case "showAllEmployeesAtDepartment":
                 //    //showAllEmployeesAtDepartment;ServicesForClients
 
                 //    ValidateModel.ExactParameterLength(commandParameters, 2);
@@ -253,44 +241,9 @@ namespace AutoService.Core
                     Console.WriteLine($"Vehicle {vehicleMake} {vehicleModel} added to client {client.Name}");
                     break;
 
-                case "createBankAccount":
+              
 
-                    this.coreValidator.ExactParameterLength(commandParameters, 4);
-
-                    if (this.employees.Count == 0)
-                    {
-                        throw new InvalidOperationException(
-                            "No employees currently in the service! You need to hire one then open the bank account :)");
-                    }
-
-                    employeeId = this.coreValidator.IntFromString(commandParameters[1], "employeeId");
-
-                    employee = this.coreValidator.EmployeeById(this.employees, employeeId);
-
-                    assetName = commandParameters[2];
-
-                    this.coreValidator.ValidateBankAccount(commandParameters[3]);
-                    bankAccountNumber = commandParameters[3];
-
-                    DateTime currentAssetDate = this.lastAssetDate.AddDays(5); //fixed date in order to check zero tests
-
-                    this.CreateBankAccount(employee, assetName, currentAssetDate, bankAccountNumber);
-                    break;
-
-                case "depositCashInBank":
-
-                    this.coreValidator.ExactParameterLength(commandParameters, 3);
-
-                    this.coreValidator.BankAccountsCount(this.bankAccounts.Count);
-
-                    int bankAccountId = this.coreValidator.IntFromString(commandParameters[1], "bankAccountId");
-
-                    BankAccount bankAccount = this.coreValidator.BankAccountById(this.bankAccounts, bankAccountId);
-
-                    decimal depositAmount = this.coreValidator.DecimalFromString(commandParameters[2], "depositAmount");
-
-                    this.DepositCashInBankAccount(bankAccount, depositAmount);
-                    break;
+               
 
                 case "sellStockToClientVehicle":
                     //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
@@ -405,26 +358,7 @@ namespace AutoService.Core
                     this.OrderStockFromSupplier(stock);
                     break;
 
-                case "registerSupplier":
-                    //registerSupplier;AXM - AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
-                    this.coreValidator.ExactParameterLength(commandParameters, 5);
-
-                    supplierUniqueName = commandParameters[1];
-                    supplierAddress = commandParameters[2];
-                    supplierUniqueNumber = commandParameters[3];
-                    
-                    //TODO: add to validate class once refactored
-                    bool interfaceIsAvailable;
-                    if (commandParameters[4] is null)
-                        interfaceIsAvailable = false;
-                    else
-                        interfaceIsAvailable = bool.Parse(commandParameters[4]);
-
-                    this.coreValidator.CounterpartyAlreadyRegistered(this.suppliers, supplierUniqueName, "supplier");
-
-                    this.AddSupplier(supplierUniqueName, supplierAddress, supplierUniqueNumber, interfaceIsAvailable);
-                    Console.WriteLine("Supplier registered sucessfully");
-                    break;
+               
 
                 case "changeSupplierName":
                     //changeSupplierName; VintchetaBolchetaGaiki; VintchetaBolchetaGaikiNew
@@ -438,16 +372,7 @@ namespace AutoService.Core
                     Console.WriteLine($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}");
                     break;
 
-                case "removeSupplier":
-
-                    this.coreValidator.ExactParameterLength(commandParameters, 2);
-
-                    supplierUniqueName = commandParameters[1];
-
-                    this.coreValidator.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
-                    this.RemoveCounterparty(supplierUniqueName, this.suppliers);
-                    break;
-
+               
                 case "registerClient":
 
                     this.coreValidator.ExactParameterLength(commandParameters, 4);
@@ -503,7 +428,7 @@ namespace AutoService.Core
                     this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
                     client = this.clients.FirstOrDefault(f => f.Name == clientUniqueName);
 
-                    bankAccountId = this.coreValidator.IntFromString(commandParameters[2], "bankAccountId");
+                    int bankAccountId = this.coreValidator.IntFromString(commandParameters[2], "bankAccountId");
                     this.coreValidator.BankAccountById(this.bankAccounts, bankAccountId);
                     IInvoice invoiceFound = this.coreValidator.InvoiceExists(this.clients, client, commandParameters[3]);
                     decimal paymentAmount = this.coreValidator.DecimalFromString(commandParameters[4], "decimal");
@@ -515,25 +440,7 @@ namespace AutoService.Core
                 case "listClients":
                     this.ListClients();
                     break;
-                case "withdrawCashFromBank":
-                    //withdrawCashFromBank;<employeeId>;<bankAccountId>;<amount>
-
-                    this.coreValidator.ExactParameterLength(commandParameters, 4);
-
-                    this.coreValidator.BankAccountsCount(this.bankAccounts.Count);
-                    employeeId = this.coreValidator.IntFromString(commandParameters[1], "employeeId");
-
-                    employee = this.coreValidator.EmployeeById(this.employees, employeeId);
-
-                    bankAccountId = this.coreValidator.IntFromString(commandParameters[2], "bankAccountId");
-
-                    bankAccount = this.coreValidator.BankAccountById(this.bankAccounts, bankAccountId);
-
-                    decimal withdrawAmount = this.coreValidator.DecimalFromString(commandParameters[3], "depositAmount");
-
-                    this.WithdrawCashFromBank(bankAccount, withdrawAmount, employee);
-
-                    break;
+                
                 case "help":
                     this.HelpThem();
                     break;
@@ -542,20 +449,6 @@ namespace AutoService.Core
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
         }
-
-        private void WithdrawCashFromBank(BankAccount bankAccount, decimal withdrawAmount, IEmployee employee)
-        {
-            if (employee.Responsibilities.Contains(ResponsibilityType.Account) || employee.Responsibilities.Contains(ResponsibilityType.Manage))
-            {
-                bankAccount.WithdrawFunds(withdrawAmount);
-                Console.WriteLine($"{withdrawAmount} BGN were successfully withdrawn by {employee.FirstName} {employee.LastName}");
-            }
-            else
-            {
-                throw new ArgumentException($"Employee {employee.FirstName} {employee.LastName} is not allowed to withdraw!");
-            }
-        }
-
 
         private void HelpThem()
         {
@@ -591,38 +484,6 @@ namespace AutoService.Core
             var supplier = counterparties.First(f => f.Name == counterpartyName);
 
             supplier.ChangeName(counterpartyNewName);
-        }
-
-        private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
-        {
-            bankAccount.DepositFunds(depositAmount);
-            Console.WriteLine($"{depositAmount} BGN were successfully added to bank account {bankAccount.Name}");
-        }
-
-        private void CreateBankAccount(IEmployee employee, string assetName, DateTime currentAssetDate,
-            string uniqueNumber)
-        {
-            if (employee.Responsibilities.Contains(ResponsibilityType.Account) ||
-                employee.Responsibilities.Contains(ResponsibilityType.Manage))
-            {
-                BankAccount bankAccountToAdd = this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
-                bankAccountToAdd.CriticalLimitReached += c_CriticalAmountReached;
-                this.bankAccounts.Add(bankAccountToAdd);
-                Console.WriteLine(
-                    $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Employee {employee.FirstName} {employee.LastName} does not have the required repsonsibilities to register asset {assetName}");
-            }
-
-        }
-
-        static void c_CriticalAmountReached(object sender, EventArgs e)
-        {
-            Console.WriteLine("The minimum threshold of 300 BGN was reached! Please deposit some funds!");
-
         }
 
         private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleMake, string vehicleModel,
@@ -809,30 +670,7 @@ namespace AutoService.Core
             this.notInvoicedSales[client].Add(sell);
         }
 
-        private void IssueInvoices()
-        {
-            int invoiceCount = 0;
-            foreach (var client in this.notInvoicedSales.OrderBy(o => o.Key.Name))
-            {
-                this.lastInvoiceNumber++;
-                invoiceCount++;
-                string invoiceNumber = this.lastInvoiceNumber.ToString();
-                this.lastInvoiceDate = this.lastInvoiceDate.AddDays(3);
-                IInvoice invoice = new Invoice(invoiceNumber, this.lastInvoiceDate, client.Key, modelValidator);
-
-                foreach (var sell in client.Value)
-                {
-                    invoice.InvoiceItems.Add(sell);
-                    invoice.CalculateInvoiceAmount();
-                }
-                var clientToAddInvoice =
-                    this.clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
-                clientToAddInvoice.Invoices.Add(invoice);
-            }
-
-            this.notInvoicedSales.Clear();
-            Console.WriteLine($"{invoiceCount} invoices were successfully issued!");
-        }
+       
 
        
         //private void AddEmployee(string firstName, string lastName, string position, decimal salary,
@@ -845,19 +683,6 @@ namespace AutoService.Core
         //    Console.WriteLine(employee);
         //    Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
         //}
-
-        private void AddSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable = false)
-        {
-            ICounterparty supplier = this.factory.CreateSupplier(name, address, uniqueNumber, interfaceIsAvailable);
-            if (suppliers.FirstOrDefault(x => x.UniqueNumber == uniqueNumber) != null)
-            {
-                throw new ArgumentException(
-                    "Supplier with the same unique number already exist. Please check the number and try again!");
-            }
-            this.suppliers.Add(supplier);
-            Console.WriteLine(supplier);
-            //Console.WriteLine($"Supplier {name} added successfully with Id {this.suppliers.Count}!");
-        }
 
         private void AddClient(string name, string address, string uniqueNumber)
         {

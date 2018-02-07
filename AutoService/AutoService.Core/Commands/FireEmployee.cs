@@ -2,7 +2,6 @@
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
-using AutoService.Models.Validator;
 
 namespace AutoService.Core.Commands
 {
