@@ -300,55 +300,6 @@ namespace AutoService.Core
 
                     break;
 
-
-                case "orderStockToWarehouse":
-                    //orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;RT20134HP;180;Manarino;Management
-
-                    this.coreValidator.EitherOrParameterLength(commandParameters, 6, 8);
-
-
-
-                    employeeFirstName = commandParameters[1];
-                    if (commandParameters.Length == 8)
-                    {
-                        employee = this.coreValidator.EmployeeUnique(this.employees, employeeFirstName, commandParameters[6], commandParameters[7]);
-                    }
-                    else
-                    {
-                        employee = this.coreValidator.EmployeeUnique(this.employees, employeeFirstName, null, null);
-                    }
-
-                    supplierUniqueName = commandParameters[2];
-
-                    this.coreValidator.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
-                    supplier = this.suppliers.FirstOrDefault(x => x.Name == supplierUniqueName);
-
-                    var stockName = commandParameters[3];
-
-                    stockUniqueNumber = commandParameters[4];
-
-                    decimal purchasePrice = this.coreValidator.DecimalFromString(commandParameters[5], "purchasePrice");
-
-                    stock = new Stock(stockName, employee, stockUniqueNumber, purchasePrice, supplier);
-
-                    this.OrderStockFromSupplier(stock);
-                    break;
-
-
-
-                case "changeSupplierName":
-                    //changeSupplierName; VintchetaBolchetaGaiki; VintchetaBolchetaGaikiNew
-                    this.coreValidator.ExactParameterLength(commandParameters, 3);
-                    supplierUniqueName = commandParameters[1];
-                    var supplierNewUniqueName = commandParameters[2];
-                    this.coreValidator.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
-
-                    this.ChangeCounterpartyName(supplierUniqueName, this.suppliers, supplierNewUniqueName);
-
-                    Console.WriteLine($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}");
-                    break;
-
-
                 case "removeSupplier":
 
                     this.coreValidator.ExactParameterLength(commandParameters, 2);
@@ -359,53 +310,6 @@ namespace AutoService.Core
                     this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
 
-                //case "registerClient":
-
-                //    this.coreValidator.ExactParameterLength(commandParameters, 4);
-
-                //    clientUniqueName = commandParameters[1];
-                //    clientAddress = commandParameters[2];
-                //    clientUniquieNumber = commandParameters[3];
-
-                //    this.coreValidator.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
-                //    this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
-
-                //    //add default car to the client
-                //    client = this.clients.FirstOrDefault(x => x.UniqueNumber == clientUniquieNumber);
-                //    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol,
-                //        5);
-                //    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
-                //    Console.WriteLine(newVehicle);
-
-                //    Console.WriteLine($"Default Vehicle added to client {client.Name}");
-
-                //    break;
-
-                //case "changeClientName":
-                //    //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
-                //    this.coreValidator.ExactParameterLength(commandParameters, 3);
-
-                //    clientUniqueName = commandParameters[1];
-                //    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
-
-                //    var clientNewUniqueName = commandParameters[2];
-                //    this.ChangeCounterpartyName(clientUniqueName, this.clients, clientNewUniqueName);
-                //    Console.WriteLine($"{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
-                //    break;
-
-                case "removeClient":
-
-                    this.coreValidator.ExactParameterLength(commandParameters, 2);
-
-                    clientUniqueName = commandParameters[1];
-
-                    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
-                    this.RemoveCounterparty(clientUniqueName, this.clients);
-
-                    break;
-                case "listWarehouseItems":
-                    this.ListWarehouseItems();
-                    break;
                 case "addClientPayment":
                     //addClientPayment;<clientName>;<bankAccountId>;<invoiceNum>;<amount>
                     this.coreValidator.ExactParameterLength(commandParameters, 5);
@@ -423,32 +327,10 @@ namespace AutoService.Core
 
                     break;
 
-                case "listClients":
-                    this.ListClients();
-                    break;
-
-                case "help":
-                    this.HelpThem();
-                    break;
+                
 
                 default:
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
-            }
-        }
-
-        private void HelpThem()
-        {
-            Console.WriteLine("This is a sample AutoService software written for just 5 days." + Environment.NewLine +
-                              "For suggestions on improvement please send email to holySynod@bg-patriarshia.bg" +
-                              Environment.NewLine +
-                              "Please donate in order to keep us alive! We accept BitCoin, LiteCoin, Ethereum, PitCoin , ShitCoin and any other coin!");
-        }
-
-        private void ListClients()
-        {
-            foreach (var client in this.clients)
-            {
-                Console.WriteLine(client);
             }
         }
 
@@ -459,10 +341,7 @@ namespace AutoService.Core
                 $"amount {paymentAmount} successfully booked to invoice {invoiceFound.Number}. Thank you for your business!");
         }
 
-        private void ListWarehouseItems()
-        {
-            Console.WriteLine(this.warehouse);
-        }
+        
 
         private void ChangeCounterpartyName(string counterpartyName, IList<ICounterparty> counterparties,
             string counterpartyNewName)
@@ -472,7 +351,6 @@ namespace AutoService.Core
             supplier.ChangeName(counterpartyNewName);
         }
 
-       
 
         private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
         {

@@ -45,7 +45,13 @@ namespace AutoService
             builder.RegisterType<IssueInvoices> ().Named<ICommand>("issueInvoices");
             builder.RegisterType<RegisterClient>().Named<ICommand>("registerClient");
             builder.RegisterType<ChangeClientName>().Named<ICommand>("changeClientName");
-            builder.RegisterType<AddVehicleToClient>().Named<ICommand>("addVehicleToClient");
+            builder.RegisterType<ChangeSupplierName>().Named<ICommand>("changeSupplierName");
+            builder.RegisterType<OrderStockToWarehouse>().Named<ICommand>("orderStockToWarehouse");
+            builder.RegisterType<RemoveClient>().Named<ICommand>("removeClient");
+            builder.RegisterType<ListWarehouseItems>().Named<ICommand>("listWarehouseItems");
+            builder.RegisterType<ListClients>().Named<ICommand>("listClients");
+            builder.RegisterType<Help>().Named<ICommand>("help");
+
 
             //the other commands will follow below
 

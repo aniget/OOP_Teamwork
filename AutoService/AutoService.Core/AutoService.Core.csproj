@@ -49,12 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddVehicleToClient.cs" />
+    <Compile Include="Commands\ChangeSupplierName.cs" />
     <Compile Include="Commands\CreateBankAccount.cs" />
     <Compile Include="Commands\DepositCashInBank.cs" />
     <Compile Include="Commands\ChangeClientName.cs" />
     <Compile Include="Commands\FireEmployee.cs" />
+    <Compile Include="Commands\Help.cs" />
     <Compile Include="Commands\IssueInvoices.cs" />
+    <Compile Include="Commands\ListClients.cs" />
+    <Compile Include="Commands\ListWarehouseItems.cs" />
+    <Compile Include="Commands\OrderStockToWarehouse.cs" />
     <Compile Include="Commands\RegisterSupplier.cs" />
+    <Compile Include="Commands\RemoveClient.cs" />
     <Compile Include="Commands\RemoveSupplier.cs" />
     <Compile Include="Commands\RegisterClient.cs" />
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />

@@ -14,7 +14,7 @@ namespace AutoService.Core.Contracts
         IList<ICounterparty> Clients { get; }
         IList<ICounterparty> Suppliers { get; }
         Dictionary<IClient, IList<ISell>> NotInvoicedSales { get; }
-        IList<IStock> AvailableStocks { get; }
+        //IList<IStock> AvailableStocks { get; }
 
         DateTime LastInvoiceDate { get; set; }
         DateTime LastAssetDate { get; set; }
