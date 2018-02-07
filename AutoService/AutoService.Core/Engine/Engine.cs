@@ -29,8 +29,8 @@ namespace AutoService.Core
         private readonly IStockManager stockManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
-        private readonly IIOWrapper wrapper;
-        
+        private readonly IConsoleWriter consoleWriter;
+        private readonly IConsoleReader consoleReader;
 
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -41,13 +41,14 @@ namespace AutoService.Core
         //constructor
         public Engine
             (
-            ICommandFactory commandFactory, 
-            IAutoServiceFactory autoServiceFactory, 
-            IDatabase database, IWarehouse warehouse, 
-            IStockManager stockManager, 
-            IValidateCore coreValidator, 
-            IValidateModel modelValidator, 
-            IIOWrapper wrapper
+            ICommandFactory commandFactory,
+            IAutoServiceFactory autoServiceFactory,
+            IDatabase database, IWarehouse warehouse,
+            IStockManager stockManager,
+            IValidateCore coreValidator,
+            IValidateModel modelValidator,
+            IConsoleWriter consoleWriter,
+            IConsoleReader consoleReader
             )
         {
             this.factory = autoServiceFactory;
@@ -61,7 +62,8 @@ namespace AutoService.Core
             this.stockManager = stockManager;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
-            this.wrapper = wrapper;
+            this.consoleWriter = consoleWriter;
+            this.consoleReader = consoleReader;
 
         }
 
@@ -84,17 +86,17 @@ namespace AutoService.Core
                     command.ExecuteThisCommand(commandParameters);
                 }
 
-                catch (NotSupportedException e) { wrapper.WriteWithWrapper(e.Message); }
-                catch (InvalidOperationException e) { wrapper.WriteLineWithWrapper(e.Message); }
-                catch (InvalidIdException e) { wrapper.WriteLineWithWrapper(e.Message); }
-                catch (ArgumentException e) { wrapper.WriteLineWithWrapper(e.Message); }
+                catch (NotSupportedException e) { this.consoleWriter.Write(e.Message); }
+                catch (InvalidOperationException e) { this.consoleWriter.Write(e.Message); }
+                catch (InvalidIdException e) { this.consoleWriter.Write(e.Message); }
+                catch (ArgumentException e) { this.consoleWriter.Write(e.Message); }
 
-                wrapper.WriteLineWithWrapper(Environment.NewLine +
-                                  "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
-                                  Environment.NewLine);
+                this.consoleWriter.Write(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
+                this.consoleWriter.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+                this.consoleWriter.Write("   ");
 
                 wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                wrapper.WriteWithWrapper("   ");
+                //wrapper.WriteWithWrapper("   ");
                 inputLine = ReadCommand();
 
             }
@@ -102,7 +104,7 @@ namespace AutoService.Core
 
         private string ReadCommand()
         {
-            return wrapper.ReadWithWrapper();
+            return this.consoleReader.Read();
         }
 
         private string[] ParseCommand(string command)
@@ -115,8 +117,7 @@ namespace AutoService.Core
             string commandType = string.Empty;
             try
             {
-                wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                wrapper.WriteLineWithWrapper();
+                this.consoleWriter.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=" + Environment.NewLine);
                 commandType = commandParameters[0];
 
             }
@@ -141,9 +142,9 @@ namespace AutoService.Core
             string employeeLastName = "";
             string employeeDepartment = "";
             string supplierUniqueName;
-            string clientUniquieNumber;
+            //string clientUniquieNumber;
             string clientUniqueName;
-            string clientAddress;
+            //string clientAddress;
             string vehicleMake;
             string vehicleModel;
             string vehicleRegistrationNumber;
@@ -151,11 +152,11 @@ namespace AutoService.Core
             switch (commandType)
             {
 
-              case "changeEmployeeRate":
+                case "changeEmployeeRate":
 
                     this.coreValidator.ExactParameterLength(commandParameters, 3);
 
-                  this.coreValidator.EmployeeCount(this.employees.Count);
+                    this.coreValidator.EmployeeCount(this.employees.Count);
 
                     employeeId = this.coreValidator.IntFromString(commandParameters[1], "employeeId");
 
@@ -166,7 +167,7 @@ namespace AutoService.Core
                     this.ChangeRateOfEmployee(employee, ratePerMinute);
                     break;
 
-               //case "showAllEmployeesAtDepartment":
+                //case "showAllEmployeesAtDepartment":
                 //    //showAllEmployeesAtDepartment;ServicesForClients
 
                 //    ValidateModel.ExactParameterLength(commandParameters, 2);
@@ -254,9 +255,9 @@ namespace AutoService.Core
                     Console.WriteLine($"Vehicle {vehicleMake} {vehicleModel} added to client {client.Name}");
                     break;
 
-              
 
-               
+
+
 
                 case "sellStockToClientVehicle":
                     //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
@@ -371,7 +372,7 @@ namespace AutoService.Core
                     this.OrderStockFromSupplier(stock);
                     break;
 
-               
+
 
                 case "changeSupplierName":
                     //changeSupplierName; VintchetaBolchetaGaiki; VintchetaBolchetaGaikiNew
@@ -385,7 +386,7 @@ namespace AutoService.Core
                     Console.WriteLine($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}");
                     break;
 
-               
+
                 case "registerClient":
                 case "removeSupplier":
 
@@ -464,7 +465,7 @@ namespace AutoService.Core
                 case "listClients":
                     this.ListClients();
                     break;
-                
+
                 case "help":
                     this.HelpThem();
                     break;
@@ -549,7 +550,7 @@ namespace AutoService.Core
                     Enum.TryParse(responsibility, out currentResponsibility);
                     responsibilitesToRemove.Add(currentResponsibility);
                 }
-                 
+
             }
             employee.RemoveResponsibilities(responsibilitesToRemove);
         }
@@ -694,9 +695,9 @@ namespace AutoService.Core
             this.notInvoicedSales[client].Add(sell);
         }
 
-       
 
-       
+
+
         //private void AddEmployee(string firstName, string lastName, string position, decimal salary,
         //    decimal ratePerMinute, DepartmentType department)
         //{

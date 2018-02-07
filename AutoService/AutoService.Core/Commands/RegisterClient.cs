@@ -15,15 +15,15 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
 
-        private readonly IIOWrapper wrapper;
+        private readonly IConsoleWriter consoleWriter;
 
-        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IIOWrapper wrapper)
+        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IConsoleWriter consoleWriter)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
-            this.wrapper = wrapper;
+            this.consoleWriter = consoleWriter;
             
         }
 
@@ -45,9 +45,9 @@ namespace AutoService.Core.Commands
 
             database.Clients.Add(client);
 
-            wrapper.WriteLineWithWrapper(client);
-            wrapper.WriteLineWithWrapper($"Client {clientUniqueName} added successfully with unique number {clientUniquieNumber}");
-            wrapper.WriteLineWithWrapper($"Default Vehicle added to client {client.Name}");
+            consoleWriter.Write(client.ToString());
+            consoleWriter.Write($"Client {clientUniqueName} added successfully with unique number {clientUniquieNumber}");
+            consoleWriter.Write($"Default Vehicle added to client {client.Name}");
         }
     }
 }

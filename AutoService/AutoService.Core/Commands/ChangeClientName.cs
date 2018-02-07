@@ -18,16 +18,16 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
 
-        private readonly IIOWrapper wrapper;
+        private readonly IConsoleWriter consoleWriter;
 
         //Constructor
-        public ChangeClientName(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IIOWrapper wrapper)
+        public ChangeClientName(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IConsoleWriter consoleWriter)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
-            this.wrapper = wrapper;
+            this.consoleWriter = consoleWriter;
         }
         //Methods
         public void ExecuteThisCommand(string[] commandParameters)
@@ -39,7 +39,7 @@ namespace AutoService.Core.Commands
             var clientNewUniqueName = commandParameters[2];
             var client = database.Clients.FirstOrDefault(x => x.Name == clientUniqueName);
             client.ChangeName(clientNewUniqueName);
-            wrapper.WriteWithWrapper($"Client{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
+            consoleWriter.Write($"Client{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
         }
     }
 }

@@ -24,11 +24,10 @@ namespace AutoService
             builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>().SingleInstance();
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
             builder.RegisterType<Warehouse>().As<IWarehouse>().SingleInstance();
-            builder.RegisterType<Writer>().As<IWriter>().SingleInstance();
-            builder.RegisterType<Reader>().As<IReader>().SingleInstance();
-            builder.RegisterType<IOWrapper>().As<IIOWrapper>().SingleInstance();
 
-
+            builder.RegisterType<ConsoleReader>().As<IConsoleReader>().SingleInstance();
+            builder.RegisterType<ConsoleWriter>().As<IConsoleWriter>().SingleInstance();
+            
             builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
             builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
             builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
