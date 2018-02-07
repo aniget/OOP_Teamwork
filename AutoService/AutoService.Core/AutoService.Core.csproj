@@ -57,6 +57,7 @@
     <Compile Include="Commands\IssueInvoices.cs" />
     <Compile Include="Commands\OrderStockToWarehouse.cs" />
     <Compile Include="Commands\RegisterSupplier.cs" />
+    <Compile Include="Commands\RemoveClient.cs" />
     <Compile Include="Commands\RemoveSupplier.cs" />
     <Compile Include="Commands\RegisterClient.cs" />
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />
