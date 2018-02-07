@@ -8,7 +8,6 @@ namespace AutoService.Core.Commandsа
     public class HireEmployee : ICommand
     {
         private readonly IDatabase database;
-
         private readonly IAutoServiceFactory autoServiceFactory;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;

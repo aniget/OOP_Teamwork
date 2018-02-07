@@ -310,45 +310,10 @@ namespace AutoService.Core
                     this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
 
-                case "addClientPayment":
-                    //addClientPayment;<clientName>;<bankAccountId>;<invoiceNum>;<amount>
-                    this.coreValidator.ExactParameterLength(commandParameters, 5);
-
-                    clientUniqueName = commandParameters[1];
-                    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
-                    client = this.clients.FirstOrDefault(f => f.Name == clientUniqueName);
-
-                    int bankAccountId = this.coreValidator.IntFromString(commandParameters[2], "bankAccountId");
-                    this.coreValidator.BankAccountById(this.bankAccounts, bankAccountId);
-                    IInvoice invoiceFound = this.coreValidator.InvoiceExists(this.clients, client, commandParameters[3]);
-                    decimal paymentAmount = this.coreValidator.DecimalFromString(commandParameters[4], "decimal");
-
-                    this.AddClientPayment(invoiceFound, paymentAmount);
-
-                    break;
-
-                
 
                 default:
                     throw new NotSupportedException("Command not supported yet! Please call IT Support or raise a TT");
             }
-        }
-
-        private void AddClientPayment(IInvoice invoiceFound, decimal paymentAmount)
-        {
-            invoiceFound.IncreasePaidAmount(paymentAmount);
-            Console.WriteLine(
-                $"amount {paymentAmount} successfully booked to invoice {invoiceFound.Number}. Thank you for your business!");
-        }
-
-        
-
-        private void ChangeCounterpartyName(string counterpartyName, IList<ICounterparty> counterparties,
-            string counterpartyNewName)
-        {
-            var supplier = counterparties.First(f => f.Name == counterpartyName);
-
-            supplier.ChangeName(counterpartyNewName);
         }
 
 
@@ -510,47 +475,11 @@ namespace AutoService.Core
             this.notInvoicedSales[client].Add(sell);
         }
 
-
-
-
-        //private void AddEmployee(string firstName, string lastName, string position, decimal salary,
-        //    decimal ratePerMinute, DepartmentType department)
-        //{
-        //    IEmployee employee =
-        //        this.factory.CreateEmployee(firstName, lastName, position, salary, ratePerMinute, department);
-
-        //    this.employees.Add(employee);
-        //    Console.WriteLine(employee);
-        //    Console.WriteLine($"Employee {firstName} {lastName} added successfully with Id {this.employees.Count}");
-        //}
-
-        private void AddClient(string name, string address, string uniqueNumber)
-        {
-            if (clients.Any(x => x.UniqueNumber == uniqueNumber))
-            {
-                var clientExisting = this.clients.First(f => f.UniqueNumber == uniqueNumber);
-                throw new ArgumentException(
-                    $"Client with the same unique number {clientExisting.Name} already exists. Please check the number and try again!");
-            }
-
-            ICounterparty client = this.factory.CreateClient(name, address, uniqueNumber, modelValidator);
-
-            this.clients.Add(client);
-            Console.WriteLine(client);
-            //Console.WriteLine($"Client {name} added successfully with Id {this.clients.Count}!");
-        }
-
         private void RemoveCounterparty(string counterpartyUniqueName, IList<ICounterparty> counterparties)
         {
             ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
             counterparties.Remove(counterparty);
             Console.WriteLine($"{counterpartyUniqueName} removed successfully!");
         }
-
-        //static void c_CriticalAmountReached(object sender, CriticalLimitReachedEventArgs e)
-        //{
-        //    Console.WriteLine("The threshold of {0} was reached at", e.CriticalLimit);
-
-        //}
     }
 }
