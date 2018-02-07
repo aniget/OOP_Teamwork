@@ -29,10 +29,8 @@ namespace AutoService.Core
         private readonly IStockManager stockManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
-        private readonly IIOWrapper wrapper;
-
-        private readonly IWriter consoleWriter;
-        private readonly IReader consoleReader;
+        private readonly IConsoleWriter consoleWriter;
+        private readonly IConsoleReader consoleReader;
 
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -49,9 +47,8 @@ namespace AutoService.Core
             IStockManager stockManager,
             IValidateCore coreValidator,
             IValidateModel modelValidator,
-            IIOWrapper wrapper,
-            IWriter consoleWriter,
-            IReader consoleReader
+            IConsoleWriter consoleWriter,
+            IConsoleReader consoleReader
             )
         {
             this.factory = autoServiceFactory;
@@ -65,7 +62,6 @@ namespace AutoService.Core
             this.stockManager = stockManager;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
-            this.wrapper = wrapper;
             this.consoleWriter = consoleWriter;
             this.consoleReader = consoleReader;
 
@@ -119,8 +115,7 @@ namespace AutoService.Core
             string commandType = string.Empty;
             try
             {
-                this.consoleWriter.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                this.consoleWriter.Write(string.Empty);
+                this.consoleWriter.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=" + Environment.NewLine);
                 commandType = commandParameters[0];
 
             }
@@ -145,9 +140,9 @@ namespace AutoService.Core
             string employeeLastName = "";
             string employeeDepartment = "";
             string supplierUniqueName;
-            string clientUniquieNumber;
+            //string clientUniquieNumber;
             string clientUniqueName;
-            string clientAddress;
+            //string clientAddress;
             string vehicleMake;
             string vehicleModel;
             string vehicleRegistrationNumber;

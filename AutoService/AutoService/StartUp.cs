@@ -25,10 +25,8 @@ namespace AutoService
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
             builder.RegisterType<Warehouse>().As<IWarehouse>().SingleInstance();
 
-            builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
-            builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
-
-            builder.RegisterType<IOWrapper>().As<IIOWrapper>().SingleInstance();
+            builder.RegisterType<ConsoleReader>().As<IConsoleReader>().SingleInstance();
+            builder.RegisterType<ConsoleWriter>().As<IConsoleWriter>().SingleInstance();
             
             builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
             builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
