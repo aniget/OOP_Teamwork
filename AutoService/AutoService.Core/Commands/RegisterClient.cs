@@ -15,9 +15,9 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
 
-        private readonly IConsoleWriter consoleWriter;
+        private readonly IWriter consoleWriter;
 
-        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IConsoleWriter consoleWriter)
+        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IWriter consoleWriter)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;

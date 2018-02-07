@@ -11,9 +11,9 @@ namespace AutoService.Core.Commands
 {
     public class Help : ICommand
     {
-        private readonly IConsoleWriter consoleWriter;
+        private readonly IWriter consoleWriter;
 
-        public Help(IConsoleWriter consoleWriter)
+        public Help(IWriter consoleWriter)
         {
             this.consoleWriter = consoleWriter;
         }

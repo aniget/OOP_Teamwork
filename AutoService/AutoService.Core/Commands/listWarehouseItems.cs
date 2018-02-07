@@ -14,14 +14,14 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IWarehouse warehouse;
         private readonly IValidateCore coreValidator;
-        private readonly IConsoleWriter wrapper;
+        private readonly IWriter consoleWriter;
 
-        public ListWarehouseItems(IDatabase database, IWarehouse warehouse, IValidateCore coreValidator, IConsoleWriter wrapper)
+        public ListWarehouseItems(IDatabase database, IWarehouse warehouse, IValidateCore coreValidator, IWriter consoleWriter)
         {
             this.database = database;
             this.warehouse = warehouse;
             this.coreValidator = coreValidator;
-            this.wrapper = wrapper;
+            this.consoleWriter = consoleWriter;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -30,7 +30,7 @@ namespace AutoService.Core.Commands
             {
                 throw new ArgumentException("The are no avalible staocks at the Warehouse. But you can order it.;-)");
             }
-            wrapper.Write(this.warehouse.ToString());
+            consoleWriter.Write(this.warehouse.ToString());
         }
     }
 }

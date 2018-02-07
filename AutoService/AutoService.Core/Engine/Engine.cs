@@ -29,8 +29,8 @@ namespace AutoService.Core
         private readonly IStockManager stockManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
-        private readonly IConsoleWriter consoleWriter;
-        private readonly IConsoleReader consoleReader;
+        private readonly IWriter consoleWriter;
+        private readonly IReader consoleReader;
 
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -47,8 +47,8 @@ namespace AutoService.Core
             IStockManager stockManager,
             IValidateCore coreValidator,
             IValidateModel modelValidator,
-            IConsoleWriter consoleWriter,
-            IConsoleReader consoleReader
+            IWriter consoleWriter,
+            IReader consoleReader
             )
         {
             this.factory = autoServiceFactory;
@@ -126,15 +126,15 @@ namespace AutoService.Core
             int employeeId;
             decimal ratePerMinute;
             IEmployee employee;
-            ICounterparty supplier;
+            //ICounterparty supplier;
             ICounterparty client;
             IVehicle vehicle;
             //IOrderStock orderStock;
             IStock stock;
             string position;
-            VehicleType vehicleType;
-            EngineType engineType;
-            IVehicle newVehicle = null;
+            //VehicleType vehicleType;
+            //EngineType engineType;
+            //IVehicle newVehicle = null;
             string stockUniqueNumber;
             string employeeFirstName;
             string employeeLastName = "";
@@ -143,8 +143,8 @@ namespace AutoService.Core
             //string clientUniquieNumber;
             string clientUniqueName;
             //string clientAddress;
-            string vehicleMake;
-            string vehicleModel;
+            //string vehicleMake;
+            //string vehicleModel;
             string vehicleRegistrationNumber;
 
             switch (commandType)

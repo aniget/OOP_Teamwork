@@ -12,9 +12,9 @@ namespace AutoService.Core.Commands
         //Fields
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
-        private readonly IConsoleWriter writer;
+        private readonly IWriter writer;
         //Constructor
-        public ChangeSupplierName(IDatabase database, IValidateCore coreValidator, IConsoleWriter writer)
+        public ChangeSupplierName(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;

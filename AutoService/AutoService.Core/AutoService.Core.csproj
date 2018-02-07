@@ -66,8 +66,6 @@
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />
     <Compile Include="Commands\ShowEmployees.cs" />
     <Compile Include="Commands\WithdrawCashFromBank.cs" />
-    <Compile Include="Contracts\IConsoleReader.cs" />
-    <Compile Include="Contracts\IConsoleWriter.cs" />
     <Compile Include="Contracts\IReader.cs" />
     <Compile Include="Contracts\IStockManager.cs" />
     <Compile Include="Contracts\IWriter.cs" />

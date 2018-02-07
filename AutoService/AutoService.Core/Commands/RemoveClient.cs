@@ -16,13 +16,13 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
-        private readonly IConsoleWriter wrapper;
+        private readonly IWriter consoleWriter;
 
-        public RemoveClient(IDatabase database, IValidateCore coreValidator, IConsoleWriter wrapper)
+        public RemoveClient(IDatabase database, IValidateCore coreValidator, IWriter consolerWriter)
         {
             this.database = database;
             this.coreValidator = coreValidator;
-            this.wrapper = wrapper;
+            this.consoleWriter = consolerWriter;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -36,7 +36,7 @@ namespace AutoService.Core.Commands
         {
             ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
             counterparties.Remove(counterparty);
-            wrapper.Write($"{counterpartyUniqueName} removed successfully!");
+            consoleWriter.Write($"{counterpartyUniqueName} removed successfully!");
         }
     }
 }
