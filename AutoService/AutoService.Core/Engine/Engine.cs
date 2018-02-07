@@ -124,12 +124,10 @@ namespace AutoService.Core
                 //this catch the IndexOutOfRange Exception and throws the error message of the Default of the Switch
             }
             int employeeId;
-            decimal ratePerMinute;
             IEmployee employee;
             //ICounterparty supplier;
             ICounterparty client;
             IVehicle vehicle;
-            //IOrderStock orderStock;
             IStock stock;
             string position;
             //VehicleType vehicleType;
@@ -317,6 +315,7 @@ namespace AutoService.Core
         }
 
 
+
         private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
         {
             var responsibilitesToRemove = new List<ResponsibilityType>();
@@ -412,13 +411,6 @@ namespace AutoService.Core
                 $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
         }
 
-        private void SellStockToClient(IStock stock, IClient client, IVehicle vehicle)
-        {
-            ISell sellStock;
-            if (stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Sell) ||
-                stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Manage))
-            {
-                sellStock = factory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock, modelValidator);
 
                 stockManager.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee/*, warehouse*/);
 

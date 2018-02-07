@@ -8,7 +8,6 @@ namespace AutoService.Core.Commands
     public class FireEmployee : ICommand
     {
         private readonly IDatabase database;
-
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
 
@@ -29,10 +28,10 @@ namespace AutoService.Core.Commands
 
             var employee = this.coreValidator.EmployeeById(this.database.Employees, employeeId);
 
-            this.FireEmployeeMethod(employee);
+            this.Fire(employee);
 
         }
-        private void FireEmployeeMethod(IEmployee employee)
+        private void Fire(IEmployee employee)
         {
             this.coreValidator.CheckNullObject(employee);
             employee.FireEmployee();
