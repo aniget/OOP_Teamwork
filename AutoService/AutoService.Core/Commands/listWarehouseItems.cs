@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
@@ -11,26 +7,24 @@ namespace AutoService.Core.Commands
 {
     public class ListWarehouseItems : ICommand
     {
-        private readonly IDatabase database;
         private readonly IWarehouse warehouse;
         private readonly IValidateCore coreValidator;
-        private readonly IWriter consoleWriter;
+        private readonly IWriter writer;
 
-        public ListWarehouseItems(IDatabase database, IWarehouse warehouse, IValidateCore coreValidator, IWriter consoleWriter)
+        public ListWarehouseItems(IWarehouse warehouse, IValidateCore coreValidator, IWriter writer)
         {
-            this.database = database;
             this.warehouse = warehouse;
             this.coreValidator = coreValidator;
-            this.consoleWriter = consoleWriter;
+            this.writer = writer;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
             this.coreValidator.ExactParameterLength(commandParameters, 1);
             if (this.warehouse.AvailableStocks.Count == 0)
             {
-                throw new ArgumentException("The are no avalible staocks at the Warehouse. But you can order it.;-)");
+                throw new ArgumentException("The are no avalible staocks at the Warehouse. But you can order some. ;-)");
             }
-            consoleWriter.Write(this.warehouse.ToString());
+            writer.Write(this.warehouse.ToString());
         }
     }
 }

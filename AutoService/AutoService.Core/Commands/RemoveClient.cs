@@ -1,13 +1,7 @@
 ﻿using AutoService.Core.Contracts;
 using AutoService.Models.Common.Contracts;
-using AutoService.Models.Validator;
 using System.Linq;
-using System;
 using AutoService.Core.Validator;
-using AutoService.Models.Assets.Contracts;
-using AutoService.Models.Common.Enums;
-using AutoService.Models.BusinessProcess.Contracts;
-using AutoService.Models.Common.Models;
 using System.Collections.Generic;
 
 namespace AutoService.Core.Commands
@@ -16,13 +10,13 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
-        private readonly IWriter consoleWriter;
+        private readonly IWriter writer;
 
-        public RemoveClient(IDatabase database, IValidateCore coreValidator, IWriter consolerWriter)
+        public RemoveClient(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
-            this.consoleWriter = consolerWriter;
+            this.writer = writer;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -36,7 +30,7 @@ namespace AutoService.Core.Commands
         {
             ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
             counterparties.Remove(counterparty);
-            consoleWriter.Write($"{counterpartyUniqueName} removed successfully!");
+            writer.Write($"{counterpartyUniqueName} removed successfully!");
         }
     }
 }

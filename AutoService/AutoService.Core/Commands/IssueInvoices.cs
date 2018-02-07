@@ -13,12 +13,14 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
+        private readonly IWriter writer;
 
-        public IssueInvoices(IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator)
+        public IssueInvoices(IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
+            this.writer = writer;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -49,7 +51,7 @@ namespace AutoService.Core.Commands
             }
 
             this.database.NotInvoicedSales.Clear();
-            Console.WriteLine($"{invoiceCount} invoices were successfully issued!");
+            this.writer.Write($"{invoiceCount} invoices were successfully issued!");
         }
     }
 }

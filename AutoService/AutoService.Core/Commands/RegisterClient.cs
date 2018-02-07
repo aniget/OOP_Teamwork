@@ -1,5 +1,4 @@
-﻿using System;
-using AutoService.Core.Contracts;
+﻿using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
@@ -15,15 +14,15 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
 
-        private readonly IWriter consoleWriter;
+        private readonly IWriter writer;
 
-        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IWriter consoleWriter)
+        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
-            this.consoleWriter = consoleWriter;
+            this.writer = writer;
             
         }
 
@@ -45,9 +44,9 @@ namespace AutoService.Core.Commands
 
             database.Clients.Add(client);
 
-            consoleWriter.Write(client.ToString());
-            consoleWriter.Write($"Client {clientUniqueName} added successfully with unique number {clientUniquieNumber}");
-            consoleWriter.Write($"Default Vehicle added to client {client.Name}");
+            writer.Write(client.ToString());
+            writer.Write($"Client {clientUniqueName} added successfully with unique number {clientUniquieNumber}");
+            writer.Write($"Default Vehicle added to client {client.Name}");
         }
     }
 }

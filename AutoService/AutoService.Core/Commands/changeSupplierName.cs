@@ -1,8 +1,5 @@
 ﻿using AutoService.Core.Contracts;
-using AutoService.Models.Common.Contracts;
-using AutoService.Models.Validator;
 using System.Linq;
-using System;
 using AutoService.Core.Validator;
 
 namespace AutoService.Core.Commands
@@ -30,7 +27,7 @@ namespace AutoService.Core.Commands
             var suplier = this.database.Suppliers.FirstOrDefault(s => s.Name == supplierUniqueName);
             suplier.ChangeName(supplierNewUniqueName);
             //Printing
-            writer.Write(($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}"));
+            writer.Write($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}");
             
         }
     }

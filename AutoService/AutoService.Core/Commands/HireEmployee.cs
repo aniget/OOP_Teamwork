@@ -1,7 +1,6 @@
 ﻿using AutoService.Core.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
-using System;
 using AutoService.Core.Validator;
 
 namespace AutoService.Core.Commandsа
@@ -13,15 +12,15 @@ namespace AutoService.Core.Commandsа
         private readonly IAutoServiceFactory autoServiceFactory;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
-        private readonly IWriter consoleWriter;
+        private readonly IWriter writer;
 
-        public HireEmployee(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator, IWriter consoleWriter)
+        public HireEmployee(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
-            this.consoleWriter = consoleWriter;
+            this.writer = writer;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -45,11 +44,8 @@ namespace AutoService.Core.Commandsа
 
             this.database.Employees.Add(employee);
 
-            consoleWriter.Write(employee.ToString());
-            consoleWriter.Write($"Employee {employeeFirstName} {employeeLastName} added successfully with Id {this.database.Employees.Count}");
-            //Console.WriteLine(employee);
-            //Console.WriteLine($"Employee {employeeFirstName} {employeeLastName} added successfully with Id {this.database.Employees.Count}");
-
+            writer.Write(employee.ToString());
+            writer.Write($"Employee {employeeFirstName} {employeeLastName} added successfully with Id {this.database.Employees.Count}");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
@@ -11,11 +10,14 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
+        
 
-        public RemoveSupplier(IDatabase database, IValidateCore coreValidator)
+        public RemoveSupplier(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
+            this.writer = writer;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -31,7 +33,7 @@ namespace AutoService.Core.Commands
         {
             ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
             counterparties.Remove(counterparty);
-            Console.WriteLine($"{counterpartyUniqueName} removed successfully!");
+            this.writer.Write($"{counterpartyUniqueName} removed successfully!");
         }
     }
 }

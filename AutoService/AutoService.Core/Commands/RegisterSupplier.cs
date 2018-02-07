@@ -11,12 +11,15 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IAutoServiceFactory factory;
         private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
 
-        public RegisterSupplier(IDatabase database, IAutoServiceFactory factory, IValidateCore coreValidator)
+
+        public RegisterSupplier(IDatabase database, IAutoServiceFactory factory, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.factory = factory;
             this.coreValidator = coreValidator;
+            this.writer = writer;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -36,7 +39,7 @@ namespace AutoService.Core.Commands
             this.coreValidator.CounterpartyAlreadyRegistered(this.database.Suppliers, supplierUniqueName, "supplier");
 
             this.AddSupplier(supplierUniqueName, supplierAddress, supplierUniqueNumber);
-            Console.WriteLine("Supplier registered sucessfully");
+            this.writer.Write("Supplier registered sucessfully");
         }
 
         private void AddSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable = false)
@@ -51,7 +54,7 @@ namespace AutoService.Core.Commands
             }
             this.database.Suppliers.Add(supplier);
             
-            Console.WriteLine($"Supplier {name} added successfully with Id {this.database.Suppliers.Count}!");
+            this.writer.Write($"Supplier {name} added successfully with Id {this.database.Suppliers.Count}!");
         }
     }
 }
