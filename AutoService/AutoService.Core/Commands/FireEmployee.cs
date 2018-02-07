@@ -2,20 +2,20 @@
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
-using AutoService.Models.Validator;
 
 namespace AutoService.Core.Commands
 {
     public class FireEmployee : ICommand
     {
         private readonly IDatabase database;
-
         private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
 
-        public FireEmployee(IDatabase database, IValidateCore coreValidator)
+        public FireEmployee(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
+            this.writer = writer;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -28,15 +28,15 @@ namespace AutoService.Core.Commands
 
             var employee = this.coreValidator.EmployeeById(this.database.Employees, employeeId);
 
-            this.FireEmployeeMethod(employee);
+            this.Fire(employee);
 
         }
-        private void FireEmployeeMethod(IEmployee employee)
+        private void Fire(IEmployee employee)
         {
             this.coreValidator.CheckNullObject(employee);
             employee.FireEmployee();
 
-            Console.WriteLine($"Employee {employee.FirstName} {employee.LastName} was fired!");
+            this.writer.Write($"Employee {employee.FirstName} {employee.LastName} was fired!");
         }
     }
 }
