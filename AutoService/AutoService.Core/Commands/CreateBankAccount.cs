@@ -12,12 +12,14 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IAutoServiceFactory factory;
         private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
 
-        public CreateBankAccount(IDatabase database, IAutoServiceFactory factory, IValidateCore coreValidator)
+        public CreateBankAccount(IDatabase database, IAutoServiceFactory factory, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.factory = factory;
             this.coreValidator = coreValidator;
+            this.writer = writer;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -40,11 +42,11 @@ namespace AutoService.Core.Commands
 
             DateTime currentAssetDate = this.database.LastAssetDate.AddDays(5); //fixed date in order to check zero tests
 
-            this.CreateBankAccountMethod(employee, assetName, currentAssetDate, bankAccountNumber);
+            this.Create(employee, assetName, currentAssetDate, bankAccountNumber);
             this.database.LastAssetDate = currentAssetDate;
         }
 
-        private void CreateBankAccountMethod(IEmployee employee, string assetName, DateTime currentAssetDate,
+        private void Create(IEmployee employee, string assetName, DateTime currentAssetDate,
             string uniqueNumber)
         {
             if (employee.Responsibilities.Contains(ResponsibilityType.Account) ||
@@ -54,7 +56,7 @@ namespace AutoService.Core.Commands
                     this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
                 bankAccountToAdd.CriticalLimitReached += c_CriticalAmountReached;
                 this.database.BankAccounts.Add(bankAccountToAdd);
-                Console.WriteLine(
+               this.writer.Write(
                     $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
             }
             else
@@ -67,7 +69,7 @@ namespace AutoService.Core.Commands
 
         private void c_CriticalAmountReached(object sender, EventArgs e)
         {
-            Console.WriteLine("The minimum threshold of 300 BGN was reached! Please deposit some funds!");
+            this.writer.Write("The minimum threshold of 300 BGN was reached! Please deposit some funds!");
 
         }
     }

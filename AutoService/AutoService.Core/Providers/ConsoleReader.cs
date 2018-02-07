@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoService.Core.Contracts;
 
 namespace AutoService.Core.Providers
 {
-    public class ConsoleReader : IConsoleReader, IReader
+    public class ConsoleReader : IReader //,IConsoleReader
     {
         public string Read()
         {

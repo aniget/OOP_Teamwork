@@ -9,11 +9,13 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
 
-        public DepositCashInBank(IDatabase database, IValidateCore coreValidator)
+        public DepositCashInBank(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
+            this.writer = writer;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -33,7 +35,7 @@ namespace AutoService.Core.Commands
         private void DepositCashInBankAccount(BankAccount bankAccount, decimal depositAmount)
         {
             bankAccount.DepositFunds(depositAmount);
-            Console.WriteLine($"{depositAmount} BGN were successfully added to bank account {bankAccount.Name}");
+            this.writer.Write($"{depositAmount} BGN were successfully added to bank account {bankAccount.Name}");
         }
 
     }

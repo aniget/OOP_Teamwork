@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 
@@ -9,12 +8,14 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
 
 
-        public ShowEmployees(IDatabase database, IValidateCore coreValidator)
+        public ShowEmployees(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
+            this.writer = writer;
         }
 
         public IValidateCore CoreValidator
@@ -28,34 +29,34 @@ namespace AutoService.Core.Commands
             int hiredCounter = 1;
             if (this.database.Employees.Where(e => e.IsHired).Count() > 0)
             {
-                Console.WriteLine("Current active employees:");
+                this.writer.Write("Current active employees:");
                 foreach (var currentEmployee in this.database.Employees.Where(e => e.IsHired))
                 {
-                    Console.WriteLine(hiredCounter + ". " + currentEmployee);
+                    this.writer.Write(hiredCounter + ". " + currentEmployee);
                     hiredCounter++;
                 }
                 //int counter = 1;
             }
             else
             {
-                Console.WriteLine("No active employees!");
+                this.writer.Write("No active employees!");
             }
 
             int firedCounter = 1;
 
             if (this.database.Employees.Where(e => !e.IsHired).Count() > 0)
             {
-                Console.WriteLine("Current fired employees:");
+                this.writer.Write("Current fired employees:");
                 foreach (var currentEmployee in this.database.Employees.Where(e => !e.IsHired))
                 {
 
-                    Console.WriteLine(firedCounter + ". " + currentEmployee.ToString());
+                    this.writer.Write(firedCounter + ". " + currentEmployee.ToString());
                     firedCounter++;
                 }
             }
             else
             {
-                Console.WriteLine("No fired employees!");
+                this.writer.Write("No fired employees!");
             }
         }
     }

@@ -221,42 +221,6 @@ namespace AutoService.Core
 
                     break;
 
-                case "addVehicleToClient":
-                    //addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;TelerikAcademy
-                    this.coreValidator.ExactParameterLength(commandParameters, 9);
-
-                    vehicleType = this.coreValidator.VehicleTypeFromString(commandParameters[1], "vehicle type");
-                    vehicleMake = commandParameters[2];
-                    vehicleModel = commandParameters[3];
-                    vehicleRegistrationNumber = commandParameters[4];
-                    string vehicleYear = commandParameters[5];
-                    engineType = this.coreValidator.EngineTypeFromString(commandParameters[6], "engine type");
-                    var additionalParams = this.coreValidator.IntFromString(commandParameters[7], "additional parameters");
-
-                    this.coreValidator.CounterpartyNotRegistered(this.clients, commandParameters[8], "client");
-
-                    clientUniqueName = commandParameters[8];
-
-                    client = this.clients.FirstOrDefault(x => x.Name == clientUniqueName);
-
-                    if (((IClient)client).Vehicles.Any(x => x.RegistrationNumber == vehicleRegistrationNumber))
-                    {
-                        throw new ArgumentException(
-                            $"This client already has a vehicle with this registration number: {vehicleRegistrationNumber}.");
-                    }
-                    newVehicle = CreateVehicle(vehicleType, vehicleMake, vehicleModel, vehicleRegistrationNumber,
-                        vehicleYear, engineType, additionalParams);
-
-                    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
-                    Console.WriteLine(newVehicle);
-
-                    Console.WriteLine($"Vehicle {vehicleMake} {vehicleModel} added to client {client.Name}");
-                    break;
-
-
-
-
-
                 case "sellStockToClientVehicle":
                     //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
                     this.coreValidator.EitherOrParameterLength(commandParameters, 5, 7);
@@ -385,7 +349,6 @@ namespace AutoService.Core
                     break;
 
 
-                case "registerClient":
                 case "removeSupplier":
 
                     this.coreValidator.ExactParameterLength(commandParameters, 2);
@@ -509,31 +472,7 @@ namespace AutoService.Core
             supplier.ChangeName(counterpartyNewName);
         }
 
-        private IVehicle CreateVehicle(VehicleType vehicleType, string vehicleMake, string vehicleModel,
-                string registrationNumber, string vehicleYear, EngineType engineType, int additionalParams)
-        //vehicleType, vehicleMake, vehicleModel, registrationNumber, vehicleYear, engineType, additionalParams
-
-        {
-            IVehicle vehicle = null;
-
-            if (vehicleType == VehicleType.Car)
-            {
-                vehicle = (IVehicle)this.factory.CreateVehicle(vehicleModel, vehicleMake, registrationNumber,
-                    vehicleYear, engineType, additionalParams, modelValidator);
-            }
-
-            else if (vehicleType == VehicleType.SmallTruck)
-            {
-                vehicle = (IVehicle)this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber,
-                    vehicleYear, engineType, additionalParams, modelValidator);
-            }
-            else if (vehicleType == VehicleType.Truck)
-            {
-                vehicle = (IVehicle)this.factory.CreateTruck(vehicleModel, vehicleMake, registrationNumber,
-                    vehicleYear, engineType, additionalParams, modelValidator);
-            }
-            return vehicle;
-        }
+       
 
         private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
         {

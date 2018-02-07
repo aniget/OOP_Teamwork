@@ -2,7 +2,6 @@
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Assets;
-using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 
@@ -12,11 +11,13 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
 
-        public WithdrawCashFromBank(IDatabase database, IValidateCore coreValidator)
+        public WithdrawCashFromBank(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
+            this.writer = writer;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -42,7 +43,7 @@ namespace AutoService.Core.Commands
             if (employee.Responsibilities.Contains(ResponsibilityType.Account) || employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
                 bankAccount.WithdrawFunds(withdrawAmount);
-                Console.WriteLine($"{withdrawAmount} BGN were successfully withdrawn by {employee.FirstName} {employee.LastName}");
+                this.writer.Write($"{withdrawAmount} BGN were successfully withdrawn by {employee.FirstName} {employee.LastName}");
             }
             else
             {

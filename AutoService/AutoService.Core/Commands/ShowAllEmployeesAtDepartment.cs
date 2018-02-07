@@ -1,12 +1,9 @@
 ﻿using AutoService.Core.Contracts;
 using AutoService.Models.Common.Enums;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-
-//showAllEmployeesAtDepartment;ServicesForClients
+using AutoService.Core.Validator;
 
 namespace AutoService.Core.Commands
 {
@@ -14,20 +11,21 @@ namespace AutoService.Core.Commands
     {
         private DepartmentType department;
         private readonly IDatabase database;
+        private readonly IValidateCore coreValidator;
+        private readonly IWriter writer;
 
-        public ShowAllEmployeesAtDepartment(IDatabase database)
+        public ShowAllEmployeesAtDepartment(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
+            this.coreValidator = coreValidator;
+            this.writer = writer;
         }
-        
+
         public void ExecuteThisCommand(string[] commandParameters)
         {
+            this.coreValidator.ExactParameterLength(commandParameters, 2);
 
-            //TODO: uncomment once validation is ready
-            //ValidateModel.ExactParameterLength(commandParameters, 2);
-
-            //department = ValidateModel.DepartmentTypeFromString(commandParameters[1], "department");
-            department = (DepartmentType)Enum.Parse(typeof(DepartmentType), commandParameters[1]);
+            department = this.coreValidator.DepartmentTypeFromString(commandParameters[1], "department");
 
             var employeesInDepartment = database.Employees.Where(x => x.Department == department).ToList();
             if (employeesInDepartment.Count == 0)
@@ -45,8 +43,7 @@ namespace AutoService.Core.Commands
                 str.AppendLine($"{counter}. {employee.ToString()}");
                 counter++;
             }
-            Console.WriteLine(str.ToString());
-
+            this.writer.Write(str.ToString());
         }
     }
 }
