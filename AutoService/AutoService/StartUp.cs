@@ -47,6 +47,7 @@ namespace AutoService
             builder.RegisterType<RegisterClient>().Named<ICommand>("registerClient");
             builder.RegisterType<ChangeClientName>().Named<ICommand>("changeClientName");
             builder.RegisterType<ChangeSupplierName>().Named<ICommand>("changeSupplierName");
+            builder.RegisterType<OrderStockToWarehouse>().Named<ICommand>("orderStockToWarehouse");
 
 
             //the other commands will follow below
