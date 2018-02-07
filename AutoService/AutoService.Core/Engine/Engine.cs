@@ -29,6 +29,8 @@ namespace AutoService.Core
         private readonly IStockManager stockManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
+        private readonly IIOWrapper wrapper;
+        
 
         private DateTime lastInvoiceDate =
             DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -37,7 +39,16 @@ namespace AutoService.Core
         private IAutoServiceFactory factory;
 
         //constructor
-        public Engine(ICommandFactory commandFactory, IAutoServiceFactory autoServiceFactory, IDatabase database, IWarehouse warehouse, IStockManager stockManager, IValidateCore coreValidator, IValidateModel modelValidator)
+        public Engine
+            (
+            ICommandFactory commandFactory, 
+            IAutoServiceFactory autoServiceFactory, 
+            IDatabase database, IWarehouse warehouse, 
+            IStockManager stockManager, 
+            IValidateCore coreValidator, 
+            IValidateModel modelValidator, 
+            IIOWrapper wrapper
+            )
         {
             this.factory = autoServiceFactory;
             this.employees = database.Employees;
@@ -50,6 +61,8 @@ namespace AutoService.Core
             this.stockManager = stockManager;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
+            this.wrapper = wrapper;
+
         }
 
         public ICommandFactory CommandFactory { get; }
@@ -71,17 +84,17 @@ namespace AutoService.Core
                     command.ExecuteThisCommand(commandParameters);
                 }
 
-                catch (NotSupportedException e) { Console.WriteLine(e.Message); }
-                catch (InvalidOperationException e) { Console.WriteLine(e.Message); }
-                catch (InvalidIdException e) { Console.WriteLine(e.Message); }
-                catch (ArgumentException e) { Console.WriteLine(e.Message); }
+                catch (NotSupportedException e) { wrapper.WriteWithWrapper(e.Message); }
+                catch (InvalidOperationException e) { wrapper.WriteLineWithWrapper(e.Message); }
+                catch (InvalidIdException e) { wrapper.WriteLineWithWrapper(e.Message); }
+                catch (ArgumentException e) { wrapper.WriteLineWithWrapper(e.Message); }
 
-                Console.WriteLine(Environment.NewLine +
+                wrapper.WriteLineWithWrapper(Environment.NewLine +
                                   "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" +
                                   Environment.NewLine);
 
-                Console.WriteLine("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                Console.Write("   ");
+                wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+                //wrapper.WriteWithWrapper("   ");
                 inputLine = ReadCommand();
 
             }
@@ -89,7 +102,7 @@ namespace AutoService.Core
 
         private string ReadCommand()
         {
-            return Console.ReadLine();
+            return wrapper.ReadWithWrapper();
         }
 
         private string[] ParseCommand(string command)
@@ -102,8 +115,8 @@ namespace AutoService.Core
             string commandType = string.Empty;
             try
             {
-                Console.WriteLine("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
-                Console.WriteLine();
+                wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+                wrapper.WriteLineWithWrapper();
                 commandType = commandParameters[0];
 
             }
@@ -374,38 +387,49 @@ namespace AutoService.Core
 
                
                 case "registerClient":
+                case "removeSupplier":
 
-                    this.coreValidator.ExactParameterLength(commandParameters, 4);
+                    this.coreValidator.ExactParameterLength(commandParameters, 2);
 
-                    clientUniqueName = commandParameters[1];
-                    clientAddress = commandParameters[2];
-                    clientUniquieNumber = commandParameters[3];
+                    supplierUniqueName = commandParameters[1];
 
-                    this.coreValidator.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
-                    this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
-
-                    //add default car to the client
-                    client = this.clients.FirstOrDefault(x => x.UniqueNumber == clientUniquieNumber);
-                    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol,
-                        5);
-                    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
-                    Console.WriteLine(newVehicle);
-
-                    Console.WriteLine($"Default Vehicle added to client {client.Name}");
-
+                    this.coreValidator.CounterpartyNotRegistered(this.suppliers, supplierUniqueName, "supplier");
+                    this.RemoveCounterparty(supplierUniqueName, this.suppliers);
                     break;
 
-                case "changeClientName":
-                    //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
-                    this.coreValidator.ExactParameterLength(commandParameters, 3);
+                //case "registerClient":
 
-                    clientUniqueName = commandParameters[1];
-                    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+                //    this.coreValidator.ExactParameterLength(commandParameters, 4);
 
-                    var clientNewUniqueName = commandParameters[2];
-                    this.ChangeCounterpartyName(clientUniqueName, this.clients, clientNewUniqueName);
-                    Console.WriteLine($"{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
-                    break;
+                //    clientUniqueName = commandParameters[1];
+                //    clientAddress = commandParameters[2];
+                //    clientUniquieNumber = commandParameters[3];
+
+                //    this.coreValidator.CounterpartyAlreadyRegistered(this.clients, clientUniqueName, "client");
+                //    this.AddClient(clientUniqueName, clientAddress, clientUniquieNumber);
+
+                //    //add default car to the client
+                //    client = this.clients.FirstOrDefault(x => x.UniqueNumber == clientUniquieNumber);
+                //    newVehicle = CreateVehicle(VehicleType.Car, "Empty", "Empty", "123456", "2000", EngineType.Petrol,
+                //        5);
+                //    ((IClient)client).Vehicles.Add((Vehicle)newVehicle);
+                //    Console.WriteLine(newVehicle);
+
+                //    Console.WriteLine($"Default Vehicle added to client {client.Name}");
+
+                //    break;
+
+                //case "changeClientName":
+                //    //changeClientName; ClientSuperDuper; clientNewUniqueNameNew 
+                //    this.coreValidator.ExactParameterLength(commandParameters, 3);
+
+                //    clientUniqueName = commandParameters[1];
+                //    this.coreValidator.CounterpartyNotRegistered(this.clients, clientUniqueName, "client");
+
+                //    var clientNewUniqueName = commandParameters[2];
+                //    this.ChangeCounterpartyName(clientUniqueName, this.clients, clientNewUniqueName);
+                //    Console.WriteLine($"{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
+                //    break;
 
                 case "removeClient":
 

@@ -51,14 +51,19 @@
     <Compile Include="Commands\AddVehicleToClient.cs" />
     <Compile Include="Commands\CreateBankAccount.cs" />
     <Compile Include="Commands\DepositCashInBank.cs" />
+    <Compile Include="Commands\ChangeClientName.cs" />
     <Compile Include="Commands\FireEmployee.cs" />
     <Compile Include="Commands\IssueInvoices.cs" />
     <Compile Include="Commands\RegisterSupplier.cs" />
     <Compile Include="Commands\RemoveSupplier.cs" />
+    <Compile Include="Commands\RegisterClient.cs" />
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />
     <Compile Include="Commands\ShowEmployees.cs" />
     <Compile Include="Commands\WithdrawCashFromBank.cs" />
+    <Compile Include="Contracts\IIOWrapper.cs" />
+    <Compile Include="Contracts\IReader.cs" />
     <Compile Include="Contracts\IStockManager.cs" />
+    <Compile Include="Contracts\IWriter.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Commands\HireEmployee.cs" />
     <Compile Include="Contracts\IDatabase.cs" />
@@ -71,6 +76,9 @@
     <Compile Include="Contracts\ICommandFactory.cs" />
     <Compile Include="Manager\StockManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\IOWrapper.cs" />
+    <Compile Include="Providers\Reader.cs" />
+    <Compile Include="Providers\Writer.cs" />
     <Compile Include="Validator\IValidateCore.cs" />
     <Compile Include="Validator\ValidateCore.cs" />
   </ItemGroup>
