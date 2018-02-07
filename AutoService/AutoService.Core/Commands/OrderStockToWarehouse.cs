@@ -19,7 +19,7 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         //private readonly IWarehouse warehouse;
         private readonly IStockManager stockManager;
-        private readonly IIOWrapper wrapper;
+        private readonly IConsoleWriter wrapper;
         //Constructor
         public OrderStockToWarehouse
             (
@@ -27,7 +27,7 @@ namespace AutoService.Core.Commands
             IAutoServiceFactory autoServiceFactory, 
             IValidateCore coreValidator,
             //IWarehouse warehouse,
-            IIOWrapper wrapper,
+            IConsoleWriter wrapper,
             IStockManager stockManager,
             IValidateModel modelValidator
             )
@@ -90,7 +90,7 @@ namespace AutoService.Core.Commands
                     $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required repsonsibilities to register asset {stock.Name}");
             }
 
-            wrapper.WriteLineWithWrapper(
+            wrapper.Write(
                 $"{stock.Name} ordered from {stock.Supplier.Name} for the amount of {stock.PurchasePrice} are stored in the Warehouse." +
                 Environment.NewLine +
                 $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");

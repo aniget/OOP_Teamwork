@@ -14,12 +14,12 @@ namespace AutoService.Core.Commands
     public class ListClients : ICommand
     {
         private readonly IDatabase database;
-        private readonly IIOWrapper wrapper;
+        private readonly IConsoleWriter writer;
 
-        public ListClients(IDatabase database, IIOWrapper wrapper)
+        public ListClients(IDatabase database, IConsoleWriter writer)
         {
             this.database = database;
-            this.wrapper = wrapper;
+            this.writer = writer;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -31,7 +31,7 @@ namespace AutoService.Core.Commands
             }
             foreach (var client in clients)
             {
-                wrapper.WriteLineWithWrapper(clients);
+                writer.Write(client.ToString());
             }
             
         }

@@ -95,7 +95,7 @@ namespace AutoService.Core
                 this.consoleWriter.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
                 this.consoleWriter.Write("   ");
 
-                wrapper.WriteLineWithWrapper("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
+                consoleWriter.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
                 //wrapper.WriteWithWrapper("   ");
                 inputLine = ReadCommand();
 

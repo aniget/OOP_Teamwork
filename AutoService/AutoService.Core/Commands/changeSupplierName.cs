@@ -12,13 +12,13 @@ namespace AutoService.Core.Commands
         //Fields
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
-        private readonly IIOWrapper wrapper;
+        private readonly IConsoleWriter writer;
         //Constructor
-        public ChangeSupplierName(IDatabase database, IValidateCore coreValidator, IIOWrapper wrapper)
+        public ChangeSupplierName(IDatabase database, IValidateCore coreValidator, IConsoleWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
-            this.wrapper = wrapper;
+            this.writer = writer;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -30,7 +30,7 @@ namespace AutoService.Core.Commands
             var suplier = this.database.Suppliers.FirstOrDefault(s => s.Name == supplierUniqueName);
             suplier.ChangeName(supplierNewUniqueName);
             //Printing
-            wrapper.WriteLineWithWrapper(($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}"));
+            writer.Write(($"{supplierUniqueName} changed sucessfully to {supplierNewUniqueName}"));
             
         }
     }
