@@ -10,12 +10,14 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
+        private readonly IInvoiceManager invoiceManager;
 
-        public AddClientPayment(IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public AddClientPayment(IDatabase database, IValidateCore coreValidator, IWriter writer, IInvoiceManager invoiceManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
+            this.invoiceManager = invoiceManager;
         }
 
 
@@ -32,12 +34,13 @@ namespace AutoService.Core.Commands
             IInvoice invoiceFound = this.coreValidator.InvoiceExists(this.database.Clients, client, commandParameters[3]);
             decimal paymentAmount = this.coreValidator.DecimalFromString(commandParameters[4], "decimal");
 
-            this.Add(invoiceFound, paymentAmount);
+            this.Add(invoiceFound, paymentAmount, invoiceManager);
         }
 
-        private void Add(IInvoice invoiceFound, decimal paymentAmount)
+        private void Add(IInvoice invoiceFound, decimal paymentAmount, IInvoiceManager invoiceManager)
         {
-            invoiceFound.IncreasePaidAmount(paymentAmount);
+            invoiceManager.SetInvoice(invoiceFound);
+            invoiceManager.IncreasePaidAmount(paymentAmount);
             this.writer.Write(
                 $"amount {paymentAmount} successfully booked to invoice {invoiceFound.Number}. Thank you for your business!");
         }

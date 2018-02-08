@@ -1,7 +1,6 @@
 ﻿using System;
 using AutoService.Models.Assets.Events;
 using AutoService.Models.Common.Contracts;
-using AutoService.Models.Common.Enums;
 
 namespace AutoService.Models.Assets
 {

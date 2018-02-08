@@ -10,12 +10,14 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
+        private readonly IEmployeeManager employeeManager;
 
-        public FireEmployee(IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public FireEmployee(IDatabase database, IValidateCore coreValidator, IWriter writer, IEmployeeManager employeeManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
+            this.employeeManager = employeeManager;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -28,14 +30,14 @@ namespace AutoService.Core.Commands
 
             var employee = this.coreValidator.EmployeeById(this.database.Employees, employeeId);
 
-            this.Fire(employee);
+            this.Fire(employee, employeeManager);
 
         }
-        private void Fire(IEmployee employee)
+        private void Fire(IEmployee employee, IEmployeeManager employeeManager)
         {
-            this.coreValidator.CheckNullObject(employee);
-            employee.FireEmployee();
-
+            this.coreValidator.CheckNullObject(employee, employeeManager);
+            employeeManager.SetEmployee(employee);
+            employeeManager.FireEmployee();
             this.writer.Write($"Employee {employee.FirstName} {employee.LastName} was fired!");
         }
     }

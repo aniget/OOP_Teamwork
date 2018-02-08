@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Common.Contracts;
@@ -42,9 +41,9 @@ namespace AutoService.Models.Common.Models
         public decimal Amount
         {
             get => this.amount;
-            private set
+            set
             {
-             this.ModelValidator.InvoicePositiveAmount(value);
+                this.ModelValidator.InvoicePositiveAmount(value);
                 this.amount = value;
             }
         }
@@ -52,7 +51,7 @@ namespace AutoService.Models.Common.Models
         public decimal PaidAmount
         {
             get => this.paidAmount;
-            private set
+            set
             {
                 this.ModelValidator.InvoiceOverpaid(this.Amount, value);
                 this.paidAmount = value;
@@ -69,19 +68,9 @@ namespace AutoService.Models.Common.Models
             get => this.invoiceItems;
         }
 
-        public void IncreasePaidAmount(decimal amount)
-        {
-            this.PaidAmount += amount;
-        }
-
         public decimal GetOutstandingBalance()
         {
             return this.Amount - this.PaidAmount;
-        }
-
-        public void CalculateInvoiceAmount()
-        {
-            this.Amount = this.invoiceItems.Select(i => i.SellPrice).Sum();
         }
 
         public override string ToString()
@@ -92,7 +81,7 @@ namespace AutoService.Models.Common.Models
             sb.AppendLine($"Outstanding amount: {this.GetOutstandingBalance()} BGN");
             sb.AppendLine("Invoiced items:");
 
-            foreach (var item in InvoiceItems)
+            foreach (var item in this.InvoiceItems)
             {
                 sb.AppendLine("===" + Environment.NewLine + item + Environment.NewLine + "===");
             }

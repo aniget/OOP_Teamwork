@@ -26,7 +26,7 @@ namespace AutoService.Tests.ValidatorTests
            // mockValidator.CheckNullObject(null);
 
 
-            Assert.ThrowsException<ArgumentException>(() => mockValidator.CheckNullObject());
+            Assert.ThrowsException<ArgumentException>(() => mockValidator.CheckNullObject(null));
         }
     }
 }

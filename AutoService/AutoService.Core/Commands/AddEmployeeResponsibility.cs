@@ -12,11 +12,13 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
+        private readonly IEmployeeManager employeeManager;
 
-        public AddEmployeeResponsibility(IDatabase database, IValidateCore coreValidator)
+        public AddEmployeeResponsibility(IDatabase database, IValidateCore coreValidator, IEmployeeManager employeeManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
+            this.employeeManager = employeeManager;
         }
 
 
@@ -31,11 +33,11 @@ namespace AutoService.Core.Commands
             var employee = this.coreValidator.EmployeeById(database.Employees, employeeId);
 
             var responsibilitiesToAdd = commandParameters.Skip(2).ToArray();
-            this.AddResponsibilitiesToEmployee(employee, responsibilitiesToAdd);
+            this.AddResponsibilitiesToEmployee(employee, responsibilitiesToAdd, employeeManager);
 
         }
 
-        private void AddResponsibilitiesToEmployee(IEmployee employee, string[] responsibilities)
+        private void AddResponsibilitiesToEmployee(IEmployee employee, string[] responsibilities, IEmployeeManager employeeManager)
         {
             var responsibilitesToAdd = new List<ResponsibilityType>();
             foreach (var responsibility in responsibilities)
@@ -49,8 +51,8 @@ namespace AutoService.Core.Commands
                     responsibilitesToAdd.Add(currentResponsibility);
                 }
             }
-            employee.AddResponsibilities(responsibilitesToAdd);
+            employeeManager.SetEmployee(employee);
+            employeeManager.AddResponsibilities(responsibilitesToAdd);
         }
-
     }
 }

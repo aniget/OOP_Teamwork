@@ -12,11 +12,13 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
+        private readonly IEmployeeManager employeeManager;
 
-        public RemoveEmployeeResponsibility(IDatabase database, IValidateCore coreValidator)
+        public RemoveEmployeeResponsibility(IDatabase database, IValidateCore coreValidator, IEmployeeManager employeeManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
+            this.employeeManager = employeeManager;
         }
 
 
@@ -32,12 +34,12 @@ namespace AutoService.Core.Commands
 
             var responsibilitiesToRemove = commandParameters.Skip(2).ToArray();
 
-            this.RemoveResponsibilitiesToEmployee(employee, responsibilitiesToRemove);
+            this.RemoveResponsibilitiesToEmployee(employee, responsibilitiesToRemove, employeeManager);
 
         }
 
 
-        private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove)
+        private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove, IEmployeeManager employeeManager)
         {
             var responsibilitesToRemove = new List<ResponsibilityType>();
             foreach (var responsibility in responsibilitiesToRemove)
@@ -52,7 +54,8 @@ namespace AutoService.Core.Commands
                 }
 
             }
-            employee.RemoveResponsibilities(responsibilitesToRemove);
+            this.employeeManager.SetEmployee(employee);
+            employeeManager.RemoveResponsibilities(responsibilitesToRemove);
         }
 
 

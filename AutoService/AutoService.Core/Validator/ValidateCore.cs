@@ -240,6 +240,10 @@ namespace AutoService.Core.Validator
 
         public void CheckNullObject(params object[] values)
         {
+            if (values == null)
+            {
+                throw new ArgumentException("Null object provided!");
+            }
             foreach (var value in values)
             {
                 if (value == null)

@@ -16,7 +16,7 @@ namespace AutoService.Models.Common.Models
         private decimal ratePerMinute;
         private DepartmentType department;
         private bool isHired;
-        private List<ResponsibilityType> responsibilities;
+        private IList<ResponsibilityType> responsibilities;
         private readonly IValidateModel modelValidator;
 
         public Employee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
@@ -41,7 +41,7 @@ namespace AutoService.Models.Common.Models
         public string FirstName
         {
             get => this.firstName;
-            private set
+            set
             {
                 this.ModelValidator.StringForNullEmpty(value);
                 this.ModelValidator.HasDigitInString(value, "first name");
@@ -53,7 +53,7 @@ namespace AutoService.Models.Common.Models
         {
             get => this.lastName;
 
-            private set
+             set
             {
                 this.ModelValidator.StringForNullEmpty(value);
                 this.ModelValidator.HasDigitInString(value, "last name");
@@ -66,17 +66,17 @@ namespace AutoService.Models.Common.Models
         {
             get => this.salary;
 
-            private set
+            set
             {
                 this.ModelValidator.NonNegativeValue(value, "salary");
-                
+
                 this.salary = value;
             }
         }
         public string Position
         {
             get => this.position;
-            private set
+            set
             {
                 this.ModelValidator.StringForNullEmpty(value);
                 this.position = value;
@@ -86,7 +86,7 @@ namespace AutoService.Models.Common.Models
         public decimal RatePerMinute
         {
             get => this.ratePerMinute;
-            private set
+            set
             {
                 this.ModelValidator.NonNegativeValue(value, "rate per minute");
 
@@ -103,88 +103,24 @@ namespace AutoService.Models.Common.Models
         public bool IsHired
         {
             get => this.isHired;
-            private set { this.isHired = value; }
+            set
+            {
+                if (this.isHired)
+                {
+                    this.isHired = false;
+                }
+                else
+                {
+                    throw new ArgumentException("Employee is already fired!");
+                }
+            }
         }
 
-        public List<ResponsibilityType> Responsibilities
+        public IList<ResponsibilityType> Responsibilities
         {
             get => this.responsibilities;
         }
 
-        public void ChangeSalary(decimal salary)
-        {
-            this.Salary = salary;
-        }
-
-        public void AddResponsibilities(List<ResponsibilityType> value)
-        {
-            List<ResponsibilityType> resposibilityToBeAdded = new List<ResponsibilityType>();
-            List<ResponsibilityType> alreadyHasResponsibilities = new List<ResponsibilityType>();
-
-            foreach (var resp in value)
-            {
-                if (this.Responsibilities.Any(a => a.Equals(resp)))
-                {
-                    alreadyHasResponsibilities.Add(resp);
-                }
-                else
-                {
-                    this.Responsibilities.Add(resp);
-                    resposibilityToBeAdded.Add(resp);
-                }
-            }
-
-            if (resposibilityToBeAdded.Count > 0)
-            {
-                Console.WriteLine($"To Employee {this.FirstName} {this.LastName} were successfully added responsibilities {string.Join(", ", resposibilityToBeAdded)}");
-            }
-            if (alreadyHasResponsibilities.Count > 0)
-
-            {
-                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has these responsibilities: {string.Join(", ", alreadyHasResponsibilities)}");
-            }
-        }
-
-        public void RemoveResponsibilities(List<ResponsibilityType> value)
-        {
-            List<ResponsibilityType> removedResponsibilities = new List<ResponsibilityType>();
-            foreach (var responsibility in value)
-            {
-                if (this.responsibilities.Contains(responsibility))
-                {
-                    this.responsibilities.Remove(responsibility);
-                    removedResponsibilities.Add(responsibility);
-                }
-                else
-                {
-                    Console.WriteLine("Employee does not have this responsibility!");
-                }
-            }
-            Console.WriteLine($"Employee {this.FirstName} {this.LastName} were succesfuly declined and removed responsibilities {string.Join(", ", removedResponsibilities)}");
-        }
-
-        public void ChangePosition(string position)
-        {
-            this.Position = position;
-        }
-
-        public void FireEmployee()
-        {
-            if (IsHired)
-            {
-                this.Responsibilities.Clear();
-                this.IsHired = false;
-            }
-            else
-            {
-                throw new ArgumentException("Employee is already fired!");
-            }
-        }
-
-        public void ChangeRate(decimal ratePerMinutes)
-        {
-            this.RatePerMinute = ratePerMinutes;
-        }
 
         public override string ToString()
         {

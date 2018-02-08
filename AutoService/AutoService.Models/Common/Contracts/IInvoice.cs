@@ -8,15 +8,12 @@ namespace AutoService.Models.Common.Contracts
     {
         string Number { get; }
         DateTime Date { get; }
-        decimal Amount { get; } // Calculated property based on invoiceItems
-        decimal PaidAmount { get; }
+        decimal Amount { get; set; } 
+        decimal PaidAmount { get; set; }
         IClient Client { get; }
 
         ICollection<ISell> InvoiceItems { get; }
+        decimal GetOutstandingBalance();
 
-        void IncreasePaidAmount(decimal amount);
-        decimal GetOutstandingBalance(); // Calculated property Amount - PaidAmount
-
-        void CalculateInvoiceAmount();
     }
 }

@@ -9,7 +9,6 @@ using System.Globalization;
 using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
-using Autofac.Core.Registration;
 
 namespace AutoService.Core
 {
@@ -20,7 +19,9 @@ namespace AutoService.Core
         private readonly IList<ICounterparty> clients;
         private readonly IList<ICounterparty> suppliers;
         private readonly IDictionary<IClient, IList<ISell>> notInvoicedSales;
-       private readonly IStockManager stockManager;
+        private readonly IStockManager stockManager;
+        private readonly IEmployeeManager employeeManager;
+        private readonly IInvoiceManager invoiceManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
@@ -39,6 +40,8 @@ namespace AutoService.Core
             IAutoServiceFactory autoServiceFactory,
             IDatabase database,
             IStockManager stockManager,
+            IEmployeeManager employeeManager,
+            IInvoiceManager invoiceManager,
             IValidateCore coreValidator,
             IValidateModel modelValidator,
             IWriter writer,
@@ -54,7 +57,8 @@ namespace AutoService.Core
             this.CommandFactory = commandFactory;
             this.stockManager = stockManager;
             this.coreValidator = coreValidator;
-            this.modelValidator = modelValidator;
+            this.employeeManager = employeeManager;
+            this.invoiceManager = invoiceManager;
             this.writer = writer;
             this.reader = reader;
 
@@ -72,7 +76,7 @@ namespace AutoService.Core
             {
 
                 commandParameters = ParseCommand(inputLine);
-               
+
                 try
                 {
                     ICommand command = this.CommandFactory.CreateCommand(commandParameters[0]);
@@ -82,7 +86,7 @@ namespace AutoService.Core
                 catch (InvalidOperationException e) { this.writer.Write(e.Message); }
                 catch (InvalidIdException e) { this.writer.Write(e.Message); }
                 catch (ArgumentException e) { this.writer.Write(e.Message); }
-                catch(ComponentNotRegisteredException e) { this.writer.Write($"There is no command named {inputLine} implemented! Please contact Dev team to implement it :)");}
+                catch (ComponentNotRegisteredException e) { this.writer.Write($"There is no command named {inputLine} implemented! Please contact Dev team to implement it :)"); }
 
                 this.writer.Write(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
                 this.writer.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");

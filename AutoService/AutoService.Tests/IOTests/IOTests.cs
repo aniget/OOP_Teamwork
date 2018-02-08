@@ -1,11 +1,9 @@
 ﻿using Autofac;
-using AutoService.Core;
 using AutoService.Core.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Reflection;
-using AutoService;
 
 namespace AutoService.Tests.IOTests
 {

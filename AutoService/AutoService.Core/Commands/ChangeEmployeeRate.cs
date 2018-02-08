@@ -11,12 +11,14 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
+        private readonly IEmployeeManager employeeManager;
 
-        public ChangeEmployeeRate(IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public ChangeEmployeeRate(IDatabase database, IValidateCore coreValidator, IWriter writer, IEmployeeManager employeeManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
+            this.employeeManager = employeeManager;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -31,13 +33,14 @@ namespace AutoService.Core.Commands
 
             var ratePerMinute = this.coreValidator.DecimalFromString(commandParameters[2], "ratePerMinute");
             
-            this.ChangeRateOfEmployee(employee, ratePerMinute);
+            this.ChangeRateOfEmployee(employee, ratePerMinute, employeeManager);
 
         }
 
-        private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute)
+        private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute, IEmployeeManager employeeManager)
         {
-            employee.ChangeRate(ratePerMinute);
+            employeeManager.SetEmployee(employee);
+            employeeManager.ChangeRate(ratePerMinute);
             writer.Write($"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
         }
     }

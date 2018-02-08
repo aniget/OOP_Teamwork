@@ -14,22 +14,24 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
+        private readonly IInvoiceManager invoiceManager;
 
-        public IssueInvoices(IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer)
+        public IssueInvoices(IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer, IInvoiceManager invoiceManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
             this.writer = writer;
+            this.invoiceManager = invoiceManager;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
         {
             this.coreValidator.ExactParameterLength(commandParameters, 1);
 
-            this.IssueInvoicesMethod();
+            this.IssueInvoicesMethod(invoiceManager);
         }
-        private void IssueInvoicesMethod()
+        private void IssueInvoicesMethod(IInvoiceManager invoiceManager)
         {
             int invoiceCount = 0;
             foreach (var client in this.database.NotInvoicedSales.OrderBy(o => o.Key.Name))
@@ -43,7 +45,8 @@ namespace AutoService.Core.Commands
                 foreach (var sell in client.Value)
                 {
                     invoice.InvoiceItems.Add(sell);
-                    invoice.CalculateInvoiceAmount();
+                    invoiceManager.SetInvoice(invoice);
+                    invoiceManager.CalculateInvoiceAmount();
                 }
                 var clientToAddInvoice =
                     this.database.Clients.FirstOrDefault(f => f.UniqueNumber == client.Key.UniqueNumber);
