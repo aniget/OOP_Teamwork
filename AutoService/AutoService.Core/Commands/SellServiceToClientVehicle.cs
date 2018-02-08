@@ -1,6 +1,5 @@
 ﻿using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
-using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
@@ -9,8 +8,6 @@ using AutoService.Models.Vehicles.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 //sellServiceToClientVehicle; Jo; 123456789; CA1234AC; Disk change; 240; Manarino; Management
 
@@ -23,17 +20,13 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
-        private readonly IStockManager stockManager;
-        private readonly IWarehouse warehouse;
         private readonly IAutoServiceFactory autoServiceFactory;
 
-        public SellServiceToClientVehicle(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer, IStockManager stockManager, IWarehouse warehouse, IValidateModel modelValidator)
+        public SellServiceToClientVehicle(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer, IValidateModel modelValidator)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
-            this.stockManager = stockManager;
-            this.warehouse = warehouse;
             this.autoServiceFactory = autoServiceFactory;
             this.modelValidator = modelValidator;
         }
@@ -75,14 +68,7 @@ namespace AutoService.Core.Commands
 
         }
 
-        private void RemoveCounterparty(string counterpartyUniqueName, IList<ICounterparty> counterparties)
-        {
-            ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
-            counterparties.Remove(counterparty);
-            writer.Write($"{counterpartyUniqueName} removed successfully!");
-        }
-
-        private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle,
+       private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle,
             string serviceName, int durationInMinutes)
         {
             ISellService sellService;

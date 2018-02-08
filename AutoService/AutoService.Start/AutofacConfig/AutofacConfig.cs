@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using AutoService.Core;
 using AutoService.Core.Commands;
 using AutoService.Core.Commandsа;
@@ -12,8 +7,6 @@ using AutoService.Core.Factory;
 using AutoService.Core.Manager;
 using AutoService.Core.Providers;
 using AutoService.Core.Validator;
-using AutoService.Models.Common.Contracts;
-using AutoService.Models.Common.Models;
 using AutoService.Models.Validator;
 
 namespace AutoService.AutofacConfig
@@ -25,8 +18,7 @@ namespace AutoService.AutofacConfig
             builder.RegisterType<CommandFactory>().As<ICommandFactory>().SingleInstance();
             builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>().SingleInstance();
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
-            builder.RegisterType<Warehouse>().As<IWarehouse>().SingleInstance();
-
+            
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
 

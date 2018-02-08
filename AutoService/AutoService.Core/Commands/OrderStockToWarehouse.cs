@@ -78,9 +78,9 @@ namespace AutoService.Core.Commands
             {
                 IOrderStock orderStock = autoServiceFactory.CreateOrderStock(stock.ResponsibleEmployee, stock.Supplier, stock, modelValidator);
                 if (((Supplier)stock.Supplier).InterfaceIsAvailable)
-                    this.stockManager.AddStockToWarehouse(stock/*, warehouse*/);
+                    this.stockManager.AddStockToWarehouse(stock);
                 else
-                    this.stockManager.AddStockToWarehouse(stock, stock.ResponsibleEmployee/*, warehouse*/);
+                    this.stockManager.AddStockToWarehouse(stock, stock.ResponsibleEmployee);
             }
             else
             {

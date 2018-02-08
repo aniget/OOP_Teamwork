@@ -50,7 +50,6 @@
     <Compile Include="BusinessProcess\Models\OrderStock.cs" />
     <Compile Include="BusinessProcess\Models\SellStock.cs" />
     <Compile Include="Assets\Events\CriticalLimitReachedEventArgs.cs" />
-    <Compile Include="Common\Contracts\IWarehouse.cs" />
     <Compile Include="CustomExceptions\InvalidIdException.cs" />
     <Compile Include="Validator\IValidateModel.cs" />
     <Compile Include="Validator\ValidateModel.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="Common\Models\Invoice.cs" />
     <Compile Include="BusinessProcess\Models\Work.cs" />
     <Compile Include="Common\Models\Supplier.cs" />
-    <Compile Include="Common\Models\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vehicles\Enums\VehicleType.cs" />
     <Compile Include="Vehicles\Models\SmallTruck.cs" />

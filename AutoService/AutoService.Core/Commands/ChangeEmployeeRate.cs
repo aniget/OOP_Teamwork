@@ -8,15 +8,13 @@ namespace AutoService.Core.Commands
     public class ChangeEmployeeRate : ICommand
     {
         private readonly IDatabase database;
-        private readonly IAutoServiceFactory autoServiceFactory;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
 
-        public ChangeEmployeeRate(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public ChangeEmployeeRate(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
-            this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
             this.writer = writer;
         }

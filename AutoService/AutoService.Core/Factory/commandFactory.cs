@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
+using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
 
 namespace AutoService.Core.Factory

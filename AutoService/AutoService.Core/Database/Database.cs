@@ -22,7 +22,7 @@ namespace AutoService
             this.Clients = new List<ICounterparty>();
             this.Suppliers = new List<ICounterparty>();
             this.NotInvoicedSales = new Dictionary<IClient, IList<ISell>>();
-            //this.AvailableStocks = new List<IStock>();
+            this.AvailableStocks = new List<IStock>();
             this.lastInvoiceDate = DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture); //fixed for simplicity
             this.lastAssetDate = DateTime.ParseExact("2017-01-30", "yyyy-MM-dd", CultureInfo.InvariantCulture);
             this.lastInvoiceNumber = 0;
@@ -38,7 +38,7 @@ namespace AutoService
 
         public Dictionary<IClient, IList<ISell>> NotInvoicedSales { get; }
 
-        //public IList<IStock> AvailableStocks { get; }
+        public IList<IStock> AvailableStocks { get; }
 
         public DateTime LastInvoiceDate
         {
