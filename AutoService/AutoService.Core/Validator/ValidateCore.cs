@@ -8,9 +8,6 @@ using AutoService.Models.Common.Enums;
 using AutoService.Models.CustomExceptions;
 using AutoService.Models.Vehicles.Enums;
 
-//testing branches
-//test 2
-
 namespace AutoService.Core.Validator
 {
     public class ValidateCore : IValidateCore
@@ -21,8 +18,6 @@ namespace AutoService.Core.Validator
         {
             this.writer = writer;
         }
-
-        
 
         public int IntFromString(string commandParameter, string parameterName)
         {
@@ -255,6 +250,10 @@ namespace AutoService.Core.Validator
 
         public void StringForNullEmpty(params string[] values)
         {
+            if (values == null)
+            {
+                throw new ArgumentException("Null object provided!");
+            }
             foreach (var value in values)
             {
                 if (string.IsNullOrWhiteSpace(value))
@@ -329,6 +328,7 @@ namespace AutoService.Core.Validator
 
         public void MakeAndModelLength(params string[] values)
         {
+            this.CheckNullObject(values);
             foreach (var value in values)
             {
                 if (value.Length > 50)
@@ -340,6 +340,8 @@ namespace AutoService.Core.Validator
 
         public void RegistrationNumber(string registrationNumber)
         {
+            this.StringForNullEmpty(registrationNumber);
+
             if (registrationNumber.Length < 6)
             {
                 throw new ArgumentException("Invalid registration number. Must be at least 6 characters!");
@@ -348,6 +350,8 @@ namespace AutoService.Core.Validator
 
         public void VehicleYear(string year)
         {
+            this.StringForNullEmpty(year);
+
             if (year.Any(a => !char.IsDigit(a)))
             {
                 throw new ArgumentException("Invalid year!");

@@ -95,6 +95,4 @@ namespace AutoService.Core.Manager
             this.employee.RatePerMinute = ratePerMinutes;
         }
     }
-
-
 }
