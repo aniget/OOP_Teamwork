@@ -17,16 +17,15 @@ namespace AutoService.Core.Commands
         private readonly IValidateModel modelValidator;
         private readonly IAutoServiceFactory autoServiceFactory;
         private readonly IValidateCore coreValidator;
-        //private readonly IWarehouse warehouse;
         private readonly IStockManager stockManager;
         private readonly IWriter writer;
+
         //Constructor
         public OrderStockToWarehouse
             (
             IDatabase database, 
             IAutoServiceFactory autoServiceFactory, 
             IValidateCore coreValidator,
-            //IWarehouse warehouse,
             IWriter writer,
             IStockManager stockManager,
             IValidateModel modelValidator
@@ -35,7 +34,6 @@ namespace AutoService.Core.Commands
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
-            //this.warehouse = warehouse;
             this.writer = writer;
             this.stockManager = stockManager;
             this.modelValidator = modelValidator;

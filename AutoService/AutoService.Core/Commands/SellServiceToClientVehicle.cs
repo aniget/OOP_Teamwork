@@ -79,8 +79,44 @@ namespace AutoService.Core.Commands
         {
             ICounterparty counterparty = counterparties.FirstOrDefault(x => x.Name == counterpartyUniqueName);
             counterparties.Remove(counterparty);
-            Console.WriteLine($"{counterpartyUniqueName} removed successfully!");
+            writer.Write($"{counterpartyUniqueName} removed successfully!");
         }
+
+        private void SellServiceToClient(IEmployee responsibleEmployee, IClient client, IVehicle vehicle,
+            string serviceName, int durationInMinutes)
+        {
+            ISellService sellService;
+            if (responsibleEmployee.Responsibilities.Contains(ResponsibilityType.Repair) ||
+                responsibleEmployee.Responsibilities.Contains(ResponsibilityType.SellService))
+            {
+                sellService = (ISellService)autoServiceFactory.CreateSellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes, modelValidator);
+                //sellService.SellToClientVehicle(sellService, null);
+
+                //record the Sell in the notInvoicedSells Dictionary
+                AddSellToNotInvoicedItems(client, sellService);
+
+            }
+            else
+            {
+                throw new ArgumentException(
+                    $"Employee {responsibleEmployee.FirstName} {responsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
+            }
+
+            writer.Write(
+                $"{serviceName} was performed to {client.Name} for the amount of {sellService.SellPrice}" +
+                Environment.NewLine
+                + $"Employee responsible for the repair: {responsibleEmployee.FirstName} {responsibleEmployee.LastName}");
+        }
+
+        private void AddSellToNotInvoicedItems(IClient client, ISell sell)
+        {
+            if (!database.NotInvoicedSales.ContainsKey(client))
+            {
+                database.NotInvoicedSales[client] = new List<ISell>();
+            }
+            database.NotInvoicedSales[client].Add(sell);
+        }
+
 
     }
 }

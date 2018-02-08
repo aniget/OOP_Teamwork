@@ -52,8 +52,12 @@ namespace AutoService
             builder.RegisterType<ListClients>().Named<ICommand>("listClients");
             builder.RegisterType<Help>().Named<ICommand>("help");
             builder.RegisterType<AddClientPayment>().Named<ICommand>("addClientPayment");
-
-
+            builder.RegisterType<AddEmployeeResponsibility>().Named<ICommand>("addEmployeeResponsibility");
+            builder.RegisterType<RemoveEmployeeResponsibility>().Named<ICommand>("removeEmployeeResponsibility");
+            builder.RegisterType<SellStockToClientVehicle>().Named<ICommand>("sellStockToClientVehicle");
+            builder.RegisterType<AddVehicleToClient>().Named<ICommand>("addVehicleToClient");
+            builder.RegisterType<SellServiceToClientVehicle>().Named<ICommand>("sellServiceToClientVehicle");
+             
             //the other commands will follow below
 
             //IContainer containerToRegister = null

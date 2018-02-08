@@ -49,8 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddClientPayment.cs" />
+    <Compile Include="Commands\AddEmployeeResponsibility.cs" />
     <Compile Include="Commands\AddVehicleToClient.cs" />
+    <Compile Include="Commands\ChangeEmployeePosition.cs" />
     <Compile Include="Commands\ChangeSupplierName.cs" />
+    <Compile Include="Commands\RemoveEmployeeResponsibility.cs" />
     <Compile Include="Commands\CreateBankAccount.cs" />
     <Compile Include="Commands\DepositCashInBank.cs" />
     <Compile Include="Commands\ChangeClientName.cs" />
@@ -64,6 +67,8 @@
     <Compile Include="Commands\RemoveClient.cs" />
     <Compile Include="Commands\RemoveSupplier.cs" />
     <Compile Include="Commands\RegisterClient.cs" />
+    <Compile Include="Commands\SellServiceToClientVehicle.cs" />
+    <Compile Include="Commands\SellStockToClientVehicle.cs" />
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />
     <Compile Include="Commands\ShowEmployees.cs" />
     <Compile Include="Commands\WithdrawCashFromBank.cs" />
@@ -73,6 +78,7 @@
     <Compile Include="Database\Database.cs" />
     <Compile Include="Commands\HireEmployee.cs" />
     <Compile Include="Contracts\IDatabase.cs" />
+    <Compile Include="Commands\ChangeEmployeeRate.cs" />
     <Compile Include="Factory\CommandFactory.cs" />
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="Contracts\ICommand.cs" />

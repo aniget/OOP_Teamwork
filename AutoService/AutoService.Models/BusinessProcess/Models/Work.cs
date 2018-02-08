@@ -13,7 +13,7 @@ namespace AutoService.Models.Assets
 
         public Work(IEmployee responsibleEmployee, TypeOfWork job, IValidateModel modelValidator)
         {
-            this.ResponsibleEmployee = responsibleEmployee;
+            this.responsibleEmployee = responsibleEmployee;
             this.job = job;
             this.modelValidator = modelValidator;
         }

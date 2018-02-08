@@ -13,7 +13,7 @@ namespace AutoService.Models.BusinessProcess.Models
         protected Order(IEmployee responsibleEmployee, ICounterparty supplier, IValidateModel modelValidator) 
             : base(responsibleEmployee, TypeOfWork.Ordering, modelValidator)
         {
-            this.ModelValidator.CheckNullObject(supplier);
+            modelValidator.CheckNullObject(supplier);
             this.supplier = supplier;
         }
 

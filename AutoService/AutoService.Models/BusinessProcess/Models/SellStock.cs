@@ -14,7 +14,7 @@ namespace AutoService.Models.BusinessProcess.Models
         public SellStock(IEmployee responsibleEmployee, IClient client, IVehicle vehicle, IStock stock, IValidateModel modelValidator)
             : base(responsibleEmployee, stock.PurchasePrice * 1.2m, client, vehicle, modelValidator)
         {
-            this.ModelValidator.CheckNullObject(stock);
+            modelValidator.CheckNullObject(stock);
             this.stock = stock;
         }
 

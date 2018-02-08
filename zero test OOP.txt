@@ -1,0 +1,73 @@
+test
+showEmployees
+hireEmployee;Jo;Ma;Cleaner;1000;20;Cleaning
+hireEmployee;Jo;Ma;CleanerManager;1000;20;Management
+hireEmployee;Jo;Manarino;DriverManager;1000;20;Management
+hireEmployee;Pesho;Gosh0v;Mazach;1500;11;ServicesForClients
+hireEmployee;Pesho;Goshov;Mazach;15f00;11;ServicesForClients
+hireEmployee;Pesho;Goshov;Mazach;1500;-11;ServicesForClients
+hireEmployee;Gosho;Goshov;Targovec;2500;35;Management
+hireEmployee;Pesho;Goshov;Tire changer;1500;11;ServicesForClients
+showAllEmployeesAtDepartment;ServicesForClients
+hireEmployee;Minka;Stavreva;Mazach;1700;11;Management
+fireEmployee;585459847594574395743594375
+fireEmployee;-1
+fireEmployee;4
+showEmployees
+addEmployeeResponsibility;1;Manage;алабала
+createBankAccount;1;Разплащателна сметка;BG45UNCR763011111CEZELe
+createBankAccount;1;Разплащателна сметка;BG01UNCR763011111CEZEL
+createBankAccount;1;Разплащателна сметка;BG45UNCR763011111CEZEL
+removeEmpoloyeeResponsibility;1;Manage
+depositCashInBank;1;-15000
+depositCashInBank;1;15000
+addEmployeeResponsibility;1;Manage;алабала
+registerSupplier;AXM-AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
+registerSupplier;AXM-AUTO2;54 Yerusalim Blvd Sofia Bulgaria;211311576
+removeSupplier;AXM-AUTO2
+orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120
+orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120;Manarino;Management
+addEmployeeResponsibility;3;Manage
+orderStockToWarehouse;Gosho;AXM-AUTO;Chistachki;22 incha;20
+orderStockToWarehouse;Gosho;AXM-AUTO;Poluoska;ZX;220
+orderStockToWarehouse;Gosho;AXM-AUTO;Vintili;komplekt220;2
+orderStockToWarehouse;Gosho;AXM-AUTO;Remak;Koleh21;40
+orderStockToWarehouse;Gosho;AXM-AUTO;rolka obtiajna;Ina221;20
+orderStockToWarehouse;Gosho;AXM-AUTO;Najlonov markuch;22212;10
+orderStockToWarehouse;Gosho;AXM-AUTO;Klimatik;289898;2000
+addEmployeeResponsibility;1;WorkInWarehouse
+addEmployeeResponsibility;2;Manage
+orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120;Manarino;Management
+orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;;180;Manarino;Management
+orderStockToWarehouse;Jo;AXM-AUTO;Bobina;;150
+orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120
+orderStockToWarehouse;Jo;AXM-AUTO;Bobina;NAJ DALGIA UNIQUE NUMBER;150
+orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;RT20134HP;180;Manarino;Management
+orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;NAJ DALGIA UNIQUE NUMBER;180;Manarino;Management
+registerClient;TelerikAcademy;Mladost Blvd Sofia Bulgaria;123456789
+addEmployeeResponsibility;1;Sell;SellService;Manage;Repair;OrderService;Account
+addEmployeeResponsibility;2;Sell;SellService;Manage;Repair;OrderService;Account
+addEmployeeResponsibility;3;Sell;SellService;Manage;Repair;OrderService;Account
+addEmployeeResponsibility;4;Sell;SellService;Manage;Repair;OrderService;Account
+addEmployeeResponsibility;5;Sell;SellService;Manage;Repair;OrderService;Account
+sellStockToClientVehicle;Jo;TelerikAcademy;123456;SIMER M240;Manarino;Management
+addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;TelerikAcademy
+sellStockToClientVehicle;Jo;TelerikAcademy;CA1234AC;SIMER M240;Manarino;Management
+sellStockToClientVehicle;Jo;TelerikAcademy;CA1234AC;RT20134HP;Manarino;Man`agement
+sellServiceToClientVehicle;Jo;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
+addEmployeeResponsibility;2;Repair
+sellServiceToClientVehicle;Jo;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
+addEmployeeResponsibility;2;SellService
+sellServiceToClientVehicle;Jo;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
+sellServiceToClientVehicle;;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
+issueInvoices
+listWarehouseItems
+addClientPayment;TelerikAcademy;1;1;10000
+addClientPayment;TelerikAcademy;1;1;10000
+listClients
+withdrawCashFromBank;1;1;1800
+withdrawCashFromBank;1;1;1800
+withdrawCashFromBank;1;1;1800
+withdrawCashFromBank;1;1;10000
+withdrawCashFromBank;1;1;9600
+help

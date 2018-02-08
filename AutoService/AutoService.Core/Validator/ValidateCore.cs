@@ -16,10 +16,14 @@ namespace AutoService.Core.Validator
 {
     public class ValidateCore : IValidateCore
     {
-        public ValidateCore()
+        private readonly IWriter writer;
+
+        public ValidateCore(IWriter writer)
         {
-            
+            this.writer = writer;
         }
+
+        
 
         public int IntFromString(string commandParameter, string parameterName)
         {
@@ -375,7 +379,7 @@ namespace AutoService.Core.Validator
             ResponsibilityType currentResponsibility;
             if (!Enum.TryParse(responsibility, out currentResponsibility))
             {
-                Console.WriteLine($"Responsibility {responsibility} not valid!");
+                writer.Write($"Responsibility {responsibility} not valid!");
                 isValid = false;
             }
             return isValid;

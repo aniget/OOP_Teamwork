@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace AutoService.Core.Commands
 {
-    public class RemoveEmpoloyeeResponsibility : ICommand
+    public class RemoveEmployeeResponsibility : ICommand
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
 
-        public RemoveEmpoloyeeResponsibility(IDatabase database, IValidateCore coreValidator)
+        public RemoveEmployeeResponsibility(IDatabase database, IValidateCore coreValidator)
         {
             this.database = database;
             this.coreValidator = coreValidator;
