@@ -54,24 +54,24 @@ Main functions (commands) of the app:
 _____________________________________________
 
 1.	showEmployees
-2.	hireEmployee;<firstName>;<lastName>;<position>;<salary>;<ratePerMinute>;<department>;
-3.	showAllEmployeesAtDepartment;<department>
-4.	fireEmployee;<employeeId>
-5.	changeEmployeeRate;<employeeId>;<ratePerMinute>
-6.	changeEmployeePosition;<employeeId>;<position>
-7.	createBankAccount;<employeeId>;<assetName>;<IBAN> - check validation
-8.	addEmployeeResponsibility;<employeeId>;<responsibility>;[<responsibility>;]*
-9.	removeEmpoloyeeResponsibility;<employeeId>;<responsibility>;[<responsibility>;]*
-10.	depositCashInBank;<bankAccountId>;<depositAmount>
-11.	registerClient;<name>;<address>;<uniqueNumber>
-12.	registerSupplier;<name>;<address>;<uniqueNumber>
-13.	removeSupplier;< name>
-14.	removeClient;< name>
-15.	changeSupplierName;<currentName>;<newName>
-16.	orderStockToWarehouse;<employeeFirstName>;<supplier>;<partName>;<partNumber>;<Price>;[<employeeLastName>;<employeeDepartment>]*
-17.	addVehicleToClient;<vehicleType>;<make>;<model>;<uniqueNumber>;<year>;<engineType>;<seats/weightCapacity>;<clientUniqueName>
-18.	sellServiceToClientVehicle;<employeeFirstName>;<supplier>;<partName>;<partNumber>;<Price>;[<employeeLastName>;<employeeDepartment>]*
-19.	sellStockToClientVehicle; ;<employeeFirstName>;<supplier>;<partName>;<partNumber>;<Price>;[<employeeLastName>;<employeeDepartment>]*
+2.	hireEmployee;'<firstName>';'<lastName>';'<position>';'<salary>';'<ratePerMinute>';'<department>';
+3.	showAllEmployeesAtDepartment;'<department>'
+4.	fireEmployee;'<employeeId>'
+5.	changeEmployeeRate;'<employeeId>';'<ratePerMinute>'
+6.	changeEmployeePosition;'<employeeId>';'<position>'
+7.	createBankAccount;'<employeeId>';'<assetName>';'<IBAN>' - check validation
+8.	addEmployeeResponsibility;'<employeeId>';'<responsibility>';['<responsibility>';]*
+9.	removeEmpoloyeeResponsibility;'<employeeId>';'<responsibility>';['<responsibility>';]*
+10.	depositCashInBank;'<bankAccountId>';'<depositAmount>'
+11.	registerClient;'<name>';'<address>';'<uniqueNumber>'
+12.	registerSupplier;'<name>';'<address>';'<uniqueNumber>'
+13.	removeSupplier;'< name>'
+14.	removeClient;'< name>'
+15.	changeSupplierName;'<currentName>';'<newName>'
+16.	orderStockToWarehouse;'<employeeFirstName>';'<supplier>';'<partName>';'<partNumber>';'<Price>';['<employeeLastName>';'<employeeDepartment>']*
+17.	addVehicleToClient;'<vehicleType>';'<make>';'<model>';'<uniqueNumber>';'<year>';'<engineType>';'<seats/weightCapacity>';'<clientUniqueName>'
+18.	sellServiceToClientVehicle;'<employeeFirstName>';'<supplier>';'<partName>';'<partNumber>';'<Price>';['<employeeLastName>';'<employeeDepartment>']*
+19.	sellStockToClientVehicle; ;'<employeeFirstName>';'<supplier>';'<partName>';'<partNumber>';'<Price>';['<employeeLastName>';'<employeeDepartment>']*
 20.	issueInvoices;
 21.	many more to come 
 

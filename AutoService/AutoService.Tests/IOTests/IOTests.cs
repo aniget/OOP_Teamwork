@@ -22,10 +22,10 @@ namespace AutoService.Tests.IOTests
             Console.SetIn(input); //==console.readline
             Console.SetOut(result); //==console.writeline
 
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterAssemblyModules(Assembly.GetAssembly(typeof(StartUp)));
+            var builder = new ContainerBuilder();
+            builder.RegisterAssemblyModules(Assembly.GetAssembly(typeof(StartUp)));
 
-            var container = containerBuilder.Build();
+            var container = builder.Build();
 
             IEngine engine = container.Resolve<IEngine>();
             engine.Run();

@@ -8,6 +8,7 @@ using AutoService.Core.Manager;
 using AutoService.Core.Providers;
 using AutoService.Core.Validator;
 using AutoService.Models.Validator;
+using System.Reflection;
 
 namespace AutoService.AutofacConfig
 {
@@ -15,10 +16,17 @@ namespace AutoService.AutofacConfig
     {
         protected override void Load(ContainerBuilder builder)
         {
+            //builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IEngine)))
+            //    //.Where(x => x.Namespace.Contains("Factories") ||
+            //    //            x.Namespace.Contains("Providers") ||
+            //    //            x.Name.EndsWith("Engine"))
+            //    .AsImplementedInterfaces()
+            //    .SingleInstance();
+
             builder.RegisterType<CommandFactory>().As<ICommandFactory>().SingleInstance();
             builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>().SingleInstance();
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
-            
+
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
 
