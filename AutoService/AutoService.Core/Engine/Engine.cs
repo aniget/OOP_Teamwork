@@ -79,7 +79,7 @@ namespace AutoService.Core
 
                 try
                 {
-                    ICommand command = this.CommandFactory.CreateCommand(commandParameters[0]);
+                    
                     command.ExecuteThisCommand(commandParameters);
                 }
                 catch (NotSupportedException e) { this.writer.Write(e.Message); }

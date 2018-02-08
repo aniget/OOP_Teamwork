@@ -18,8 +18,16 @@ namespace AutoService.Core.Factory
 
         public ICommand CreateCommand(string commandName)
         {
-            
+            try
+            {
                 return this.container.ResolveNamed<ICommand>(commandName);
+
+            }
+            catch (Exception)
+            {
+
+                
+            }
             
             
             

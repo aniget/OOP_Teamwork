@@ -20,9 +20,9 @@ namespace AutoService
         public static void Main()
         {
             var builder = new ContainerBuilder();
+
             builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
 
-             
             //the other commands will follow below
 
             //IContainer containerToRegister = null
