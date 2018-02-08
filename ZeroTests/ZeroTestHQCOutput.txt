@@ -1,11 +1,8 @@
-showEmployees
-There are no employees! Do you want to hire any?
+﻿There are no employees! Do you want to hire any?
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Jo;Ma;Cleaner;1000;20;Cleaning
 Department is not valid!
 List of departments to choose from:
 Management
@@ -17,8 +14,6 @@ Warehouse
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Jo;Ma;CleanerManager;1000;20;Management
 Employee names: Jo Ma
 +++ Position: CleanerManager
 +++ Rate per minute: 20 $
@@ -29,8 +24,6 @@ Employee Jo Ma added successfully with Id 1
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Jo;Manarino;DriverManager;1000;20;Management
 Employee names: Jo Manarino
 +++ Position: DriverManager
 +++ Rate per minute: 20 $
@@ -41,22 +34,16 @@ Employee Jo Manarino added successfully with Id 2
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Pesho;Gosh0v;Mazach;1500;11;ServicesForClients
 Invalid value! Cannot have digits in parameter last name
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Pesho;Goshov;Mazach;15f00;11;ServicesForClients
 Please provide a valid decimal value for salary!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Rado;Gazir;GumiHacker;100;5;ServicesForClients
 Employee names: Rado Gazir
 +++ Position: GumiHacker
 +++ Rate per minute: 5 $
@@ -67,15 +54,11 @@ Employee Rado Gazir added successfully with Id 3
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Pesho;Goshov;Mazach;1500;-11;ServicesForClients
 rate per minute cannot be negative!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Gosho;Goshov;Targovec;2500;35;Management
 Employee names: Gosho Goshov
 +++ Position: Targovec
 +++ Rate per minute: 35 $
@@ -86,8 +69,6 @@ Employee Gosho Goshov added successfully with Id 4
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Pesho;Goshov;Tire changer;1500;11;ServicesForClients
 Employee names: Pesho Goshov
 +++ Position: Tire changer
 +++ Rate per minute: 11 $
@@ -98,8 +79,6 @@ Employee Pesho Goshov added successfully with Id 5
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-showAllEmployeesAtDepartment;ServicesForClients
 Employees at: ServicesForClients department:
 1. Employee names: Rado Gazir
 +++ Position: GumiHacker
@@ -116,8 +95,6 @@ Employees at: ServicesForClients department:
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-hireEmployee;Minka;Stavreva;Mazach;1700;11;Management
 Employee names: Minka Stavreva
 +++ Position: Mazach
 +++ Rate per minute: 11 $
@@ -128,29 +105,21 @@ Employee Minka Stavreva added successfully with Id 6
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-fireEmployee;585459847594574395743594375
 Please provide a valid integer value for employeeId!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-fireEmployee;-1
 Please provide a valid employee value, i.e. between 1 and 6!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-fireEmployee;4
 Employee Gosho Goshov was fired!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-showEmployees
 Current active employees:
 1. Employee names: Jo Ma
 +++ Position: CleanerManager
@@ -187,224 +156,162 @@ Current fired employees:
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;1;Manage;алабала
-Responsibility алабала not valid!
+Responsibility alabala not valid!
 To Employee Jo Ma were successfully added responsibilities Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-createBankAccount;1;Разплащателна сметка;BG45UNCR763011111CEZELe
 Bank Account IBAN is invalid!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-createBankAccount;1;Разплащателна сметка;BG01UNCR763011111CEZEL
 Bank Account IBAN is invalid!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-createBankAccount;1;Разплащателна сметка;BG45UNCR763011111CEZEL
-Asset Разплащателна сметка was created successfully by his responsible employee Jo Ma
+Asset Current Account was created successfully by his responsible employee Jo Ma
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-removeEmployeeResponsibility;1;Manage
 Employee Jo Ma were succesfuly declined and removed responsibilities Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-depositCashInBank;1;-15000
 Amount cannot be negative!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-depositCashInBank;1;15000
-15000 BGN were successfully added to bank account Разплащателна сметка
+15000 BGN were successfully added to bank account Current Account
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;1;Manage;алабала
-Responsibility алабала not valid!
+Responsibility alabala not valid!
 To Employee Jo Ma were successfully added responsibilities Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-registerSupplier;AXM-AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
 Supplier AXM-AUTO added successfully with Id 1!
 Supplier registered sucessfully
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-registerSupplier;AXM-AUTO2;54 Yerusalim Blvd Sofia Bulgaria;211311576;true
 Supplier AXM-AUTO2 added successfully with Id 2!
 Supplier registered sucessfully
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-removeSupplier;AXM-AUTO2
 AXM-AUTO2 removed successfully!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120
 More than one employee with the same name, please provide first name, last name and department
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120;Manarino;Management
 Employee Jo Manarino does not have the required repsonsibilities to register asset Nakladki
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;3;Manage
 To Employee Rado Gazir were successfully added responsibilities Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Gosho;AXM-AUTO;Chistachki;22 incha;20
 Employee Gosho Goshov does not have the required repsonsibilities to register asset Chistachki
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Gosho;AXM-AUTO;Poluoska;ZX;220
 The stock unique number bust be between 3 and 10 characters long!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Gosho;AXM-AUTO;Vintili;komplekt220;2
 The stock unique number bust be between 3 and 10 characters long!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Gosho;AXM-AUTO;Remak;Koleh21;40
 Employee Gosho Goshov does not have the required repsonsibilities to register asset Remak
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Gosho;AXM-AUTO;rolka obtiajna;Ina221;20
 Employee Gosho Goshov does not have the required repsonsibilities to register asset rolka obtiajna
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Gosho;AXM-AUTO;Najlonov markuch;22212;10
 Employee Gosho Goshov does not have the required repsonsibilities to register asset Najlonov markuch
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Gosho;AXM-AUTO;Klimatik;289898;2000
 Employee Gosho Goshov does not have the required repsonsibilities to register asset Klimatik
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;1;WorkInWarehouse
 To Employee Jo Ma were successfully added responsibilities WorkInWarehouse
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;2;Manage
 To Employee Jo Manarino were successfully added responsibilities Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120;Manarino;Management
 Nakladki ordered from AXM-AUTO for the amount of 120 are stored in the Warehouse.
 Employee responsible for the transaction: Jo Manarino
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;;180;Manarino;Management
 The stock unique number bust be between 3 and 10 characters long!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Bobina;;150
 More than one employee with the same name, please provide first name, last name and department
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Nakladki;SIMER M240;120
 More than one employee with the same name, please provide first name, last name and department
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Bobina;NAJ DALGIA UNIQUE NUMBER;150
 More than one employee with the same name, please provide first name, last name and department
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;RT20134HP;180;Manarino;Management
 Rotinger HighPerformance Brake Disks ordered from AXM-AUTO for the amount of 180 are stored in the Warehouse.
 Employee responsible for the transaction: Jo Manarino
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-orderStockToWarehouse;Jo;AXM-AUTO;Rotinger HighPerformance Brake Disks;NAJ DALGIA UNIQUE NUMBER;180;Manarino;Management
 The stock unique number bust be between 3 and 10 characters long!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-registerClient;TelerikAcademy;Mladost Blvd Sofia Bulgaria;123456789
 Client name: TelerikAcademy
 ### Address: Mladost Blvd Sofia Bulgaria
 ### UIN: 123456789
@@ -418,53 +325,39 @@ Default Vehicle added to client TelerikAcademy
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;1;Sell;SellService;Manage;Repair;OrderService;Account
 To Employee Jo Ma were successfully added responsibilities Sell, SellService, Repair, OrderService, Account
 Employee Jo Ma already has these responsibilities: Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;2;Sell;SellService;Manage;Repair;OrderService;Account
 To Employee Jo Manarino were successfully added responsibilities Sell, SellService, Repair, OrderService, Account
 Employee Jo Manarino already has these responsibilities: Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;3;Sell;SellService;Manage;Repair;OrderService;Account
 To Employee Rado Gazir were successfully added responsibilities Sell, SellService, Repair, OrderService, Account
 Employee Rado Gazir already has these responsibilities: Manage
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;4;Sell;SellService;Manage;Repair;OrderService;Account
 To Employee Gosho Goshov were successfully added responsibilities Sell, SellService, Manage, Repair, OrderService, Account
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;5;Sell;SellService;Manage;Repair;OrderService;Account
 To Employee Pesho Goshov were successfully added responsibilities Sell, SellService, Manage, Repair, OrderService, Account
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-sellStockToClientVehicle;Jo;TelerikAcademy;123456;SIMER M240;Manarino;Management
 Null object provided!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addVehicleToClient;Car;BMW;E39;CA1234AC;1999;Petrol;5;TelerikAcademy
 Vehicle: Car
 -- Make: BMW
 -- Model: E39
@@ -478,75 +371,55 @@ Vehicle BMW E39 added to client TelerikAcademy
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-sellStockToClientVehicle;Jo;TelerikAcademy;CA1234AC;SIMER M240;Manarino;Management
 Nakladki purchased from AXM-AUTO was sold to TelerikAcademy for the amount of 144.0
 Employee responsible for the transaction: Jo Manarino
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-sellStockToClientVehicle;Jo;TelerikAcademy;CA1234AC;RT20134HP;Manarino;Man`agement
 There is no employee with this name
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-sellServiceToClientVehicle;Jo;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
 Change Disks was performed to TelerikAcademy for the amount of 4800
 Employee responsible for the repair: Jo Manarino
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;2;Repair
 Employee Jo Manarino already has these responsibilities: Repair
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-sellServiceToClientVehicle;Jo;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
 Change Disks was performed to TelerikAcademy for the amount of 4800
 Employee responsible for the repair: Jo Manarino
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addEmployeeResponsibility;2;SellService
 Employee Jo Manarino already has these responsibilities: SellService
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-sellServiceToClientVehicle;Jo;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
 Change Disks was performed to TelerikAcademy for the amount of 4800
 Employee responsible for the repair: Jo Manarino
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-sellServiceToClientVehicle;;TelerikAcademy;CA1234AC;Change Disks;240;Manarino;Management
 There is no employee with this name
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-issueInvoices
 1 invoices were successfully issued!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-listWarehouseItems
 1. Asset type: Stock
   - Asset name: Rotinger HighPerformance Brake Disks
   - Asset unique number: RT20134HP
@@ -560,22 +433,16 @@ listWarehouseItems
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addClientPayment;TelerikAcademy;1;1;10000
 amount 10000 successfully booked to invoice 1. Thank you for your business!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-addClientPayment;TelerikAcademy;1;1;10000
 Invoice is overpaid, please correct the amount to pay!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-listClients
 Client name: TelerikAcademy
 ### Address: Mladost Blvd Sofia Bulgaria
 ### UIN: 123456789
@@ -626,44 +493,32 @@ This service amounts to: 4800 BGN
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-withdrawCashFromBank;1;1;1800
 1800 BGN were successfully withdrawn by Jo Ma
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-withdrawCashFromBank;1;1;1800
 1800 BGN were successfully withdrawn by Jo Ma
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-withdrawCashFromBank;1;1;1800
 1800 BGN were successfully withdrawn by Jo Ma
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-withdrawCashFromBank;1;1;10000
 Remaining amount cannot be negative!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-withdrawCashFromBank;1;1;9600
 The minimum threshold of 300 BGN was reached! Please deposit some funds!
 9600 BGN were successfully withdrawn by Jo Ma
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
-help
 This is a sample AutoService software written for just 5 days.
 For suggestions on improvement please send email to holySynod@bg-patriarshia.bg
 Please donate in order to keep us alive! We accept BitCoin, LiteCoin, Ethereum, PitCoin , ShitCoin and any other coin!
@@ -671,4 +526,3 @@ Please donate in order to keep us alive! We accept BitCoin, LiteCoin, Ethereum, 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-

@@ -14,14 +14,14 @@ fireEmployee;585459847594574395743594375
 fireEmployee;-1
 fireEmployee;4
 showEmployees
-addEmployeeResponsibility;1;Manage;алабала
-createBankAccount;1;Разплащателна сметка;BG45UNCR763011111CEZELe
-createBankAccount;1;Разплащателна сметка;BG01UNCR763011111CEZEL
-createBankAccount;1;Разплащателна сметка;BG45UNCR763011111CEZEL
+addEmployeeResponsibility;1;Manage;alabala
+createBankAccount;1;Current Account;BG45UNCR763011111CEZELe
+createBankAccount;1;Current Account;BG01UNCR763011111CEZEL
+createBankAccount;1;Current Account;BG45UNCR763011111CEZEL
 removeEmployeeResponsibility;1;Manage
 depositCashInBank;1;-15000
 depositCashInBank;1;15000
-addEmployeeResponsibility;1;Manage;алабала
+addEmployeeResponsibility;1;Manage;alabala
 registerSupplier;AXM-AUTO;54 Yerusalim Blvd Sofia Bulgaria;211311577
 registerSupplier;AXM-AUTO2;54 Yerusalim Blvd Sofia Bulgaria;211311576;true
 removeSupplier;AXM-AUTO2
@@ -71,3 +71,4 @@ withdrawCashFromBank;1;1;1800
 withdrawCashFromBank;1;1;10000
 withdrawCashFromBank;1;1;9600
 help
+exit

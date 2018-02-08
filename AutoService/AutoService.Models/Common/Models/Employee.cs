@@ -141,7 +141,7 @@ namespace AutoService.Models.Common.Models
             if (alreadyHasResponsibilities.Count > 0)
 
             {
-                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has these responsibilities: {string.Join(", ", alreadyHasResponsibilities)} ");
+                Console.WriteLine($"Employee {this.FirstName} {this.LastName} already has these responsibilities: {string.Join(", ", alreadyHasResponsibilities)}");
             }
         }
 
