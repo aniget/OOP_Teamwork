@@ -6,6 +6,7 @@ using AutoService.Models.Validator;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 
@@ -70,10 +71,10 @@ namespace AutoService.Core
             {
 
                 commandParameters = ParseCommand(inputLine);
-                ICommand command = this.CommandFactory.CreateCommand(commandParameters[0]);
-
+               
                 try
                 {
+                    ICommand command = this.CommandFactory.CreateCommand(commandParameters[0]);
                     command.ExecuteThisCommand(commandParameters);
                 }
 
@@ -81,7 +82,7 @@ namespace AutoService.Core
                 catch (InvalidOperationException e) { this.writer.Write(e.Message); }
                 catch (InvalidIdException e) { this.writer.Write(e.Message); }
                 catch (ArgumentException e) { this.writer.Write(e.Message); }
-                //catch(ComponentNotRegisteredException e) { this.writer.Write(e.Message);}
+                catch(ComponentNotRegisteredException e) { this.writer.Write($"There is no command named {inputLine} implemented! Please contact Dev team to implement it :)");}
 
                 this.writer.Write(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
                 this.writer.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
