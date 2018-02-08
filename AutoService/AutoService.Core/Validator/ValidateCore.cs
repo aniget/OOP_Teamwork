@@ -6,7 +6,6 @@ using AutoService.Models.Assets;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.CustomExceptions;
-using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Enums;
 
 //testing branches
