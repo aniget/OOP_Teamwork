@@ -7,10 +7,8 @@ using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Models.Common.Models
 {
-
     public class Warehouse : IWarehouse
     {
-        
         //public Warehouse()
         //{
         //}
