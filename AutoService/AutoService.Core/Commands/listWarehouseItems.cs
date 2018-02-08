@@ -1,30 +1,31 @@
 ﻿using System;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
-using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Core.Commands
 {
     public class ListWarehouseItems : ICommand
     {
-        private readonly IWarehouse warehouse;
+        IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
+        private readonly IStockManager stockManager;
 
-        public ListWarehouseItems(IWarehouse warehouse, IValidateCore coreValidator, IWriter writer)
+        public ListWarehouseItems(IDatabase database, IValidateCore coreValidator, IWriter writer, IStockManager stockManager)
         {
-            this.warehouse = warehouse;
+            this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
+            this.stockManager = stockManager;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
             this.coreValidator.ExactParameterLength(commandParameters, 1);
-            if (this.warehouse.AvailableStocks.Count == 0)
+            if (this.database.AvailableStocks.Count == 0)
             {
                 throw new ArgumentException("The are no avalible staocks at the Warehouse. But you can order some. ;-)");
             }
-            writer.Write(this.warehouse.ToString());
+            writer.Write(this.stockManager.PrintAvailableStock());
         }
     }
 }

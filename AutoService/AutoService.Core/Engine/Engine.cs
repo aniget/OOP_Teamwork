@@ -18,8 +18,7 @@ namespace AutoService.Core
         private readonly IList<ICounterparty> clients;
         private readonly IList<ICounterparty> suppliers;
         private readonly IDictionary<IClient, IList<ISell>> notInvoicedSales;
-        private readonly IWarehouse warehouse;
-        private readonly IStockManager stockManager;
+       private readonly IStockManager stockManager;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
@@ -36,7 +35,7 @@ namespace AutoService.Core
             (
             ICommandFactory commandFactory,
             IAutoServiceFactory autoServiceFactory,
-            IDatabase database, IWarehouse warehouse,
+            IDatabase database,
             IStockManager stockManager,
             IValidateCore coreValidator,
             IValidateModel modelValidator,
@@ -50,7 +49,6 @@ namespace AutoService.Core
             this.clients = database.Clients;
             this.suppliers = database.Suppliers;
             this.notInvoicedSales = database.NotInvoicedSales;
-            this.warehouse = warehouse;
             this.CommandFactory = commandFactory;
             this.stockManager = stockManager;
             this.coreValidator = coreValidator;
@@ -83,6 +81,7 @@ namespace AutoService.Core
                 catch (InvalidOperationException e) { this.writer.Write(e.Message); }
                 catch (InvalidIdException e) { this.writer.Write(e.Message); }
                 catch (ArgumentException e) { this.writer.Write(e.Message); }
+                //catch(ComponentNotRegisteredException e) { this.writer.Write(e.Message);}
 
                 this.writer.Write(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
                 this.writer.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");

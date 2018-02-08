@@ -6,11 +6,11 @@ namespace AutoService.Core.Contracts
 {
     public interface IStockManager
     {
-        //IWarehouse Warehouse { get;  }
-        void AddStockToWarehouse(IStock stock/*, IWarehouse warehouse*//*, ICounterparty supplier*/);
-        void AddStockToWarehouse(IStock stock, IEmployee employee/*, IWarehouse warehouse*/);
+        void AddStockToWarehouse(IStock stock/*, ICounterparty supplier*/);
+        void AddStockToWarehouse(IStock stock, IEmployee employee);
         void AddStockToClient(IStock stock, IEmployee employee, IClient client, IVehicle vehicle/*, IDatabase database*/);
-        void RemoveStockFromWarehouse(IStock stock, IEmployee employee/*, IWarehouse warehouse*/);
-        bool ConfirmStockExists(string stockUniqueNumber, IEmployee employee/*, IWarehouse warehouse*/);
+        void RemoveStockFromWarehouse(IStock stock, IEmployee employee);
+        bool ConfirmStockExists(string stockUniqueNumber, IEmployee employee);
+        string PrintAvailableStock();
     }
 }

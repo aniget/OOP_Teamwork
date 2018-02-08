@@ -9,8 +9,6 @@ using AutoService.Models.Vehicles.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 //sellStockToClientVehicle; Jo; 123456789; CA1234AC; RT20134HP; Manarino; Management
 
@@ -23,16 +21,14 @@ namespace AutoService.Core.Commands
         private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
         private readonly IStockManager stockManager;
-        private readonly IWarehouse warehouse;
         private readonly IAutoServiceFactory autoServiceFactory;
 
-        public SellStockToClientVehicle(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer, IStockManager stockManager, IWarehouse warehouse, IValidateModel modelValidator)
+        public SellStockToClientVehicle(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer, IStockManager stockManager, IValidateModel modelValidator)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
             this.stockManager = stockManager;
-            this.warehouse = warehouse;
             this.autoServiceFactory = autoServiceFactory;
             this.modelValidator = modelValidator;
         }
@@ -73,7 +69,7 @@ namespace AutoService.Core.Commands
                 throw new ArgumentException(
                     $"Trying to sell the stock with unique ID {stockUniqueNumber} that is not present in the Warehouse");
             }
-            var stock = warehouse.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
+            var stock = this.database.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
             //no need to check vehicle for null because we create a default vehicle with every client registration
             var vehicle = ((IClient)client).Vehicles.FirstOrDefault(x =>
@@ -90,7 +86,7 @@ namespace AutoService.Core.Commands
             {
                 sellStock = autoServiceFactory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock, modelValidator);
 
-                stockManager.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee/*, warehouse*/);
+                stockManager.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee);
 
                 //sellStock.SellToClientVehicle(sellStock, stock);
 

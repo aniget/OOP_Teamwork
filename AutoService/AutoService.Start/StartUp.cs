@@ -23,8 +23,7 @@ namespace AutoService
             builder.RegisterType<CommandFactory>().As<ICommandFactory>().SingleInstance();
             builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>().SingleInstance();
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
-            builder.RegisterType<Warehouse>().As<IWarehouse>().SingleInstance();
-
+            
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
             
