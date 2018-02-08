@@ -54,7 +54,7 @@ Main functions (commands) of the app:
 _____________________________________________
 
 1.	showEmployees
-2.	hireEmployee;<firstName>;<lastName>;<position>;<salary>;<ratePerMinute>;<department>;
+2.	hireEmployee;'<firstName>';'<lastName>';'<position>';'<salary>';'<ratePerMinute>';'<department>';
 3.	showAllEmployeesAtDepartment;<department>
 4.	fireEmployee;<employeeId>
 5.	changeEmployeeRate;<employeeId>;<ratePerMinute>
