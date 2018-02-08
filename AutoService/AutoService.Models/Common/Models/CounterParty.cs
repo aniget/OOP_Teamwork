@@ -31,6 +31,8 @@ namespace AutoService.Models.Common.Models
                     throw new ArgumentException("Company name must be more than 5 symbols!");
                 }
                 this.name = value;
+
+
             }
         }
 
