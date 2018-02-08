@@ -89,6 +89,7 @@ namespace AutoService.Core.Factory
             IEmployee newEmployee = new Employee(firstName, lastName, position, salary, ratePerMinute, department, modelValidator);
             return newEmployee;
         }
-        
+
+       
     }
 }
