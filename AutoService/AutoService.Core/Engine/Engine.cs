@@ -9,6 +9,7 @@ using System.Globalization;
 using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
+using Autofac.Core.Registration;
 
 namespace AutoService.Core
 {
@@ -77,7 +78,6 @@ namespace AutoService.Core
                     ICommand command = this.CommandFactory.CreateCommand(commandParameters[0]);
                     command.ExecuteThisCommand(commandParameters);
                 }
-
                 catch (NotSupportedException e) { this.writer.Write(e.Message); }
                 catch (InvalidOperationException e) { this.writer.Write(e.Message); }
                 catch (InvalidIdException e) { this.writer.Write(e.Message); }
