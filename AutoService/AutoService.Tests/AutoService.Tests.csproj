@@ -75,15 +75,24 @@
     <Compile Include="AssetsTests\BankAccountTests.cs" />
     <Compile Include="AssetsTests\FakeEmployee.cs" />
     <Compile Include="AssetsTests\StockTests.cs" />
+    <Compile Include="IOTests\IOTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoService.Core\AutoService.Core.csproj">
+      <Project>{7305AE65-C7CF-4738-818A-21D8D5C8CB2C}</Project>
+      <Name>AutoService.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AutoService.Models\AutoService.Models.csproj">
       <Project>{eea271b4-16db-4a04-9c5b-1cb5e0ff4c7f}</Project>
       <Name>AutoService.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoService.Start\AutoService.Start.csproj">
+      <Project>{5ba43a66-68ab-4793-8a20-0d7c8eb196e8}</Project>
+      <Name>AutoService.Start</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
