@@ -7,6 +7,8 @@ using AutoService.Models.Assets.Contracts;
 using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Models;
 using AutoService.Models.Common.Contracts;
+using AutoService.Models.Common.Enums;
+using AutoService.Models.Common.Models;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 
@@ -17,7 +19,7 @@ namespace AutoService.Core.Manager
         private IDatabase database;
         private readonly IValidateModel modelValidator;
 
-        //DI: initialize the singleInstance objects that are used in the methods
+        //Initialize the singleInstance objects that are used in the methods
         //properties not needed for now
         public StockManager(IDatabase database, IValidateModel modelValidator)
         {
@@ -25,18 +27,13 @@ namespace AutoService.Core.Manager
             this.modelValidator = modelValidator;
         }
 
-
         public IValidateModel ModelValidator { get => this.modelValidator; }
 
         //once ordered the stock is automatically added (without Employee intervention) to warehouse 
         //thanks to integration of our application with the supplier's system
         public void AddStockToWarehouse(IStock stock/*, ICounterparty supplier*/)
-        {
-            //if (((Supplier)supplier).InterfaceIsAvailable)
-                this.database.AvailableStocks.Add(stock);
-            //else
-            //    throw new ArgumentException
-            //        ("This order cannot be recorded automatically because there is no system interface with this supplier");
+        { 
+            this.database.AvailableStocks.Add(stock);
         }
 
         //stock is recorded in warehouse by authorized employee
@@ -44,17 +41,17 @@ namespace AutoService.Core.Manager
         {
             this.ModelValidator.CheckNullObject(stock, employee);
             //only employees with right (Responsibility) to BUY can perform this work
-            //if (employee.Responsibilities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
-            //                    employee.Responsibilities.Contains(ResponsibilityType.Manage) ||
-            //                    employee.Responsibilities.Contains(ResponsibilityType.BuyPartForClient) ||
-            //                    employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
-            //{
-            this.database.AvailableStocks.Add(stock);
-            //}
-            //else
-            //{
-            //    throw new ArgumentException("No authorization to put stock in warehouse parts.");
-            //}
+            if (employee.Responsibilities.Contains(ResponsibilityType.BuyPartForWarehouse) ||
+                                employee.Responsibilities.Contains(ResponsibilityType.Manage) ||
+                                employee.Responsibilities.Contains(ResponsibilityType.BuyPartForClient) ||
+                                employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
+            {
+                this.database.AvailableStocks.Add(stock);
+            }
+            else
+            {
+                throw new ArgumentException("No authorization to put stock in warehouse parts.");
+            }
         }
 
         //stock recorded directly to the client (skip warehouse)
@@ -74,14 +71,14 @@ namespace AutoService.Core.Manager
             this.ModelValidator.CheckNullObject(stock, employee);
 
             //only employees with right (Responsibility) to SELL can perform this work
-            //if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||
-            //    employee.Responsibilities.Contains(ResponsibilityType.Manage))
+            if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||
+                employee.Responsibilities.Contains(ResponsibilityType.Manage))
 
-            this.database.AvailableStocks.Remove(stock);
-            //else
-            //{
-            //    throw new ArgumentException("No authorization to remove stock from warehouse!");
-            //}
+                this.database.AvailableStocks.Remove(stock);
+            else
+            {
+                throw new ArgumentException("No authorization to remove stock from warehouse!");
+            }
         }
 
         public bool ConfirmStockExists(string stockUniqueNumber, IEmployee employee)
@@ -89,19 +86,19 @@ namespace AutoService.Core.Manager
             this.ModelValidator.CheckNullObject(stockUniqueNumber, employee);
             bool exists = false;
             //only employees with right (Responsibility) to SELL can perform this work
-            //if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||
-            //    employee.Responsibilities.Contains(ResponsibilityType.Manage) ||
-            //    employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
-            //{
-            if (this.database.AvailableStocks.Any(x => x.UniqueNumber == stockUniqueNumber))
+            if (employee.Responsibilities.Contains(ResponsibilityType.Sell) ||
+                employee.Responsibilities.Contains(ResponsibilityType.Manage) ||
+                employee.Responsibilities.Contains(ResponsibilityType.WorkInWarehouse))
             {
-                exists = true;
+                if (this.database.AvailableStocks.Any(x => x.UniqueNumber == stockUniqueNumber))
+                {
+                    exists = true;
+                }
             }
-            //}
-            //else
-            //{
-            //    throw new ArgumentException("No authorization to check stock in warehouse!");
-            //}
+            else
+            {
+                throw new ArgumentException("No authorization to check stock in warehouse!");
+            }
             return exists;
         }
 

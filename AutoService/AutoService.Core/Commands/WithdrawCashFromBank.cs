@@ -13,21 +13,19 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
-        private IBankAccountManager bankAccountManager;
 
-        public WithdrawCashFromBank(IDatabase database, IValidateCore coreValidator, IWriter writer, IBankAccountManager bankAccountManager)
+        public WithdrawCashFromBank(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
-            this.bankAccountManager = bankAccountManager;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
         {
             this.coreValidator.ExactParameterLength(commandParameters, 4);
-
             this.coreValidator.BankAccountsCount(this.database.BankAccounts.Count);
+
             int employeeId = this.coreValidator.IntFromString(commandParameters[1], "employeeId");
 
             var employee = this.coreValidator.EmployeeById(this.database.Employees, employeeId);
@@ -38,15 +36,15 @@ namespace AutoService.Core.Commands
 
             decimal withdrawAmount = this.coreValidator.DecimalFromString(commandParameters[3], "depositAmount");
 
-            this.WithdrawCashFromBankMethod(bankAccount, withdrawAmount, employee, bankAccountManager);
-        }
-
-        private void WithdrawCashFromBankMethod(IBankAccount bankAccount, decimal withdrawAmount, IEmployee employee, IBankAccountManager bankAccountManager)
-        {
             if (employee.Responsibilities.Contains(ResponsibilityType.Account) || employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
-                bankAccountManager.SetBankAccount(bankAccount);
-                bankAccountManager.WithdrawFunds(withdrawAmount);
+                if (withdrawAmount < 0)
+                    throw new ArgumentException("Amount cannot be negative!");
+                if (bankAccount.Balance - withdrawAmount < 0)
+                    throw new ArgumentException("Remaining amount cannot be negative!");
+
+                bankAccount.Balance -= withdrawAmount;
+
                 this.writer.Write($"{withdrawAmount} BGN were successfully withdrawn by {employee.FirstName} {employee.LastName}");
             }
             else

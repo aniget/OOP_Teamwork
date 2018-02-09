@@ -11,14 +11,12 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
-        private readonly IBankAccountManager bankAccountManager;
 
-        public DepositCashInBank(IDatabase database, IValidateCore coreValidator, IWriter writer, IBankAccountManager bankAccountManager)
+        public DepositCashInBank(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
-            this.bankAccountManager = bankAccountManager;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -32,14 +30,13 @@ namespace AutoService.Core.Commands
 
             decimal depositAmount = this.coreValidator.DecimalFromString(commandParameters[2], "depositAmount");
 
-            this.DepositCashInBankAccount(bankAccount, depositAmount, bankAccountManager);
-        }
+            if (depositAmount < 0)
+            {
+                throw new ArgumentException("Amount cannot be negative!");
+            }
+            bankAccount.Balance += depositAmount;
 
-        private void DepositCashInBankAccount(IBankAccount bankAccount, decimal depositAmount, IBankAccountManager bankAccountManager)
-        {
-            bankAccountManager.SetBankAccount(bankAccount);
-            bankAccountManager.DepositFunds(depositAmount);
-            this.writer.Write($"{depositAmount} BGN were successfully added to bank account {bankAccount.Name}");
+            writer.Write($"{depositAmount} BGN were successfully added to bank account {bankAccount.Name}");
         }
 
     }

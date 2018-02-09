@@ -80,11 +80,10 @@ namespace AutoService.Core.Commands
 
         private void SellStockToClient(IStock stock, IClient client, IVehicle vehicle)
         {
-            ISell sellStock;
             if (stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Sell) ||
                 stock.ResponsibleEmployee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
-                sellStock = autoServiceFactory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock, modelValidator);
+                var sellStock = autoServiceFactory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock, modelValidator);
 
                 stockManager.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee);
 
@@ -92,17 +91,14 @@ namespace AutoService.Core.Commands
 
                 //record the Sell in the notInvoicedSells Dictionary
                 AddSellToNotInvoicedItems(client, sellStock);
-            }
-            else
-            {
-                throw new ArgumentException(
-                    $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
-            }
 
-            writer.Write(
-                $"{stock.Name} purchased from {stock.Supplier.Name} was sold to {client.Name} for the amount of {sellStock.SellPrice}" +
-                Environment.NewLine
-                + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+                writer.Write($"{stock.Name} purchased from {stock.Supplier.Name} was sold to {client.Name} "
+                    + $"for the amount of {sellStock.SellPrice}" + Environment.NewLine
+                    + $"Employee responsible for the transaction: {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName}");
+
+            } else throw new ArgumentException(
+                $"Employee {stock.ResponsibleEmployee.FirstName} {stock.ResponsibleEmployee.LastName} does not have the required priviledges to sell stock to clients");
+
         }
 
         private void AddSellToNotInvoicedItems(IClient client, ISell sell)
