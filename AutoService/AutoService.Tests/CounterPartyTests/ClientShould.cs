@@ -56,13 +56,23 @@ namespace AutoService.Tests.ClientShould
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenAdress_IsNull()
+        public void ThrowArgumetException_WnenAdress_IsLessThanFiveSymbols()
         {
             //Arrange
             var adressLessThan5Symbols = "Moon";
             var validator = new Mock<IValidateModel>();
             //Act & Assert
             Assert.ThrowsException<ArgumentException>(() => new Client("testname", adressLessThan5Symbols, "123456789", validator.Object));
+        }
+
+        [TestMethod]
+        public void ThrowArgumetException_WnenAdress_IsNull()
+        {
+            //Arrange
+            string adreesisNull = null;
+            var validator = new Mock<IValidateModel>();
+            //Act & Assert
+            Assert.ThrowsException<ArgumentException>(() => new Client("testname", adreesisNull, "123456789", validator.Object));
         }
 
         [TestMethod]
