@@ -10,27 +10,30 @@ namespace AutoService.Core.Manager
     public class EmployeeManager : IEmployeeManager
     {
         private IEmployee employee;
+        private readonly IWriter writer;
 
-       public void SetEmployee(IEmployee employee)
+        public EmployeeManager(IWriter writer)
         {
-            if (employee == null)
-            {
-                throw new ArgumentException("Null employee provided!");
-            }
-            this.employee = employee;
+            this.writer = writer;
+        }
+
+        public void SetEmployee(IEmployee employee)
+        {
+            this.employee = employee ?? throw new ArgumentException("Null employee provided!");
         }
 
         public void ChangeSalary(decimal salary)
         {
+
             this.employee.Salary = salary;
         }
 
-        public void AddResponsibilities(IList<ResponsibilityType> value)
+        public void AddResponsibilities(IList<ResponsibilityType> responsibilities)
         {
             List<ResponsibilityType> resposibilityToBeAdded = new List<ResponsibilityType>();
             List<ResponsibilityType> alreadyHasResponsibilities = new List<ResponsibilityType>();
 
-            foreach (var resp in value)
+            foreach (var resp in responsibilities)
             {
                 if (this.employee.Responsibilities.Any(a => a.Equals(resp)))
                 {
@@ -45,19 +48,19 @@ namespace AutoService.Core.Manager
 
             if (resposibilityToBeAdded.Count > 0)
             {
-                Console.WriteLine($"To Employee {this.employee.FirstName} {this.employee.LastName} were successfully added responsibilities {string.Join(", ", resposibilityToBeAdded)}");
+                writer.Write($"To Employee {this.employee.FirstName} {this.employee.LastName} were successfully added responsibilities {string.Join(", ", resposibilityToBeAdded)}");
             }
-            if (alreadyHasResponsibilities.Count > 0)
 
+            if (alreadyHasResponsibilities.Count > 0)
             {
-                Console.WriteLine($"Employee {this.employee.FirstName} {this.employee.LastName} already has these responsibilities: {string.Join(", ", alreadyHasResponsibilities)}");
+                writer.Write($"Employee {this.employee.FirstName} {this.employee.LastName} already has these responsibilities: {string.Join(", ", alreadyHasResponsibilities)}");
             }
         }
 
-        public void RemoveResponsibilities(IList<ResponsibilityType> value)
+        public void RemoveResponsibilities(IList<ResponsibilityType> responsibilities)
         {
             List<ResponsibilityType> removedResponsibilities = new List<ResponsibilityType>();
-            foreach (var responsibility in value)
+            foreach (var responsibility in responsibilities)
             {
                 if (this.employee.Responsibilities.Contains(responsibility))
                 {
@@ -66,10 +69,10 @@ namespace AutoService.Core.Manager
                 }
                 else
                 {
-                    Console.WriteLine("Employee does not have this responsibility!");
+                    writer.Write("Employee does not have this responsibility!");
                 }
             }
-            Console.WriteLine($"Employee {this.employee.FirstName} {this.employee.LastName} were succesfuly declined and removed responsibilities {string.Join(", ", removedResponsibilities)}");
+            writer.Write($"Employee {this.employee.FirstName} {this.employee.LastName} were succesfuly declined and removed responsibilities {string.Join(", ", removedResponsibilities)}");
         }
 
         public void ChangePosition(string position)
