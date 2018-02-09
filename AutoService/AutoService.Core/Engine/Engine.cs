@@ -82,7 +82,7 @@ namespace AutoService.Core
                 catch (InvalidOperationException e) { this.writer.Write(e.Message); }
                 catch (InvalidIdException e) { this.writer.Write(e.Message); }
                 catch (ArgumentException e) { this.writer.Write(e.Message); }
-                catch (ComponentNotRegisteredException) { this.writer.Write($"There is no command named {inputLine} implemented! Please contact Dev team to implement it :)"); }
+                catch (ComponentNotRegisteredException e) { this.writer.Write($"There is no command named [{inputLine}] implemented! Please contact Dev team to implement it :)"); }
 
                 this.writer.Write(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
                 this.writer.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");
