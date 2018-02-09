@@ -51,10 +51,11 @@ namespace AutoService.Models.Common.Models
 
         public string UniqueNumber
         {
+
             get => this.uniqueNumber;
             protected set
             {
-                if (value.Any(a => !char.IsDigit(a)) || string.IsNullOrWhiteSpace(value) || value.Length != 9)
+                if (string.IsNullOrWhiteSpace(value) || value.Any(a => !char.IsDigit(a)) ||  value.Length != 9)
                 {
                     throw new ArgumentException("Invalid unique number, must be exactly nine numbers!");
                 }
