@@ -23,6 +23,7 @@ namespace AutoService.Core.Factory
 
         public ICounterparty CreateSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable)
         {
+            //throw new NotImplementedException();
             return new Supplier(name, address, uniqueNumber, interfaceIsAvailable);
         }
 
@@ -89,7 +90,5 @@ namespace AutoService.Core.Factory
             IEmployee newEmployee = new Employee(firstName, lastName, position, salary, ratePerMinute, department, modelValidator);
             return newEmployee;
         }
-
-       
     }
 }
