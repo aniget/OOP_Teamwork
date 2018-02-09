@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Models;
 using AutoService.Models.Validator;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -106,7 +107,7 @@ namespace AutoService.Tests.ClientShould
             //Assert
             Assert.ThrowsException<ArgumentException>(() => client.DueDaysAllowed = -1);
         }
-
+          
         [TestMethod]
         public void CallValidationMethod_WhenDueDaysAllowed_IsSetedToNegative()
         {
@@ -128,7 +129,7 @@ namespace AutoService.Tests.ClientShould
 
             var client = new Client("testname", "testadress", "123456789", validator.Object);
             //Act & Assert
-            Assert.IsInstanceOfType(client.Vehicles, typeof(List<Vehicle>));
+            Assert.IsInstanceOfType(client.Vehicles, typeof(List<IVehicle>));
            
         }
 
