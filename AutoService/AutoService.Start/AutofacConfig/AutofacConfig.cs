@@ -61,6 +61,7 @@ namespace AutoService.AutofacConfig
             builder.RegisterType<SellStockToClientVehicle>().Named<ICommand>("sellStockToClientVehicle");
             builder.RegisterType<AddVehicleToClient>().Named<ICommand>("addVehicleToClient");
             builder.RegisterType<SellServiceToClientVehicle>().Named<ICommand>("sellServiceToClientVehicle");
+            builder.RegisterType<ChangeEmployeeSalary>().Named<ICommand>("changeEmployeeSalary");
         }
     }
 }

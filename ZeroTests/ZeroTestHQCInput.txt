@@ -1,6 +1,8 @@
 showEmployees
 hireEmployee;Jo;Ma;Cleaner;1000;20;Cleaning
 hireEmployee;Jo;Ma;CleanerManager;1000;20;Management
+changeEmployeeSalary;1;-1000
+changeEmployeeSalary;1;1000
 hireEmployee;Jo;Manarino;DriverManager;1000;20;Management
 hireEmployee;Pesho;Gosh0v;Mazach;1500;11;ServicesForClients
 hireEmployee;Pesho;Goshov;Mazach;15f00;11;ServicesForClients

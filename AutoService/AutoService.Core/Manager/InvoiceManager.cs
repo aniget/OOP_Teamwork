@@ -19,7 +19,6 @@ namespace AutoService.Core.Manager
         {
             this.invoice.PaidAmount += amount;
         }
-
         public void CalculateInvoiceAmount()
         {
             this.invoice.Amount = this.invoice.InvoiceItems.Select(i => i.SellPrice).Sum();

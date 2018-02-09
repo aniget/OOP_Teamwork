@@ -51,6 +51,7 @@
     <Compile Include="Commands\AddClientPayment.cs" />
     <Compile Include="Commands\AddEmployeeResponsibility.cs" />
     <Compile Include="Commands\AddVehicleToClient.cs" />
+    <Compile Include="Commands\ChangeEmployeeSalary.cs" />
     <Compile Include="Commands\ChangeEmployeePosition.cs" />
     <Compile Include="Commands\ChangeSupplierName.cs" />
     <Compile Include="Commands\RemoveEmployeeResponsibility.cs" />
