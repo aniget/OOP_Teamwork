@@ -19,6 +19,11 @@ namespace AutoService.Core.Manager
             this.writer = writer;
         }
 
+        public IEmployee Employee
+        {
+            get => this.employee;
+        }
+
         public void SetEmployee(IEmployee employee)
         {
             this.employee = employee ?? throw new ArgumentException("Null employee provided!");
@@ -26,7 +31,6 @@ namespace AutoService.Core.Manager
 
         public void ChangeSalary(decimal salary)
         {
-
             this.employee.Salary = salary;
         }
 

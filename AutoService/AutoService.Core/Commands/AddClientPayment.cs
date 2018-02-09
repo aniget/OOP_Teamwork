@@ -27,7 +27,7 @@ namespace AutoService.Core.Commands
 
             var clientUniqueName = commandParameters[1];
             this.coreValidator.CounterpartyNotRegistered(this.database.Clients, clientUniqueName, "client");
-           var client = this.database.Clients.FirstOrDefault(f => f.Name == clientUniqueName);
+            var client = this.database.Clients.FirstOrDefault(f => f.Name == clientUniqueName);
 
             int bankAccountId = this.coreValidator.IntFromString(commandParameters[2], "bankAccountId");
             this.coreValidator.BankAccountById(this.database.BankAccounts, bankAccountId);

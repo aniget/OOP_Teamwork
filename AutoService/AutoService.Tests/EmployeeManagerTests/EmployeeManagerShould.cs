@@ -17,23 +17,38 @@ namespace AutoService.Tests.EmployeeManagerTests
             fakeEmployee.Setup(s => s.Salary).Returns(100m);
             employeeManager.SetEmployee(fakeEmployee.Object);
 
-            //Act
-            employeeManager.ChangeSalary(200m);
-
             //Assert
-            Assert.AreEqual(200m, 200m);
+            Assert.AreEqual(fakeEmployee.Object, employeeManager.Employee);
         }
 
         [TestMethod]
-        public void ThrowException_WhenInvalidValueIsProvided()
+        public void CallChangeSalaryMethod_WithValidValues()
         {
             //Arrange
             var fakeEmployee = new Mock<IEmployee>();
             var employeeManager = new EmployeeManager();
             employeeManager.SetEmployee(fakeEmployee.Object);
 
-            //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => employeeManager.ChangeSalary(-200m));
+            //Act
+            employeeManager.ChangeSalary(200m);
+
+            //Assert
+            fakeEmployee.VerifySet(x => x.Salary = 200m, Times.Once());
+        }
+
+        [TestMethod]
+        public void FireEmployee_WhenEmployeeIsNotFired()
+        {
+            //Arrange
+            var fakeEmployee = new Mock<IEmployee>();
+            var employeeManager = new EmployeeManager();
+            employeeManager.SetEmployee(fakeEmployee.Object);
+
+            //Act
+            employeeManager.FireEmployee();
+
+            //Assert
+            fakeEmployee.VerifySet(x => x.Salary = 200m, Times.Once());
         }
     }
 }
