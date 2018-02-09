@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using AutoService.Core.Contracts;
-using AutoService.Models.Assets;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.Vehicles.Enums;
@@ -29,7 +27,7 @@ namespace AutoService.Core.Validator
 
         IEmployee EmployeeById(IList<IEmployee> employees, int id);
 
-        BankAccount BankAccountById(IList<BankAccount> bankAccounts, int id);
+        IBankAccount BankAccountById(IList<IBankAccount> bankAccounts, int id);
 
 
         void EmployeeAlreadyExistOnHire(IDatabase database, string employeeFirstName, string employeeLastName,

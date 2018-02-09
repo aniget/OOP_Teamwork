@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Contracts\IBankAccount.cs" />
     <Compile Include="BusinessProcess\Models\OrderStock.cs" />
     <Compile Include="BusinessProcess\Models\SellStock.cs" />
     <Compile Include="Assets\Events\CriticalLimitReachedEventArgs.cs" />

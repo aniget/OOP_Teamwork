@@ -21,7 +21,7 @@ namespace AutoService.Core.Contracts
 
         IInvoice CreateInvoice(string number, DateTime date, IClient client, IValidateModel modelValidator);
 
-        BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate);
+        IBankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate);
 
         IAsset CreateStock(string name, IEmployee responsibleEmployee, string uniqueNumber, decimal purchasePrice, ICounterparty vendor);
 

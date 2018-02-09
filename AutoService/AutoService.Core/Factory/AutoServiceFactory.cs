@@ -37,7 +37,7 @@ namespace AutoService.Core.Factory
             return new Invoice(number, date, client, modelValidator);
         }
 
-        public BankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate)
+        public IBankAccount CreateBankAccount(string name, IEmployee responsibleEmployee, string uniqueNumber, DateTime registrationDate)
         {
             return new BankAccount(name, responsibleEmployee, uniqueNumber, registrationDate);
         }

@@ -1,12 +1,12 @@
 ﻿using System;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Assets.Events;
 using AutoService.Models.Common.Contracts;
 
 namespace AutoService.Models.Assets
 {
-    public class BankAccount : Asset
+    public class BankAccount : Asset, IBankAccount
     {
-        //declaration of the event
         public event EventHandler CriticalLimitReached;
 
         private decimal balance;
@@ -23,7 +23,7 @@ namespace AutoService.Models.Assets
         public decimal Balance
         {
             get => this.balance;
-            protected set
+            set
             {
                 this.balance = value;
                 if (this.balance <= this.criticalLimit)
@@ -39,30 +39,6 @@ namespace AutoService.Models.Assets
         {
             get => this.registrationDate;
             set { this.registrationDate = value; }
-        }
-
-        
-        public void DepositFunds(decimal amount)
-        {
-            if (amount < 0)
-            {
-                throw new ArgumentException("Amount cannot be negative!");
-            }
-            this.Balance += amount;
-        }
-
-        public void WithdrawFunds(decimal amount)
-        {
-            if (amount < 0)
-            {
-                throw new ArgumentException("Amount cannot be negative!");
-            }
-            if (this.Balance - amount < 0)
-            {
-                throw new ArgumentException("Remaining amount cannot be negative!");
-            }
-
-            this.Balance -= amount;
         }
 
         public override string ToString()

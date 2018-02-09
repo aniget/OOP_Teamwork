@@ -2,6 +2,7 @@
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Assets;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 
@@ -52,7 +53,7 @@ namespace AutoService.Core.Commands
             if (employee.Responsibilities.Contains(ResponsibilityType.Account) ||
                 employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
-                BankAccount bankAccountToAdd =
+                IBankAccount bankAccountToAdd =
                     this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
                 bankAccountToAdd.CriticalLimitReached += c_CriticalAmountReached;
                 this.database.BankAccounts.Add(bankAccountToAdd);
