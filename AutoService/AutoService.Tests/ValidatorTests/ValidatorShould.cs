@@ -111,6 +111,7 @@ namespace AutoService.Tests.ValidatorTests
             //Act & Assert
             Assert.ThrowsException<ArgumentException>(() => mockValidator.StringForNullEmpty(listWithNullValue));
         }
+
         [TestMethod]
         public void ThrowException_WhenStringForNullEmptyMethod_IsProvidedStringOfEmptyValue()
         {

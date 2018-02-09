@@ -1,7 +1,6 @@
 ﻿using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
-using AutoService.Models.Validator;
 
 namespace AutoService.Core.Commands
 {
@@ -9,7 +8,6 @@ namespace AutoService.Core.Commands
     {
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
-        private readonly IValidateModel modelValidator;
         private readonly IWriter writer;
         private readonly IEmployeeManager employeeManager;
 
@@ -34,7 +32,6 @@ namespace AutoService.Core.Commands
             var ratePerMinute = this.coreValidator.DecimalFromString(commandParameters[2], "ratePerMinute");
             
             this.ChangeRateOfEmployee(employee, ratePerMinute, employeeManager);
-
         }
 
         private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute, IEmployeeManager employeeManager)

@@ -10,13 +10,15 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
+        private ICounterPartyManager counterPartyManager;
 
         //Constructor
-        public ChangeClientName(IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public ChangeClientName(IDatabase database, IValidateCore coreValidator, IWriter writer, ICounterPartyManager counterPartyManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
+            this.counterPartyManager = counterPartyManager;
         }
         //Methods
         public void ExecuteThisCommand(string[] commandParameters)
@@ -27,7 +29,8 @@ namespace AutoService.Core.Commands
             coreValidator.CounterpartyNotRegistered(database.Clients, clientUniqueName, "client");
             var clientNewUniqueName = commandParameters[2];
             var client = database.Clients.FirstOrDefault(x => x.Name == clientUniqueName);
-            client.ChangeName(clientNewUniqueName);
+            this.counterPartyManager.SetCounterParty(client);
+            counterPartyManager.ChangeName(clientNewUniqueName);
             writer.Write($"Client{clientUniqueName} name changed sucessfully to {clientNewUniqueName}");
         }
     }

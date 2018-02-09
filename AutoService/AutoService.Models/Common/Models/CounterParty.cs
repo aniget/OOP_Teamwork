@@ -24,7 +24,7 @@ namespace AutoService.Models.Common.Models
         public string Name
         {
             get => this.name;
-            protected set
+            set
             {
                 if (string.IsNullOrWhiteSpace(value) || value.Length < 5)
                 {
@@ -67,12 +67,7 @@ namespace AutoService.Models.Common.Models
             get => this.invoices;
         }
 
-        public void ChangeName(string name)
-        {
-            this.Name = name;
-        }
-
-        public override string ToString()
+       public override string ToString()
         {
             var sb = new StringBuilder();
             sb.AppendLine($"{this.GetType().Name} name: {this.Name}");

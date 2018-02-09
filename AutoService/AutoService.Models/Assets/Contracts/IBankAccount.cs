@@ -11,6 +11,5 @@ namespace AutoService.Models.Assets.Contracts
         DateTime RegistrationDate { get; set; }
 
         void OnCriticalLimitReached(EventArgs e);
-
     }
 }

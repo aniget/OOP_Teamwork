@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoService.Core.Factory;
-using AutoService.Models.Common.Contracts;
-using AutoService.Models.Common.Models;
+﻿using AutoService.Core.Factory;
 using AutoService.Models.Validator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -16,7 +9,7 @@ namespace AutoService.Tests.AutoServiceFactoryTests
     public class AutoServiceFactoryShould
     {
         [TestMethod]
-        public void ReturnClientWhenItIsCreates()
+        public void ReturnValidClient_WhenItIsProvidedValidArguments()
         {
             //Arange
             var validator = new Mock<IValidateModel>();

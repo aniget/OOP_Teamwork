@@ -1,9 +1,5 @@
-﻿using System;
-using Autofac;
-using Autofac.Core.Registration;
+﻿using Autofac;
 using AutoService.Core.Contracts;
-using System;
-using Autofac.Core.Registration;
 
 namespace AutoService.Core.Factory
 {
@@ -18,9 +14,7 @@ namespace AutoService.Core.Factory
 
         public ICommand CreateCommand(string commandName)
         {
-             return this.container.ResolveNamed<ICommand>(commandName);
-            
-            
+            return this.container.ResolveNamed<ICommand>(commandName);
         }
     }
 }

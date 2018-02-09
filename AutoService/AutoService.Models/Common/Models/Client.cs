@@ -25,7 +25,7 @@ namespace AutoService.Models.Common.Models
         public int DueDaysAllowed
         {
             get => this.dueDaysAllowed;
-            protected set
+            set
             {
                 this.ModelValidator.NonNegativeValue(value, "due days allowed");
 
@@ -36,7 +36,7 @@ namespace AutoService.Models.Common.Models
         public decimal Discount
         {
             get => this.discount;
-            protected set
+            set
             {
                 if (value < 0.00m || value > 1.00m)
                 {
@@ -51,24 +51,7 @@ namespace AutoService.Models.Common.Models
             get => this.vehicles;
         }
 
-        public void AddVehicle(Vehicle vehicle)
-        {
-            this.ModelValidator.CheckNullObject(vehicle);
-            this.vehicles.Add(vehicle);
-        }
-
-        public void RemoveVehicle(Vehicle vehicle)
-        {
-            this.ModelValidator.CheckNullObject(vehicle);
-            this.vehicles.Remove(vehicle);
-        }
-
-        public void UpdateDueDays(int dueDays)
-        {
-            this.DueDaysAllowed = dueDays;
-        }
-
-        public override string ToString()
+       public override string ToString()
         {
             return base.ToString() + Environment.NewLine +
                    $"### Due allowed: {this.DueDaysAllowed} day(s)" + Environment.NewLine +

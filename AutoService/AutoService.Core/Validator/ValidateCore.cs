@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoService.Core.Contracts;
-using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;

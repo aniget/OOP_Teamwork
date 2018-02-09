@@ -1,11 +1,9 @@
-﻿using AutoService.Models.Assets;
-using AutoService.Models.BusinessProcess.Contracts;
+﻿using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.CustomExceptions;
 using AutoService.Models.Validator;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
@@ -28,10 +26,7 @@ namespace AutoService.Core
         private readonly IWriter writer;
         private readonly IReader reader;
 
-        private DateTime lastInvoiceDate =
-            DateTime.ParseExact("2017-01-15", "yyyy-MM-dd", CultureInfo.InvariantCulture);
-
-        private int lastInvoiceNumber = 0;
+       private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
         //constructor
@@ -87,7 +82,7 @@ namespace AutoService.Core
                 catch (InvalidOperationException e) { this.writer.Write(e.Message); }
                 catch (InvalidIdException e) { this.writer.Write(e.Message); }
                 catch (ArgumentException e) { this.writer.Write(e.Message); }
-                catch (ComponentNotRegisteredException e) { this.writer.Write($"There is no command named {inputLine} implemented! Please contact Dev team to implement it :)"); }
+                catch (ComponentNotRegisteredException) { this.writer.Write($"There is no command named {inputLine} implemented! Please contact Dev team to implement it :)"); }
 
                 this.writer.Write(Environment.NewLine + "<>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>" + Environment.NewLine);
                 this.writer.Write("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=");

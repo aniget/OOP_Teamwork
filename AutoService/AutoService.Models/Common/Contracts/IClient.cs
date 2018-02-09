@@ -5,16 +5,10 @@ namespace AutoService.Models.Common.Contracts
 {
     public interface IClient : ICounterparty
     {
-        int DueDaysAllowed { get; }
+        int DueDaysAllowed { get; set; }
         
-        decimal Discount { get; }
+        decimal Discount { get; set; }
 
         IList<Vehicle> Vehicles { get; }
-
-        void AddVehicle(Vehicle vehicle);
-
-        void RemoveVehicle(Vehicle vehicle);
-
-        void UpdateDueDays(int dueDays);
     }
 }
