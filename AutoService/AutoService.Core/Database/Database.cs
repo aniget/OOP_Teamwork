@@ -18,7 +18,7 @@ namespace AutoService
         public Database()
         {
             this.Employees = new List<IEmployee>();
-            this.BankAccounts = new List<BankAccount>();
+            this.BankAccounts = new List<IBankAccount>();
             this.Clients = new List<ICounterparty>();
             this.Suppliers = new List<ICounterparty>();
             this.NotInvoicedSales = new Dictionary<IClient, IList<ISell>>();
@@ -30,7 +30,7 @@ namespace AutoService
 
         public IList<IEmployee> Employees { get; }
 
-        public IList<BankAccount> BankAccounts { get; }
+        public IList<IBankAccount> BankAccounts { get; }
 
         public IList<ICounterparty> Clients { get; }
 

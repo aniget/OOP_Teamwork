@@ -33,6 +33,7 @@ namespace AutoService.AutofacConfig
             builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
             builder.RegisterType<EmployeeManager>().As<IEmployeeManager>().SingleInstance();
             builder.RegisterType<InvoiceManager>().As<IInvoiceManager>().SingleInstance();
+            builder.RegisterType<BankAccountManager>().As<IBankAccountManager>().SingleInstance();
             builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
             builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();

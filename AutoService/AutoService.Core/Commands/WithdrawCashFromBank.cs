@@ -2,6 +2,7 @@
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Assets;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 
@@ -12,12 +13,14 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
+        private IBankAccountManager bankAccountManager;
 
-        public WithdrawCashFromBank(IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public WithdrawCashFromBank(IDatabase database, IValidateCore coreValidator, IWriter writer, IBankAccountManager bankAccountManager)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
+            this.bankAccountManager = bankAccountManager;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -35,14 +38,15 @@ namespace AutoService.Core.Commands
 
             decimal withdrawAmount = this.coreValidator.DecimalFromString(commandParameters[3], "depositAmount");
 
-            this.WithdrawCashFromBankMethod(bankAccount, withdrawAmount, employee);
+            this.WithdrawCashFromBankMethod(bankAccount, withdrawAmount, employee, bankAccountManager);
         }
 
-        private void WithdrawCashFromBankMethod(BankAccount bankAccount, decimal withdrawAmount, IEmployee employee)
+        private void WithdrawCashFromBankMethod(IBankAccount bankAccount, decimal withdrawAmount, IEmployee employee, IBankAccountManager bankAccountManager)
         {
             if (employee.Responsibilities.Contains(ResponsibilityType.Account) || employee.Responsibilities.Contains(ResponsibilityType.Manage))
             {
-                bankAccount.WithdrawFunds(withdrawAmount);
+                bankAccountManager.SetBankAccount(bankAccount);
+                bankAccountManager.WithdrawFunds(withdrawAmount);
                 this.writer.Write($"{withdrawAmount} BGN were successfully withdrawn by {employee.FirstName} {employee.LastName}");
             }
             else

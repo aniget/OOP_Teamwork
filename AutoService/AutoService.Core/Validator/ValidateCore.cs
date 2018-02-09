@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoService.Core.Contracts;
 using AutoService.Models.Assets;
+using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.CustomExceptions;
@@ -106,7 +107,7 @@ namespace AutoService.Core.Validator
             return employee;
         }
 
-        public BankAccount BankAccountById(IList<BankAccount> bankAccounts, int id)
+        public IBankAccount BankAccountById(IList<IBankAccount> bankAccounts, int id)
         {
             if (id <= 0)
             {
@@ -114,7 +115,7 @@ namespace AutoService.Core.Validator
                     $"Please provide a valid bank account value, i.e. between 1 and {bankAccounts.Count}!");
             }
 
-            BankAccount bankAccount = bankAccounts.Count >= id
+            IBankAccount bankAccount = bankAccounts.Count >= id
                 ? bankAccounts[id - 1]
                 : throw new ArgumentException("This bank account does not exist!");
 

@@ -9,13 +9,14 @@ using System.Globalization;
 using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
+using AutoService.Models.Assets.Contracts;
 
 namespace AutoService.Core
 {
     public sealed class Engine : IEngine
     {
         private readonly IList<IEmployee> employees;
-        private readonly IList<BankAccount> bankAccounts;
+        private readonly IList<IBankAccount> bankAccounts;
         private readonly IList<ICounterparty> clients;
         private readonly IList<ICounterparty> suppliers;
         private readonly IDictionary<IClient, IList<ISell>> notInvoicedSales;

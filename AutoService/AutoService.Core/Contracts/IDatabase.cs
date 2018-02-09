@@ -10,7 +10,7 @@ namespace AutoService.Core.Contracts
     public interface IDatabase
     {
         IList<IEmployee> Employees { get; }
-        IList<BankAccount> BankAccounts { get; }
+        IList<IBankAccount> BankAccounts { get; }
         IList<ICounterparty> Clients { get; }
         IList<ICounterparty> Suppliers { get; }
         Dictionary<IClient, IList<ISell>> NotInvoicedSales { get; }

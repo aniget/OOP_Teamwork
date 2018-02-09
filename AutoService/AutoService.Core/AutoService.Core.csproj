@@ -73,6 +73,7 @@
     <Compile Include="Commands\ShowAllEmployeesAtDepartment.cs" />
     <Compile Include="Commands\ShowEmployees.cs" />
     <Compile Include="Commands\WithdrawCashFromBank.cs" />
+    <Compile Include="Contracts\IBankAccountManager.cs" />
     <Compile Include="Contracts\IEmployeeManager.cs" />
     <Compile Include="Contracts\IInvoiceManager.cs" />
     <Compile Include="Contracts\IReader.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Factory\AutoServiceFactory.cs" />
     <Compile Include="Contracts\IAutoServiceFactory.cs" />
     <Compile Include="Contracts\ICommandFactory.cs" />
+    <Compile Include="Manager\BankAccountManager.cs" />
     <Compile Include="Manager\EmployeeManager.cs" />
     <Compile Include="Manager\InvoiceManager.cs" />
     <Compile Include="Manager\StockManager.cs" />
