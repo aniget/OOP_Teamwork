@@ -10,17 +10,16 @@ namespace AutoService.Core.Commands
 {
     public class RemoveEmployeeResponsibility : ICommand
     {
+        private readonly IWriter writer;
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
-        private readonly IEmployeeManager employeeManager;
 
-        public RemoveEmployeeResponsibility(IDatabase database, IValidateCore coreValidator, IEmployeeManager employeeManager)
+        public RemoveEmployeeResponsibility(IWriter writer, IDatabase database, IValidateCore coreValidator)
         {
+            this.writer = writer;
             this.database = database;
             this.coreValidator = coreValidator;
-            this.employeeManager = employeeManager;
         }
-
 
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -32,32 +31,29 @@ namespace AutoService.Core.Commands
 
             var employee = this.coreValidator.EmployeeById(database.Employees, employeeId);
 
-            var responsibilitiesToRemove = commandParameters.Skip(2).ToArray();
+            var responsibilitiesToRemove = commandParameters.Skip(2).ToList();
 
-            this.RemoveResponsibilitiesToEmployee(employee, responsibilitiesToRemove, employeeManager);
+            List<ResponsibilityType> removedResponsibilities = new List<ResponsibilityType>();
 
-        }
-
-
-        private void RemoveResponsibilitiesToEmployee(IEmployee employee, string[] responsibilitiesToRemove, IEmployeeManager employeeManager)
-        {
-            var responsibilitesToRemove = new List<ResponsibilityType>();
             foreach (var responsibility in responsibilitiesToRemove)
             {
                 bool isValid = this.coreValidator.IsValidResponsibilityTypeFromString(responsibility);
 
                 if (isValid)
                 {
-                    ResponsibilityType currentResponsibility;
-                    Enum.TryParse(responsibility, out currentResponsibility);
-                    responsibilitesToRemove.Add(currentResponsibility);
+                    ResponsibilityType enumResponsibility = (ResponsibilityType)Enum.Parse(typeof(ResponsibilityType), responsibility);
+                    if (employee.Responsibilities.Contains(enumResponsibility))
+                    {
+                        employee.Responsibilities.Remove(enumResponsibility);
+                        removedResponsibilities.Add(enumResponsibility);
+                    }
+                    else
+                    {
+                        writer.Write("Employee does not have this responsibility!");
+                    }
                 }
-
             }
-            this.employeeManager.SetEmployee(employee);
-            employeeManager.RemoveResponsibilities(responsibilitesToRemove);
+            writer.Write($"Employee {employee.FirstName} {employee.LastName} were succesfuly declined and removed responsibilities {string.Join(", ", removedResponsibilities)}");
         }
-
-
     }
 }

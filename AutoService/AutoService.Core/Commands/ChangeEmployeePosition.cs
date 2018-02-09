@@ -9,14 +9,12 @@ namespace AutoService
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
-        private readonly IEmployeeManager employeeManager;
 
-        public ChangeEmployeePosition(IDatabase database, IValidateCore coreValidator, IWriter writer, IEmployeeManager employeeManager)
+        public ChangeEmployeePosition(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
-            this.employeeManager = employeeManager;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -31,16 +29,9 @@ namespace AutoService
 
             var position = commandParameters[2];
 
-            this.ChangePositionOfEmployee(employee, position, employeeManager);
-        }
+            employee.Position = position;
 
-
-        private void ChangePositionOfEmployee(IEmployee employee, string position, IEmployeeManager employeeManager)
-        {
-            employeeManager.SetEmployee(employee);
-            employeeManager.ChangePosition(position);
-
-            writer.Write( $"Position of employee {employee.FirstName} {employee.LastName} was successfully set to {position}");
+            writer.Write($"Position of employee {employee.FirstName} {employee.LastName} was successfully set to {position}");
         }
     }
 }

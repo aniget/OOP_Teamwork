@@ -9,14 +9,12 @@ namespace AutoService
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
-        private readonly IEmployeeManager employeeManager;
 
-        public ChangeEmployeeSalary(IDatabase database, IValidateCore coreValidator, IWriter writer, IEmployeeManager employeeManager)
+        public ChangeEmployeeSalary(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
-            this.employeeManager = employeeManager;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -31,14 +29,7 @@ namespace AutoService
 
             var salary = decimal.Parse(commandParameters[2]);
 
-            this.ChangeSalaryOfEmployee(employee, salary, employeeManager);
-        }
-
-
-        private void ChangeSalaryOfEmployee(IEmployee employee, decimal salary, IEmployeeManager employeeManager)
-        {
-            employeeManager.SetEmployee(employee);
-            employeeManager.ChangeSalary(salary);
+            employee.Salary = salary;
 
             writer.Write( $"Salary of employee {employee.FirstName} {employee.LastName} was successfully set to {salary}");
         }

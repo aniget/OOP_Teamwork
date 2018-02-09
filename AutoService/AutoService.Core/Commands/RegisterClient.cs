@@ -2,6 +2,7 @@
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Core.Commands
@@ -13,18 +14,16 @@ namespace AutoService.Core.Commands
         private readonly IAutoServiceFactory autoServiceFactory;
         private readonly IValidateCore coreValidator;
         private readonly IValidateModel modelValidator;
-        private ICounterPartyManager clientManager;
 
         private readonly IWriter writer;
 
-        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer, ICounterPartyManager clientManager)
+        public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer)
         {
             this.database = database;
             this.autoServiceFactory = autoServiceFactory;
             this.coreValidator = coreValidator;
             this.modelValidator = modelValidator;
             this.writer = writer;
-            this.clientManager = clientManager;
         }
 
         public void ExecuteThisCommand(string[] commandParameters)
@@ -38,12 +37,15 @@ namespace AutoService.Core.Commands
             coreValidator.CounterpartyAlreadyRegistered(this.database.Clients, clientUniqueName, "client");
 
             var client = (IClient)autoServiceFactory.CreateClient(clientUniqueName, clientAddress, clientUniquieNumber, modelValidator);
-            
-            var vehicle = autoServiceFactory.CreateVehicle("default", "default", "AA0000AA", "2000", Models.Vehicles.Enums.EngineType.Petrol, 5, modelValidator);
 
-            this.clientManager.SetCounterParty(client);
-            clientManager.AddVehicle((Vehicle)vehicle);
+            IVehicle vehicle = autoServiceFactory.CreateVehicle("default", "default", "AA0000AA", "2000", Models.Vehicles.Enums.EngineType.Petrol, 5, modelValidator);
 
+            this.coreValidator.CheckNullObject(vehicle);
+
+            //add Vehicle to Client's vehicles
+            client.Vehicles.Add(vehicle);
+
+            //add Client to database
             database.Clients.Add(client);
 
             writer.Write(client.ToString());

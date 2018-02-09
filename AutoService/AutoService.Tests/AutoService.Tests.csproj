@@ -74,7 +74,6 @@
   <ItemGroup>
     <Compile Include="AssetsTests\BankAccountTests.cs" />
     <Compile Include="AssetsTests\StockTests.cs" />
-    <Compile Include="AutoServiceFactoryTests\AutoServiceFactoryShould.cs" />
     <Compile Include="EmployeeManagerTests\EmployeeManagerShould.cs" />
     <Compile Include="IOTests\IOTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +95,9 @@
       <Project>{5ba43a66-68ab-4793-8a20-0d7c8eb196e8}</Project>
       <Name>AutoService.Start</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AutoServiceFactoryTests\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

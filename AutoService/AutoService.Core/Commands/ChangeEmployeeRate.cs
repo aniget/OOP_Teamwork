@@ -9,14 +9,12 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
-        private readonly IEmployeeManager employeeManager;
 
-        public ChangeEmployeeRate(IDatabase database, IValidateCore coreValidator, IWriter writer, IEmployeeManager employeeManager)
+        public ChangeEmployeeRate(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
             this.database = database;
             this.coreValidator = coreValidator;
             this.writer = writer;
-            this.employeeManager = employeeManager;
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -29,16 +27,9 @@ namespace AutoService.Core.Commands
 
             var employee = this.coreValidator.EmployeeById(database.Employees, employeeId);
 
-            var ratePerMinute = this.coreValidator.DecimalFromString(commandParameters[2], "ratePerMinute");
-            
-            this.ChangeRateOfEmployee(employee, ratePerMinute, employeeManager);
-        }
+            employee.RatePerMinute = this.coreValidator.DecimalFromString(commandParameters[2], "ratePerMinute");
 
-        private void ChangeRateOfEmployee(IEmployee employee, decimal ratePerMinute, IEmployeeManager employeeManager)
-        {
-            employeeManager.SetEmployee(employee);
-            employeeManager.ChangeRate(ratePerMinute);
-            writer.Write($"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {ratePerMinute} $");
+            writer.Write($"Rate per minute of employee {employee.FirstName} {employee.LastName} was successfully set to {employee.RatePerMinute} $");
         }
     }
 }

@@ -68,7 +68,6 @@ namespace AutoService.Core.Commands
                 vehicle = this.factory.CreateVehicle(vehicleModel, vehicleMake, registrationNumber,
                     vehicleYear, engineType, additionalParams, modelValidator);
             }
-
             else if (vehicleType == VehicleType.SmallTruck)
             {
                 vehicle = this.factory.CreateSmallTruck(vehicleModel, vehicleMake, registrationNumber,

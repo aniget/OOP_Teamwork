@@ -10,15 +10,15 @@ namespace AutoService.Core.Commands
 {
     public class AddEmployeeResponsibility : ICommand
     {
+        private readonly IWriter writer;
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
-        private readonly IEmployeeManager employeeManager;
 
-        public AddEmployeeResponsibility(IDatabase database, IValidateCore coreValidator, IEmployeeManager employeeManager)
+        public AddEmployeeResponsibility(IWriter writer, IDatabase database, IValidateCore coreValidator)
         {
+            this.writer = writer;
             this.database = database;
             this.coreValidator = coreValidator;
-            this.employeeManager = employeeManager;
         }
 
 
@@ -32,27 +32,37 @@ namespace AutoService.Core.Commands
 
             var employee = this.coreValidator.EmployeeById(database.Employees, employeeId);
 
-            var responsibilitiesToAdd = commandParameters.Skip(2).ToArray();
-            this.AddResponsibilitiesToEmployee(employee, responsibilitiesToAdd, employeeManager);
+            var responsibilitiesToAdd = commandParameters.Skip(2).ToList();
 
-        }
+            List<ResponsibilityType> resposibilitiesToBeAdded = new List<ResponsibilityType>();
+            List<ResponsibilityType> alreadyHasResponsibilities = new List<ResponsibilityType>();
 
-        private void AddResponsibilitiesToEmployee(IEmployee employee, string[] responsibilities, IEmployeeManager employeeManager)
-        {
-            var responsibilitesToAdd = new List<ResponsibilityType>();
-            foreach (var responsibility in responsibilities)
+            foreach (var responsibility in responsibilitiesToAdd)
             {
                 bool isValid = this.coreValidator.IsValidResponsibilityTypeFromString(responsibility);
 
                 if (isValid)
                 {
-                    ResponsibilityType currentResponsibility;
-                    Enum.TryParse(responsibility, out currentResponsibility);
-                    responsibilitesToAdd.Add(currentResponsibility);
+                    var enumResponsibility = (ResponsibilityType)Enum.Parse(typeof(ResponsibilityType), responsibility);
+                    if (employee.Responsibilities.Any(a => a.Equals(enumResponsibility)))
+                    {
+                        alreadyHasResponsibilities.Add(enumResponsibility);
+                    }
+                    else
+                    {
+                        employee.Responsibilities.Add(enumResponsibility);
+                        resposibilitiesToBeAdded.Add(enumResponsibility);
+                    }
                 }
             }
-            employeeManager.SetEmployee(employee);
-            employeeManager.AddResponsibilities(responsibilitesToAdd);
+
+            if (resposibilitiesToBeAdded.Count > 0)
+                writer.Write($"To Employee {employee.FirstName} {employee.LastName} were successfully added responsibilities {string.Join(", ", resposibilitiesToBeAdded)}");
+
+            if (alreadyHasResponsibilities.Count > 0)
+                writer.Write($"Employee {employee.FirstName} {employee.LastName} already has these responsibilities: {string.Join(", ", alreadyHasResponsibilities)}");
         }
+
+
     }
 }

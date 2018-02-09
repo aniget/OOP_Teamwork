@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.Common.Models
@@ -10,7 +11,7 @@ namespace AutoService.Models.Common.Models
     {
         private int dueDaysAllowed;
         private decimal discount;
-        private IList<Vehicle> vehicles;
+        private IList<IVehicle> vehicles;
         private readonly IValidateModel modelValidator;
 
         public Client(string name, string address, string uniqueNumber, IValidateModel modelValidator) : base(name, address, uniqueNumber)
@@ -18,7 +19,7 @@ namespace AutoService.Models.Common.Models
             this.modelValidator = modelValidator;
             this.dueDaysAllowed = 5;
             this.discount = 0;
-            this.vehicles = new List<Vehicle>();
+            this.vehicles = new List<IVehicle>();
         }
 
         public IValidateModel ModelValidator { get => this.modelValidator; }
@@ -46,7 +47,7 @@ namespace AutoService.Models.Common.Models
             }
         }
 
-        public IList<Vehicle> Vehicles
+        public IList<IVehicle> Vehicles
         {
             get => this.vehicles;
         }

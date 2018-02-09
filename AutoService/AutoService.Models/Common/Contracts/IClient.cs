@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
 
 namespace AutoService.Models.Common.Contracts
@@ -9,6 +10,6 @@ namespace AutoService.Models.Common.Contracts
         
         decimal Discount { get; set; }
 
-        IList<Vehicle> Vehicles { get; }
+        IList<IVehicle> Vehicles { get; }
     }
 }
