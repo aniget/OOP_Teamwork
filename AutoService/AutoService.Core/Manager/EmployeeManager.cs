@@ -12,6 +12,8 @@ namespace AutoService.Core.Manager
         private IEmployee employee;
         private readonly IWriter writer;
 
+        public EmployeeManager() { }
+
         public EmployeeManager(IWriter writer)
         {
             this.writer = writer;
