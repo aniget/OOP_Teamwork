@@ -1,7 +1,7 @@
-﻿using System;
-using AutoService.Models.Assets.Contracts;
+﻿using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Assets.Events;
 using AutoService.Models.Common.Contracts;
+using System;
 
 namespace AutoService.Models.Assets
 {
@@ -32,8 +32,10 @@ namespace AutoService.Models.Assets
                 }
                 if (this.balance <= this.criticalLimit)
                 {
-                    CriticalLimitReachedEventArgs args = new CriticalLimitReachedEventArgs();
-                    args.CriticalLimit = criticalLimit;
+                    CriticalLimitReachedEventArgs args = new CriticalLimitReachedEventArgs
+                    {
+                        CriticalLimit = criticalLimit
+                    };
                     OnCriticalLimitReached(args);
                 }
             }
