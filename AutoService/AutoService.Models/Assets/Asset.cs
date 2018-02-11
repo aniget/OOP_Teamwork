@@ -55,7 +55,7 @@ namespace AutoService.Models.Assets
 
             protected set
             {
-                if (value == null)
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new ArgumentException("Unique number cannot be null!");
                 }

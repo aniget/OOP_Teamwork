@@ -24,7 +24,7 @@ namespace AutoService.Core
         private readonly IWriter writer;
         private readonly IReader reader;
 
-       //private int lastInvoiceNumber = 0;
+        //private int lastInvoiceNumber = 0;
         private IAutoServiceFactory factory;
 
         //constructor
@@ -53,7 +53,7 @@ namespace AutoService.Core
             this.reader = reader;
 
         }
-        
+
         public ICommandFactory CommandFactory { get; }
 
         public void Run()

@@ -26,6 +26,10 @@ namespace AutoService.Models.Assets
             set
             {
                 this.balance = value;
+                if (value < 0)
+                {
+                    throw new ArgumentException("Balance cannot be negative");
+                }
                 if (this.balance <= this.criticalLimit)
                 {
                     CriticalLimitReachedEventArgs args = new CriticalLimitReachedEventArgs();

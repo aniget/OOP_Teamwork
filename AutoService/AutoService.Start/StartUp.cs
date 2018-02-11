@@ -9,21 +9,14 @@ namespace AutoService
     {
         public static void Main()
         {
+            //    builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
+
             var builder = new ContainerBuilder();
-
-            builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
-
-            //IContainer containerToRegister = null
-            //builder.Register(c => containerToRegister);
-            //builder.RegisterBuildCallback(c => containerToRegister = c);
-            
+            builder.RegisterModule(new AutofacConfig.AutofacConfig());
             var container = builder.Build();
 
             var engine = container.Resolve<IEngine>();
-
             engine.Run();
-
-            
         }
     }
 }

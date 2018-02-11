@@ -16,23 +16,20 @@ namespace AutoService.AutofacConfig
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterAssemblyTypes(Assembly.GetAssembly(typeof(IEngine)))
-            //    //.Where(x => x.Namespace.Contains("Factories") ||
-            //    //            x.Namespace.Contains("Providers") ||
-            //    //            x.Name.EndsWith("Engine"))
-            //    .AsImplementedInterfaces()
-            //    .SingleInstance();
+            var currentAssembly = Assembly.GetExecutingAssembly();
 
-            builder.RegisterType<CommandFactory>().As<ICommandFactory>().SingleInstance();
-            builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>().SingleInstance();
+            builder.RegisterAssemblyTypes(currentAssembly)
+                .AsImplementedInterfaces();
+
+            builder.RegisterType<CommandFactory>().As<ICommandFactory>();
+            builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>();
+            builder.RegisterType<ConsoleReader>().As<IReader>();
+            builder.RegisterType<ConsoleWriter>().As<IWriter>();
+            builder.RegisterType<StockManager>().As<IStockManager>();
+            builder.RegisterType<ValidateCore>().As<IValidateCore>();
+            builder.RegisterType<ValidateModel>().As<IValidateModel>();
+
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
-
-            builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
-            builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
-
-            builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
-            builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
-            builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();
 
             //Commands
