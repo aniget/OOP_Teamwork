@@ -17,7 +17,7 @@ namespace AutoService.Core.Contracts
         ICounterparty CreateSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable);
 
         IEmployee CreateEmployee(string firstName, string lastName, string position, decimal salary, decimal ratePerMinute,
-            DepartmentType department, IValidateModel modelValidator);
+            DepartmentType department, IValidateModel modelValidation);
 
         IInvoice CreateInvoice(string number, DateTime date, IClient client, IValidateModel modelValidator);
 

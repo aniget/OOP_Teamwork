@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="AssetsTests\BankAccountTests.cs" />
     <Compile Include="AssetsTests\StockTests.cs" />
+    <Compile Include="CommandsTests\HireEmployeeCommand_Should.cs" />
     <Compile Include="CounterPartyTests\ClientShould.cs" />
     <Compile Include="EmployeeManagerTests\EmployeeManagerShould.cs" />
     <Compile Include="IOTests\IOTests.cs" />
