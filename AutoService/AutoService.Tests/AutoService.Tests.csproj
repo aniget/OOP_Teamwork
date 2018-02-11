@@ -72,15 +72,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssetsTests\BankAccountTests.cs" />
-    <Compile Include="AssetsTests\StockTests.cs" />
     <Compile Include="CommandsTests\HireEmployeeCommand_Should.cs" />
     <Compile Include="AssetsTests\BankAccountShould.cs" />
     <Compile Include="AssetsTests\StockConstructorShould.cs" />
     <Compile Include="CounterPartyTests\ClientConstructorShould.cs" />
     <Compile Include="ModelsTests\InvoiceShould.cs" />
     <Compile Include="TimeProvider\DefaultTimeProvider.cs" />
-    <Compile Include="EmployeeManagerTests\EmployeeManagerShould.cs" />
     <Compile Include="IOTests\IOTests.cs" />
     <Compile Include="ModelsTests\EmployeeShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

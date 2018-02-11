@@ -33,11 +33,7 @@ namespace AutoService.Tests.CommandsTests
             string[] commandParams = { cName, fname, lName, pos, sal, rpm, dept };
 
             var modelValidatorStub = new Mock<IValidateModel>();
-            modelValidatorStub.Setup(x => x.StringForNullEmpty("string"));
-            modelValidatorStub.Setup(x => x.HasDigitInString("assas", "sadsada"));
-            modelValidatorStub.Setup(x => x.NonNegativeValue(100m, "paramName"));
-
-
+            
             var coreValidatorStub = new Mock<IValidateCore>();
             coreValidatorStub
                  .Setup(x => x.DecimalFromString(sal, "salary"))
@@ -46,7 +42,6 @@ namespace AutoService.Tests.CommandsTests
                 .Setup(x => x.DecimalFromString(rpm, "ratePerMinute"))
                 .Returns(decimal.Parse(rpm));
 
-            var employeesStub = new Mock<IList<IEmployee>>();
             var employeeStub = new Mock<IEmployee>(MockBehavior.Strict);
             var employeeStubObj = employeeStub.Object;
 
