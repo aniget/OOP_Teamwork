@@ -63,7 +63,7 @@ namespace AutoService.Tests.ValidatorTests
             int expectedNumber = 7384;
             
             //Act & Assert
-            Assert.AreEqual(expectedNumber, mockValidator.IntFromString("7384", "parameter"));
+            Assert.AreEqual(expectedNumber, mockValidator.IntFromString(expectedNumber.ToString(), "parameter"));
         }
 
         [TestMethod]

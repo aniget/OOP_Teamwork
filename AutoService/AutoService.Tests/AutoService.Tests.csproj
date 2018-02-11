@@ -72,6 +72,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetsTests\BankAccountTests.cs" />
+    <Compile Include="AssetsTests\StockTests.cs" />
+    <Compile Include="CommandsTests\HireEmployeeCommand_Should.cs" />
     <Compile Include="AssetsTests\BankAccountShould.cs" />
     <Compile Include="AssetsTests\StockConstructorShould.cs" />
     <Compile Include="CounterPartyTests\ClientConstructorShould.cs" />
