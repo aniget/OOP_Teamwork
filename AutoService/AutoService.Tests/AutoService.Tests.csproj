@@ -75,11 +75,15 @@
     <Compile Include="AssetsTests\BankAccountTests.cs" />
     <Compile Include="AssetsTests\StockTests.cs" />
     <Compile Include="CommandsTests\HireEmployeeCommand_Should.cs" />
+    <Compile Include="AssetsTests\BankAccountShould.cs" />
+    <Compile Include="AssetsTests\StockConstructorShould.cs" />
     <Compile Include="CounterPartyTests\ClientShould.cs" />
+    <Compile Include="TimeProvider\DefaultTimeProvider.cs" />
     <Compile Include="EmployeeManagerTests\EmployeeManagerShould.cs" />
     <Compile Include="IOTests\IOTests.cs" />
     <Compile Include="ModelsTests\EmployeeShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeProvider\TimeProvider.cs" />
     <Compile Include="ValidatorTests\ValidatorShould.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +103,7 @@
       <Name>AutoService.Start</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AutoServiceFactoryTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

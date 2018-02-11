@@ -291,7 +291,7 @@ Employee responsible for the transaction: Jo Manarino
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-The stock unique number bust be between 3 and 10 characters long!
+Unique number cannot be null!
 
 <>-<>-<>-<>-<>-<>-<>-<>---<>-<>-<>-<>-<>-<>-<>-<>
 
