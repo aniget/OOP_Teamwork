@@ -34,7 +34,7 @@ namespace AutoService.Tests.ModelsTests
             employee.FirstName = null;
             string isNull = null;
             //Assert
-            validator.Verify(x => x.StringForNullEmpty(isNull), Times.Once);
+            validator.Verify(x => x.StringForNullEmpty(isNull), Times.AtLeastOnce);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace AutoService.Tests.ModelsTests
             employee.FirstName = "";
             string isEmpty = "";
             //Assert
-            validator.Verify(x => x.StringForNullEmpty(isEmpty), Times.Once);
+            validator.Verify(x => x.StringForNullEmpty(isEmpty), Times.AtLeastOnce);
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace AutoService.Tests.ModelsTests
             var employee = new Employee("firstname", "testlastname", "testposition", 1000, 10, DepartmentType.Management, validator.Object);
             //Assert
             employee.FirstName = "joe1234";
-            validator.Verify(x => x.HasDigitInString("joe1234", "first name"), Times.Once);
+            validator.Verify(x => x.HasDigitInString("joe1234", "first name"), Times.AtLeastOnce);
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace AutoService.Tests.ModelsTests
             employee.LastName = null;
             string isNull = null;
             //Assert
-            validator.Verify(x => x.StringForNullEmpty(isNull), Times.Once);
+            validator.Verify(x => x.StringForNullEmpty(isNull), Times.AtLeastOnce);
         }
 
         [TestMethod]
@@ -121,21 +121,11 @@ namespace AutoService.Tests.ModelsTests
             var validator = new Mock<IValidateModel>();
 
             var employee = new Employee("firstname", "testlastname", "testposition", 1000, 10, DepartmentType.Management, validator.Object);
-            //Assert
+            //Act
             employee.RatePerMinute = -10;
+
+            //Assert
             validator.Verify(x => x.NonNegativeValue(-10, "rate per minute"), Times.AtLeastOnce);
         }
-        //[TestMethod]
-        //public void ThrowArgumnetEcxeption_WhenDueDaysAllowed_IsNegative()
-        //{
-        //    //Arrange
-        //    var validator = new Mock<IValidateModel>();
-
-        //    var client = new Client("testname", "testadress", "123456789", validator.Object);
-        //    //Act
-        //    validator.Setup(x => x.NonNegativeValue(-1, It.IsAny<string>())).Throws<ArgumentException>();
-        //    //Assert
-        //    Assert.ThrowsException<ArgumentException>(() => client.DueDaysAllowed = -1);
-        //}
     }
 }
