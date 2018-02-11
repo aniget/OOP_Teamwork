@@ -36,7 +36,7 @@ namespace AutoService.Tests.AssetsTests
             //Act
             sut.Balance = 5000m;
 
-            //Act & Assert
+            //Assert
             Assert.AreEqual(5000m, sut.Balance);
         }
     }

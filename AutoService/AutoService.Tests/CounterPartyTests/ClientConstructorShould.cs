@@ -7,43 +7,44 @@ using AutoService.Models.Vehicles.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace AutoService.Tests.ClientShould
+namespace AutoService.Tests.CounterPartyTests
 {
     [TestClass]
-    public class ClientShould
+    public class ClientConstructorShould
     {
         [TestMethod]
-        public void ThrowArgumetException_WnenQuniqueNumber_IsNull()
+        public void ThrowArgumentException_WhenUniqueNumber_IsNull()
         {
             //Arrange
-            string num = null;
+            string uniqueNumber = null;
             var validator = new Mock<IValidateModel>();
+
             //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new Client("testname", "testadress", num, validator.Object));
+            Assert.ThrowsException<ArgumentException>(() => new Client("testname", "testadress", uniqueNumber, validator.Object));
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenQuniqueNumber_HasNonDigitsChars()
+        public void ThrowArgumentException_WhenUniqueNumber_HasNonDigitsChars()
         {
             //Arrange
-            string num = "test12345";
+            string uniqueNumber = "test12345";
             var validator = new Mock<IValidateModel>();
             //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new Client("testname", "testadress", num, validator.Object));
+            Assert.ThrowsException<ArgumentException>(() => new Client("testname", "testadress", uniqueNumber, validator.Object));
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenQuniqueNumber_IsLessThanNineDigits()
+        public void ThrowArgumentException_WhenUniqueNumber_IsLessThanNineDigits()
         {
             //Arrange
-            string num = "12345678";
+            string uniqueNumber = "12345678";
             var validator = new Mock<IValidateModel>();
             //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new Client("testname", "testadress", num, validator.Object));
+            Assert.ThrowsException<ArgumentException>(() => new Client("testname", "testadress", uniqueNumber, validator.Object));
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenName_IsNull()
+        public void ThrowArgumentException_WhenName_IsNull()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -52,37 +53,38 @@ namespace AutoService.Tests.ClientShould
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenAdress_IsLessThanFiveSymbols()
+        public void ThrowArgumentException_WnenAddress_IsLessThanFiveSymbols()
         {
             //Arrange
-            var adressLessThan5Symbols = "Moon";
+            var addressLessThan5Symbols = new string('a', 4);
             var validator = new Mock<IValidateModel>();
+
             //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new Client("testname", adressLessThan5Symbols, "123456789", validator.Object));
+            Assert.ThrowsException<ArgumentException>(() => new Client("testname", addressLessThan5Symbols, "123456789", validator.Object));
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenAdress_IsNull()
+        public void ThrowArgumentException_WnenAddress_IsNull()
         {
             //Arrange
-            string adreesisNull = null;
+            string nullAddress = null;
             var validator = new Mock<IValidateModel>();
             //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new Client("testname", adreesisNull, "123456789", validator.Object));
+            Assert.ThrowsException<ArgumentException>(() => new Client("testname", nullAddress, "123456789", validator.Object));
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenAdress_IsWhiteSpace()
+        public void ThrowArgumentException_WhenAddress_IsWhiteSpace()
         {
             //Arrange
-            var adressIsWhiteSpace = " ";
+            var whiteSpaceAddress = " ";
             var validator = new Mock<IValidateModel>();
             //Act & Assert
-            Assert.ThrowsException<ArgumentException>(() => new Client("testname", adressIsWhiteSpace, "123456789", validator.Object));
+            Assert.ThrowsException<ArgumentException>(() => new Client("testname", whiteSpaceAddress, "123456789", validator.Object));
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenName_IsWhiteSpace()
+        public void ThrowArgumentException_WhenName_IsWhiteSpace()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -92,17 +94,17 @@ namespace AutoService.Tests.ClientShould
         }
 
         [TestMethod]
-        public void ThrowArgumetException_WnenName_IsLessThanFiveChars()
+        public void ThrowArgumentException_WhenName_IsLessThanFiveChars()
         {
             //Arrange
-            var nameLessThan5Chars = "Jo";
+            var nameLessThan5Chars = new string('s', 4);
             var validator = new Mock<IValidateModel>();
             //Act & Assert
             Assert.ThrowsException<ArgumentException>(() => new Client(nameLessThan5Chars, "testadress", "123456789", validator.Object));
         }
 
         [TestMethod]
-        public void ThrowArgumnetEcxeption_WhenDueDaysAllowed_IsNegative()
+        public void ThrowArgumentException_WhenDueDaysAllowed_IsNegative()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -115,7 +117,7 @@ namespace AutoService.Tests.ClientShould
         }
           
         [TestMethod]
-        public void CallValidationMethod_WhenDueDaysAllowed_IsSetedToNegative()
+        public void CallValidationMethod_WhenDueDaysAllowed_IsChanged()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -124,11 +126,11 @@ namespace AutoService.Tests.ClientShould
             //Act
             client.DueDaysAllowed = -1;
             //Assert
-            validator.Verify(x => x.NonNegativeValue(-1, "due days allowed"), Times.Exactly(1));
+            validator.Verify(x => x.NonNegativeValue(It.IsAny<decimal>(), It.IsAny<string>()), Times.Exactly(1));
         }
 
         [TestMethod]
-        public void HaveListOfVehicles_WhenIt_IsCreated()
+        public void ProvideListOfVehicles_WhenIt_IsCreated()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -140,7 +142,7 @@ namespace AutoService.Tests.ClientShould
         }
 
         [TestMethod]
-        public void HaveListOfinvoices_WhenIt_IsCreated()
+        public void ProvideListOfinvoices_WhenIt_IsCreated()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -152,7 +154,7 @@ namespace AutoService.Tests.ClientShould
         }
 
         [TestMethod]
-        public void ThowArgumnetException_WhenDiscountSetedToNegative()
+        public void ThrowArgumentException_WhenDiscountSetToNegative()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -163,7 +165,7 @@ namespace AutoService.Tests.ClientShould
         }
 
         [TestMethod]
-        public void ThowArgumnetException_WhenDiscountSetedToMoreThanHundredPercents()
+        public void ThowArgumentException_WhenDiscountSetToMoreThanHundredPercent()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -174,7 +176,7 @@ namespace AutoService.Tests.ClientShould
         }
 
         [TestMethod]
-        public void HaveExactlyFiveDueDaysAllowedWhenItCreaded()
+        public void ProvideObjectWithExactlyFiveDueDaysAllowed_WhenObjectCreaded()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
