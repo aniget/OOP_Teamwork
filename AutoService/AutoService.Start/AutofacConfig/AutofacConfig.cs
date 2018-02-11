@@ -8,7 +8,6 @@ using AutoService.Core.Manager;
 using AutoService.Core.Providers;
 using AutoService.Core.Validator;
 using AutoService.Models.Validator;
-using System.Reflection;
 
 namespace AutoService.AutofacConfig
 {
@@ -16,11 +15,6 @@ namespace AutoService.AutofacConfig
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var currentAssembly = Assembly.GetExecutingAssembly();
-
-            builder.RegisterAssemblyTypes(currentAssembly)
-                .AsImplementedInterfaces();
-
             builder.RegisterType<CommandFactory>().As<ICommandFactory>();
             builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>();
             builder.RegisterType<ConsoleReader>().As<IReader>();

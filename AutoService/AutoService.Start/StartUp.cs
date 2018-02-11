@@ -1,7 +1,5 @@
-﻿using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using AutoService.Core.Contracts;
-using AutoService.Core.Manager;
 
 namespace AutoService
 {
@@ -9,8 +7,6 @@ namespace AutoService
     {
         public static void Main()
         {
-            //    builder.RegisterAssemblyModules(Assembly.GetExecutingAssembly());
-
             var builder = new ContainerBuilder();
             builder.RegisterModule(new AutofacConfig.AutofacConfig());
             var container = builder.Build();
