@@ -16,10 +16,10 @@ namespace AutoService.Core.Commands
 
         public RegisterSupplier(IDatabase database, IAutoServiceFactory factory, IValidateCore coreValidator, IWriter writer)
         {
-            this.database = database;
-            this.factory = factory;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
+            this.database = database ?? throw new ArgumentNullException();
+            this.factory = factory ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {

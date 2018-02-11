@@ -16,9 +16,9 @@ namespace AutoService.Core.Commands
 
         public RemoveEmployeeResponsibility(IWriter writer, IDatabase database, IValidateCore coreValidator)
         {
-            this.writer = writer;
-            this.database = database;
-            this.coreValidator = coreValidator;
+            this.writer = writer ?? throw new ArgumentNullException();
+            this.database = database ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
         }
 
         public void ExecuteThisCommand(string[] commandParameters)

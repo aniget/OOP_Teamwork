@@ -10,8 +10,8 @@ namespace AutoService.Core.Commands
 
         public ListClients(IDatabase database, IWriter writer)
         {
-            this.database = database;
-            this.writer = writer;
+            this.database = database ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
         }
 
         public void ExecuteThisCommand(string[] commandParameters)

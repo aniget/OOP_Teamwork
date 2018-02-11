@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 
@@ -14,9 +15,9 @@ namespace AutoService.Core.Commands
         //Constructor
         public ChangeClientName(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
-            this.database = database;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.database = database ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
         }
         //Methods
         public void ExecuteThisCommand(string[] commandParameters)

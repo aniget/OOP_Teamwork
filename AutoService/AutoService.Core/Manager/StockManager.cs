@@ -23,8 +23,8 @@ namespace AutoService.Core.Manager
         //properties not needed for now
         public StockManager(IDatabase database, IValidateModel modelValidator)
         {
-            this.database = database;
-            this.modelValidator = modelValidator;
+            this.database = database ?? throw new ArgumentNullException();
+            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
         }
 
         public IValidateModel ModelValidator { get => this.modelValidator; }

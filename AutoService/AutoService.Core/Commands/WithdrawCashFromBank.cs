@@ -16,9 +16,9 @@ namespace AutoService.Core.Commands
 
         public WithdrawCashFromBank(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
-            this.database = database;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
+            this.database = database ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
         }
 
         public void ExecuteThisCommand(string[] commandParameters)

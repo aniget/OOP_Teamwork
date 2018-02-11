@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using AutoService.Core.Contracts;
+using System;
 
 namespace AutoService.Core.Factory
 {
@@ -9,7 +10,7 @@ namespace AutoService.Core.Factory
 
         public CommandFactory(IComponentContext container)
         {
-            this.container = container;
+            this.container = container ?? throw new ArgumentNullException();
         }
 
         public ICommand CreateCommand(string commandName)

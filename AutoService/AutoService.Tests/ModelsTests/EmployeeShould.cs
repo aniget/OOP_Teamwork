@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoService.Models.Common.Enums;
+﻿using AutoService.Models.Common.Enums;
 using AutoService.Models.Common.Models;
 using AutoService.Models.Validator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
 
 namespace AutoService.Tests.ModelsTests
 {
@@ -15,7 +11,7 @@ namespace AutoService.Tests.ModelsTests
     public class EmployeeShould
     {
         [TestMethod]
-        public void Have_ListOfResponsibilityTypes_WhenItCreated()
+        public void Have_ListOfResponsibilityTypes_WhenIsCreated()
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
@@ -24,18 +20,6 @@ namespace AutoService.Tests.ModelsTests
             Assert.IsInstanceOfType(employee.Responsibilities, typeof(List<ResponsibilityType>));
         }
 
-        [TestMethod]
-        public void CallValidatorMethod_WhenFirstName_IsNull()
-        {
-            //Arrange
-            var validator = new Mock<IValidateModel>();
-            
-            var employee = new Employee("firstname", "testlastname", "testposition", 1000, 10, DepartmentType.Management, validator.Object);
-            employee.FirstName = null;
-            string isNull = null;
-            //Assert
-            validator.Verify(x => x.StringForNullEmpty(isNull), Times.AtLeastOnce);
-        }
 
         [TestMethod]
         public void CallValidatorMethod_WhenFirstName_IsEmpty()
@@ -95,11 +79,11 @@ namespace AutoService.Tests.ModelsTests
         {
             //Arrange
             var validator = new Mock<IValidateModel>();
-
-            var employee = new Employee("firstname", "testlastname", "testposition", 1000, 10, DepartmentType.Management, validator.Object);
+            validator.Setup(x => x.HasDigitInString("joe1234", "last name")).Verifiable();
+            //Act
+            var employee = new Employee("firstname", "joe1234", "testposition", 1000, 10, DepartmentType.Management, validator.Object);
             //Assert
-            employee.LastName = "joe1234";
-            validator.Verify(x => x.HasDigitInString("joe1234", "last name"), Times.AtLeastOnce);
+            validator.Verify();
         }
 
         [TestMethod]
@@ -127,5 +111,18 @@ namespace AutoService.Tests.ModelsTests
             //Assert
             validator.Verify(x => x.NonNegativeValue(-10, "rate per minute"), Times.AtLeastOnce);
         }
+
+        [TestMethod]
+        public void CallValidatorMethodForNullOrEmpty_WhenFirstName_IsChanged()
+        {
+            //Arrange
+            var validator = new Mock<IValidateModel>();
+            var employee = new Employee("firstname", "testlastname", "testposition", 1000, 10, DepartmentType.Management, validator.Object);
+            //Act
+            employee.FirstName = "new name";
+            //Assert
+            validator.Verify(x => x.StringForNullEmpty(It.IsAny<string>()), Times.Exactly(4)); // FirstName, LastName, Position + the change of FirstName
+        }
+
     }
 }

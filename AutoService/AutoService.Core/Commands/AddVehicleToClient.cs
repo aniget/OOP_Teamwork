@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using AutoService.Core.Contracts;
+﻿using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Enums;
 using AutoService.Models.Vehicles.Models;
+using System;
+using System.Linq;
 
 namespace AutoService.Core.Commands
 {
@@ -20,12 +20,13 @@ namespace AutoService.Core.Commands
 
         public AddVehicleToClient(IDatabase database, IWriter writer, IValidateCore coreValidator, IAutoServiceFactory factory, IValidateModel modelValidator)
         {
-            this.database = database;
-            this.writer = writer;
-            this.coreValidator = coreValidator;
-            this.modelValidator = modelValidator;
-            this.factory = factory;
+            this.database = database ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
+            this.factory = factory ?? throw new ArgumentNullException();
         }
+
         public void ExecuteThisCommand(string[] commandParameters)
         {
             this.coreValidator.ExactParameterLength(commandParameters, 9);

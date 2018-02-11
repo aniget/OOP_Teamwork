@@ -41,11 +41,7 @@ namespace AutoService.Models.Assets
             get => this.responsibleEmployee;
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentException("Null employee provided!");
-                }
-                this.responsibleEmployee = value;
+                this.responsibleEmployee = value ?? throw new ArgumentException("Null employee provided!");
             }
         }
 

@@ -25,12 +25,12 @@ namespace AutoService.Core.Commands
 
         public SellStockToClientVehicle(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer, IStockManager stockManager, IValidateModel modelValidator)
         {
-            this.database = database;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
-            this.stockManager = stockManager;
-            this.autoServiceFactory = autoServiceFactory;
-            this.modelValidator = modelValidator;
+            this.database = database ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
+            this.stockManager = stockManager ?? throw new ArgumentNullException();
+            this.autoServiceFactory = autoServiceFactory ?? throw new ArgumentNullException();
+            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
         }
 
 
@@ -62,7 +62,7 @@ namespace AutoService.Core.Commands
 
             var client = database.Clients.FirstOrDefault(x => x.Name == clientUniqueName);
 
-            //stock we sell must be present in the warehouse :)
+            //stock we sell must be present in the warehouse
             bool stockExists = stockManager.ConfirmStockExists(stockUniqueNumber, employee);
             if (stockExists == false)
             {
@@ -71,7 +71,7 @@ namespace AutoService.Core.Commands
             }
             var stock = this.database.AvailableStocks.FirstOrDefault(x => x.UniqueNumber == stockUniqueNumber);
 
-            //no need to check vehicle for null because we create a default vehicle with every client registration
+            //there is no need to check vehicle for null because we create a default vehicle with every client registration
             var vehicle = ((IClient)client).Vehicles.FirstOrDefault(x =>
                x.RegistrationNumber == vehicleRegistrationNumber);
 
@@ -86,8 +86,6 @@ namespace AutoService.Core.Commands
                 var sellStock = autoServiceFactory.CreateSellStock(stock.ResponsibleEmployee, client, vehicle, stock, modelValidator);
 
                 stockManager.RemoveStockFromWarehouse(stock, stock.ResponsibleEmployee);
-
-                //sellStock.SellToClientVehicle(sellStock, stock);
 
                 //record the Sell in the notInvoicedSells Dictionary
                 AddSellToNotInvoicedItems(client, sellStock);
