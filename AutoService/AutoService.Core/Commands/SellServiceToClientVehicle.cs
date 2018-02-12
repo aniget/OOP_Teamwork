@@ -24,11 +24,11 @@ namespace AutoService.Core.Commands
 
         public SellServiceToClientVehicle(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer, IValidateModel modelValidator)
         {
-            this.database = database;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
-            this.autoServiceFactory = autoServiceFactory;
-            this.modelValidator = modelValidator;
+            this.database = database ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
+            this.autoServiceFactory = autoServiceFactory ?? throw new ArgumentNullException();
+            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
         }
 
 
@@ -76,7 +76,6 @@ namespace AutoService.Core.Commands
                 responsibleEmployee.Responsibilities.Contains(ResponsibilityType.SellService))
             {
                 sellService = (ISellService)autoServiceFactory.CreateSellService(responsibleEmployee, client, vehicle, serviceName, durationInMinutes, modelValidator);
-                //sellService.SellToClientVehicle(sellService, null);
 
                 //record the Sell in the notInvoicedSells Dictionary
                 AddSellToNotInvoicedItems(client, sellService);

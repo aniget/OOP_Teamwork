@@ -1,6 +1,5 @@
 ﻿using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
-using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using System;
 using System.Collections.Generic;
@@ -16,9 +15,9 @@ namespace AutoService.Core.Commands
 
         public AddEmployeeResponsibility(IWriter writer, IDatabase database, IValidateCore coreValidator)
         {
-            this.writer = writer;
-            this.database = database;
-            this.coreValidator = coreValidator;
+            this.writer = writer ?? throw new ArgumentNullException();
+            this.database = database ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
         }
 
 

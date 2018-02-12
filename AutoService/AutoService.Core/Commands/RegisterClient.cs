@@ -4,6 +4,7 @@ using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 using AutoService.Models.Vehicles.Models;
+using System;
 
 namespace AutoService.Core.Commands
 {
@@ -19,11 +20,11 @@ namespace AutoService.Core.Commands
 
         public RegisterClient(IDatabase database, IAutoServiceFactory autoServiceFactory, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer)
         {
-            this.database = database;
-            this.autoServiceFactory = autoServiceFactory;
-            this.coreValidator = coreValidator;
-            this.modelValidator = modelValidator;
-            this.writer = writer;
+            this.database = database ?? throw new ArgumentNullException();
+            this.autoServiceFactory = autoServiceFactory ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
         }
 
         public void ExecuteThisCommand(string[] commandParameters)

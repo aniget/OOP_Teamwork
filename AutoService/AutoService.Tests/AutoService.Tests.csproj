@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandsTests\HireEmployeeCommand_Should.cs" />
+    <Compile Include="CommandsTests\HireEmployee_Should.cs" />
     <Compile Include="AssetsTests\BankAccountShould.cs" />
     <Compile Include="AssetsTests\StockConstructorShould.cs" />
     <Compile Include="CounterPartyTests\ClientConstructorShould.cs" />

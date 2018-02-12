@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoService.Models.Common.Contracts;
+﻿using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
-using AutoService.Models.Vehicles.Models;
+using System;
+using System.Collections.Generic;
 
 namespace AutoService.Models.Common.Models
 {
@@ -52,7 +51,7 @@ namespace AutoService.Models.Common.Models
             get => this.vehicles;
         }
 
-       public override string ToString()
+        public override string ToString()
         {
             return base.ToString() + Environment.NewLine +
                    $"### Due allowed: {this.DueDaysAllowed} day(s)" + Environment.NewLine +

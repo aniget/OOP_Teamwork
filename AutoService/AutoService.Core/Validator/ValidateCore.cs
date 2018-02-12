@@ -16,7 +16,7 @@ namespace AutoService.Core.Validator
 
         public ValidateCore(IWriter writer)
         {
-            this.writer = writer;
+            this.writer = writer ?? throw new ArgumentNullException();
         }
 
         public int IntFromString(string commandParameter, string parameterName)

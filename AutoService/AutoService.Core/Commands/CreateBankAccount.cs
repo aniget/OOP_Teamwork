@@ -17,10 +17,10 @@ namespace AutoService.Core.Commands
 
         public CreateBankAccount(IDatabase database, IAutoServiceFactory factory, IValidateCore coreValidator, IWriter writer)
         {
-            this.database = database;
-            this.factory = factory;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
+            this.database = database ?? throw new ArgumentNullException();
+            this.factory = factory ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -55,7 +55,7 @@ namespace AutoService.Core.Commands
             {
                 IBankAccount bankAccountToAdd =
                     this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
-                bankAccountToAdd.CriticalLimitReached += c_CriticalAmountReached;
+                bankAccountToAdd.CriticalLimitReached += CriticalAmountReached;
                 this.database.BankAccounts.Add(bankAccountToAdd);
                this.writer.Write(
                     $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
@@ -68,7 +68,7 @@ namespace AutoService.Core.Commands
         }
 
 
-        private void c_CriticalAmountReached(object sender, EventArgs e)
+        private void CriticalAmountReached(object sender, EventArgs e)
         {
             this.writer.Write("The minimum threshold of 300 BGN was reached! Please deposit some funds!");
 

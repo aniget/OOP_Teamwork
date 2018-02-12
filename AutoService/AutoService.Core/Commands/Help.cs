@@ -9,7 +9,7 @@ namespace AutoService.Core.Commands
 
         public Help(IWriter writer)
         {
-            this.writer = writer;
+            this.writer = writer ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {

@@ -17,9 +17,9 @@ namespace AutoService.Core.Commands
 
         public IssueInvoices(IDatabase database, IValidateCore coreValidator, IValidateModel modelValidator, IWriter writer)
         {
-            this.database = database;
-            this.coreValidator = coreValidator;
-            this.modelValidator = modelValidator;
+            this.database = database ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
             this.writer = writer;
         }
 

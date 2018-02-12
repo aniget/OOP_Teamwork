@@ -31,12 +31,12 @@ namespace AutoService.Core.Commands
             IValidateModel modelValidator
             )
         {
-            this.database = database;
-            this.autoServiceFactory = autoServiceFactory;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
-            this.stockManager = stockManager;
-            this.modelValidator = modelValidator;
+            this.database = database ?? throw new ArgumentNullException();
+            this.autoServiceFactory = autoServiceFactory ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
+            this.stockManager = stockManager ?? throw new ArgumentNullException();
+            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {

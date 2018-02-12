@@ -33,11 +33,8 @@ namespace AutoService.Models.Common.Models
             this.responsibilities = new List<ResponsibilityType>();
         }
 
-        public IValidateModel ModelValidator
-        {
-            get => this.modelValidator;
-        }
-
+        protected IValidateModel ModelValidator => this.modelValidator;
+        
         public string FirstName
         {
             get => this.firstName;
@@ -121,6 +118,7 @@ namespace AutoService.Models.Common.Models
             get => this.responsibilities;
         }
 
+        public IValidateModel ModelValidator1 => modelValidator;
 
         public override string ToString()
         {

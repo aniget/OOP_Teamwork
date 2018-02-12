@@ -3,6 +3,7 @@ using AutoService.Models.Common.Contracts;
 using System.Linq;
 using AutoService.Core.Validator;
 using System.Collections.Generic;
+using System;
 
 namespace AutoService.Core.Commands
 {
@@ -14,9 +15,9 @@ namespace AutoService.Core.Commands
 
         public RemoveClient(IDatabase database, IValidateCore coreValidator, IWriter writer)
         {
-            this.database = database;
-            this.coreValidator = coreValidator;
-            this.writer = writer;
+            this.database = database ?? throw new ArgumentNullException();
+            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            this.writer = writer ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {

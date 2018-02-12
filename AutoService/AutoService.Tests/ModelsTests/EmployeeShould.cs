@@ -1,5 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.Common.Models;
 using AutoService.Models.Validator;
@@ -12,7 +10,7 @@ namespace AutoService.Tests.ModelsTests
     public class EmployeeShould
     {
         [TestMethod]
-        public void Have_ListOfResponsibilityTypes_WhenItCreated()
+        public void Have_ListOfResponsibilityTypes_WhenItIsCreated()
         {
             //Arrange
             var stubValidator = new Mock<IValidateModel>();
