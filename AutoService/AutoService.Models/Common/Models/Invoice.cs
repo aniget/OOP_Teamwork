@@ -23,9 +23,9 @@ namespace AutoService.Models.Common.Models
             this.ModelValidator.StringForNullEmpty(number);
             this.ModelValidator.CheckNullObject(client);
 
-            this.number = number;
-            this.client = client;
-            this.date = date;
+            this.number       = number;
+            this.client       = client;
+            this.date         = date;
             this.invoiceItems = new List<ISell>();
         }
 

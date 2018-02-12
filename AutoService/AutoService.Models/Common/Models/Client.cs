@@ -17,8 +17,8 @@ namespace AutoService.Models.Common.Models
         {
             this.modelValidator = modelValidator;
             this.dueDaysAllowed = 5;
-            this.discount = 0;
-            this.vehicles = new List<IVehicle>();
+            this.discount       = 0;
+            this.vehicles       = new List<IVehicle>();
         }
 
         public IValidateModel ModelValidator { get => this.modelValidator; }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoService.Models.Common.Contracts;
+﻿using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.Validator;
+using System;
+using System.Collections.Generic;
 
 namespace AutoService.Models.Common.Models
 {
@@ -33,15 +32,13 @@ namespace AutoService.Models.Common.Models
             this.responsibilities = new List<ResponsibilityType>();
         }
 
-        protected IValidateModel ModelValidator => this.modelValidator;
-        
         public string FirstName
         {
             get => this.firstName;
             set
             {
-                this.ModelValidator.StringForNullEmpty(value);
-                this.ModelValidator.HasDigitInString(value, "first name");
+                this.modelValidator.StringForNullEmpty(value);
+                this.modelValidator.HasDigitInString(value, "first name");
                 this.firstName = value;
             }
         }
@@ -50,10 +47,10 @@ namespace AutoService.Models.Common.Models
         {
             get => this.lastName;
 
-             set
+            set
             {
-                this.ModelValidator.StringForNullEmpty(value);
-                this.ModelValidator.HasDigitInString(value, "last name");
+                this.modelValidator.StringForNullEmpty(value);
+                this.modelValidator.HasDigitInString(value, "last name");
 
                 this.lastName = value;
             }
@@ -65,7 +62,7 @@ namespace AutoService.Models.Common.Models
 
             set
             {
-                this.ModelValidator.NonNegativeValue(value, "salary");
+                this.modelValidator.NonNegativeValue(value, "salary");
 
                 this.salary = value;
             }
@@ -75,7 +72,7 @@ namespace AutoService.Models.Common.Models
             get => this.position;
             set
             {
-                this.ModelValidator.StringForNullEmpty(value);
+                this.modelValidator.StringForNullEmpty(value);
                 this.position = value;
             }
         }
@@ -85,7 +82,7 @@ namespace AutoService.Models.Common.Models
             get => this.ratePerMinute;
             set
             {
-                this.ModelValidator.NonNegativeValue(value, "rate per minute");
+                this.modelValidator.NonNegativeValue(value, "rate per minute");
 
                 this.ratePerMinute = value;
             }
@@ -117,8 +114,6 @@ namespace AutoService.Models.Common.Models
         {
             get => this.responsibilities;
         }
-
-        public IValidateModel ModelValidator1 => modelValidator;
 
         public override string ToString()
         {

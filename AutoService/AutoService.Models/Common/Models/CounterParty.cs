@@ -15,10 +15,10 @@ namespace AutoService.Models.Common.Models
         
         public CounterParty(string name, string address, string uniqueNumber)
         {
-            this.Name = name;
-            this.Address = address;
+            this.Name         = name;
+            this.Address      = address;
             this.UniqueNumber = uniqueNumber;
-            this.invoices = new List<IInvoice>();
+            this.invoices     = new List<IInvoice>();
         }
 
         public string Name

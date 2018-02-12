@@ -19,7 +19,7 @@ namespace AutoService.Core.Commands
             var clients = this.database.Clients;
             if (clients.Count == 0)
             {
-                throw new ArgumentException($"Oops! Sorry pitch, the are no clients. Go! And find them!");
+                throw new ArgumentException($"Oops! Sorry pitch, there are no clients. Go and find them!");
             }
             foreach (var client in clients)
             {

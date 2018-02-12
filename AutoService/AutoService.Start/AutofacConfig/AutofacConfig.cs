@@ -15,11 +15,11 @@ namespace AutoService.AutofacConfig
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<CommandFactory>().As<ICommandFactory>();
-            builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>();
+            builder.RegisterType<CommandFactory>().As<ICommandFactory>().SingleInstance();
+            builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>().SingleInstance();
             builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
             builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
-            builder.RegisterType<StockManager>().As<IStockManager>();
+            builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
             builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
             builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
 
