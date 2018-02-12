@@ -2,7 +2,6 @@
 using System;
 using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
-using AutoService.Core.Validator;
 
 namespace AutoService.Core
 {
@@ -19,11 +18,9 @@ namespace AutoService.Core
             IReader reader
             )
         {
-            
             this.CommandFactory = commandFactory ?? throw new ArgumentNullException();
             this.writer = writer ?? throw new ArgumentNullException();
             this.reader = reader ?? throw new ArgumentNullException();
-
         }
 
         public ICommandFactory CommandFactory { get; }

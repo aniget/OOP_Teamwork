@@ -8,7 +8,6 @@ using AutoService.Models.BusinessProcess.Contracts;
 using AutoService.Models.BusinessProcess.Models;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
-using AutoService.Models.Common.Models;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
 

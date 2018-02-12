@@ -17,11 +17,11 @@ namespace AutoService.AutofacConfig
         {
             builder.RegisterType<CommandFactory>().As<ICommandFactory>();
             builder.RegisterType<AutoServiceFactory>().As<IAutoServiceFactory>();
-            builder.RegisterType<ConsoleReader>().As<IReader>();
-            builder.RegisterType<ConsoleWriter>().As<IWriter>();
+            builder.RegisterType<ConsoleReader>().As<IReader>().SingleInstance();
+            builder.RegisterType<ConsoleWriter>().As<IWriter>().SingleInstance();
             builder.RegisterType<StockManager>().As<IStockManager>();
-            builder.RegisterType<ValidateCore>().As<IValidateCore>();
-            builder.RegisterType<ValidateModel>().As<IValidateModel>();
+            builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
+            builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
 
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();

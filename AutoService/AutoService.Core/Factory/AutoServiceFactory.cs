@@ -23,7 +23,6 @@ namespace AutoService.Core.Factory
 
         public ICounterparty CreateSupplier(string name, string address, string uniqueNumber, bool interfaceIsAvailable)
         {
-            //throw new NotImplementedException();
             return new Supplier(name, address, uniqueNumber, interfaceIsAvailable);
         }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using AutoService.Core.Contracts;
 using AutoService.Core.Validator;
-using AutoService.Models.Assets;
 using AutoService.Models.Assets.Contracts;
 
 namespace AutoService.Core.Commands
