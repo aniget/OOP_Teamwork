@@ -14,11 +14,12 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IValidateCore coreValidator;
 
-        public RemoveEmployeeResponsibility(IWriter writer, IDatabase database, IValidateCore coreValidator)
+        public RemoveEmployeeResponsibility(IProcessorLocator processorLocator)
         {
-            this.writer = writer ?? throw new ArgumentNullException();
-            this.database = database ?? throw new ArgumentNullException();
-            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.coreValidator = processorLocator.GetProcessor<IValidateCore>() ?? throw new ArgumentNullException();
         }
 
         public void ExecuteThisCommand(string[] commandParameters)

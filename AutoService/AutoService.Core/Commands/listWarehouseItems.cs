@@ -11,12 +11,13 @@ namespace AutoService.Core.Commands
         private readonly IWriter writer;
         private readonly IStockManager stockManager;
 
-        public ListWarehouseItems(IDatabase database, IValidateCore coreValidator, IWriter writer, IStockManager stockManager)
+        public ListWarehouseItems(IProcessorLocator processorLocator)
         {
-            this.database = database ?? throw new ArgumentNullException();
-            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
-            this.stockManager = stockManager;
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.coreValidator = processorLocator.GetProcessor<IValidateCore>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
+            this.stockManager = processorLocator.GetProcessor<IStockManager>() ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {

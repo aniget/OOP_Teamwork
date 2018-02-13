@@ -8,10 +8,11 @@ namespace AutoService.Core.Commands
         private readonly IDatabase database;
         private readonly IWriter writer;
 
-        public ListClients(IDatabase database, IWriter writer)
+        public ListClients(IProcessorLocator processorLocator)
         {
-            this.database = database ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
         }
 
         public void ExecuteThisCommand(string[] commandParameters)

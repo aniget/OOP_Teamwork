@@ -22,13 +22,14 @@ namespace AutoService.Core.Commands
         private readonly IWriter writer;
         private readonly IAutoServiceFactory autoServiceFactory;
 
-        public SellServiceToClientVehicle(IAutoServiceFactory autoServiceFactory, IDatabase database, IValidateCore coreValidator, IWriter writer, IValidateModel modelValidator)
+        public SellServiceToClientVehicle(IProcessorLocator processorLocator)
         {
-            this.database = database ?? throw new ArgumentNullException();
-            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
-            this.autoServiceFactory = autoServiceFactory ?? throw new ArgumentNullException();
-            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.coreValidator = processorLocator.GetProcessor<IValidateCore>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
+            this.autoServiceFactory = processorLocator.GetProcessor<IAutoServiceFactory>() ?? throw new ArgumentNullException();
+            this.modelValidator = processorLocator.GetProcessor<IValidateModel>() ?? throw new ArgumentNullException();
         }
 
 

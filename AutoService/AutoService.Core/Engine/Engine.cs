@@ -1,7 +1,7 @@
-﻿using AutoService.Models.CustomExceptions;
-using System;
-using Autofac.Core.Registration;
+﻿using Autofac.Core.Registration;
 using AutoService.Core.Contracts;
+using AutoService.Models.CustomExceptions;
+using System;
 
 namespace AutoService.Core
 {
@@ -11,16 +11,12 @@ namespace AutoService.Core
         private readonly IReader reader;
 
         //constructor
-        public Engine
-            (
-            ICommandFactory commandFactory,
-            IWriter writer,
-            IReader reader
-            )
+        public Engine (IProcessorLocator processorLocator)
         {
-            this.CommandFactory = commandFactory ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
-            this.reader = reader ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.CommandFactory = processorLocator.GetProcessor<ICommandFactory>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
+            this.reader = processorLocator.GetProcessor<IReader>() ?? throw new ArgumentNullException();
         }
 
         public ICommandFactory CommandFactory { get; }

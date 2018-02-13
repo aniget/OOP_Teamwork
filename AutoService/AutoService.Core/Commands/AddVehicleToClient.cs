@@ -1,5 +1,4 @@
 ﻿using AutoService.Core.Contracts;
-using AutoService.Core.Validator;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Validator;
 using AutoService.Models.Vehicles.Contracts;
@@ -18,13 +17,15 @@ namespace AutoService.Core.Commands
         private readonly IValidateModel modelValidator;
         private readonly IAutoServiceFactory factory;
 
-        public AddVehicleToClient(IDatabase database, IWriter writer, IValidateCore coreValidator, IAutoServiceFactory factory, IValidateModel modelValidator)
+        public AddVehicleToClient(IProcessorLocator processorLocator)
         {
-            this.database = database ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
-            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
-            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
-            this.factory = factory ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
+            this.coreValidator = processorLocator.GetProcessor<IValidateCore>() ?? throw new ArgumentNullException();
+            this.modelValidator = processorLocator.GetProcessor<IValidateModel>() ?? throw new ArgumentNullException();
+            this.factory = processorLocator.GetProcessor<IAutoServiceFactory>() ?? throw new ArgumentNullException();
         }
 
         public void ExecuteThisCommand(string[] commandParameters)

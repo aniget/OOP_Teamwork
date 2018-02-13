@@ -5,7 +5,7 @@ using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
 using AutoService.Models.Vehicles.Enums;
 
-namespace AutoService.Core.Validator
+namespace AutoService.Core.Contracts
 {
     public interface IValidateCore
     {

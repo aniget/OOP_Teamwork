@@ -33,8 +33,21 @@ namespace AutoService.Tests.CommandsTests
             string[] commandParams = { cName, fname, lName, pos, sal, rpm, dept };
 
             var modelValidatorStub = new Mock<IValidateModel>();
-
             var coreValidatorStub = new Mock<IValidateCore>();
+            var employeesStub = new Mock<IList<IEmployee>>();
+            var employeeStub = new Mock<IEmployee>(MockBehavior.Strict);
+            var autoServiceFactoryStub = new Mock<IAutoServiceFactory>(MockBehavior.Strict);
+            var databaseStub = new Mock<IDatabase>();
+            var writerStub = new Mock<IWriter>();
+
+            var processorLocatorStub = new Mock<IProcessorLocator>();
+            processorLocatorStub.Setup(x => x.GetProcessor<IValidateModel>()).Returns(modelValidatorStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IValidateCore>()).Returns(coreValidatorStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IAutoServiceFactory>()).Returns(autoServiceFactoryStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IEmployee>()).Returns(employeeStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IDatabase>()).Returns(databaseStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IWriter>()).Returns(writerStub.Object);
+            
             coreValidatorStub
                  .Setup(x => x.DecimalFromString(sal, "salary"))
                  .Returns(expectedSalary);
@@ -42,30 +55,24 @@ namespace AutoService.Tests.CommandsTests
                 .Setup(x => x.DecimalFromString(rpm, "ratePerMinute"))
                 .Returns(decimal.Parse(rpm));
 
-            var employeesStub = new Mock<IList<IEmployee>>();
-            var employeeStub = new Mock<IEmployee>(MockBehavior.Strict);
-            var employeeStubObj = employeeStub.Object;
+                        var employeeStubObj = employeeStub.Object;
 
-            var autoServiceFactoryStub = new Mock<IAutoServiceFactory>(MockBehavior.Strict);
             autoServiceFactoryStub
                 .Setup(x => x.CreateEmployee(fname, lName, pos, decimal.Parse(sal), decimal.Parse(rpm), DepartmentType.Management, modelValidatorStub.Object))
                 .Returns(new Employee(fname, lName, pos, decimal.Parse(sal), decimal.Parse(rpm), DepartmentType.Management, modelValidatorStub.Object));
 
             employeeStubObj = autoServiceFactoryStub.Object.CreateEmployee(fname, lName, pos, decimal.Parse(sal), decimal.Parse(rpm), DepartmentType.Management, modelValidatorStub.Object);
 
-            var databaseStub = new Mock<IDatabase>();
             databaseStub.Setup(x => x.Employees.Add(It.IsAny<IEmployee>()));
 
-            var writerStub = new Mock<IWriter>();
             var writerStubObj = writerStub.Object;
 
-            ICommand sut = new HireEmployee(autoServiceFactoryStub.Object, databaseStub.Object, coreValidatorStub.Object, writerStubObj, modelValidatorStub.Object);
+            ICommand sut = new HireEmployee(processorLocatorStub.Object);
 
             //Act
             sut.ExecuteThisCommand(commandParams);
 
 
-            //decimal actualSalary = databaseStub.Object.Employees[0].Salary;
             decimal actualSalary = employeeStubObj.Salary;
 
             //Assert
@@ -87,11 +94,25 @@ namespace AutoService.Tests.CommandsTests
             string[] commandParams = { cName, fname, lName, pos, sal, rpm, dept };
 
             var modelValidatorStub = new Mock<IValidateModel>();
+            var coreValidatorStub = new Mock<IValidateCore>();
+            var employeesStub = new Mock<IList<IEmployee>>();
+            var employeeStub = new Mock<IEmployee>();
+            var databaseStub = new Mock<IDatabase>();
+            var writerStub = new Mock<IWriter>();
+            var autoServiceFactoryStub = new Mock<IAutoServiceFactory>();
+
+            var processorLocatorStub = new Mock<IProcessorLocator>();
+            processorLocatorStub.Setup(x => x.GetProcessor<IValidateModel>()).Returns(modelValidatorStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IValidateCore>()).Returns(coreValidatorStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IAutoServiceFactory>()).Returns(autoServiceFactoryStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IEmployee>()).Returns(employeeStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IDatabase>()).Returns(databaseStub.Object);
+            processorLocatorStub.Setup(x => x.GetProcessor<IWriter>()).Returns(writerStub.Object);
+
             modelValidatorStub.Setup(x => x.StringForNullEmpty("string"));
             modelValidatorStub.Setup(x => x.HasDigitInString("assas", "sadsada"));
             modelValidatorStub.Setup(x => x.NonNegativeValue(100m, "paramName"));
 
-            var coreValidatorStub = new Mock<IValidateCore>();
             coreValidatorStub
                  .Setup(x => x.DecimalFromString(sal, "salary"))
                  .Returns(decimal.Parse(sal));
@@ -99,24 +120,19 @@ namespace AutoService.Tests.CommandsTests
                 .Setup(x => x.DecimalFromString(rpm, "ratePerMinute"))
                 .Returns(decimal.Parse(rpm));
 
-            var employeesStub = new Mock<IList<IEmployee>>();
-            var employeeStub = new Mock<IEmployee>();
             var employeeStubObj = employeeStub.Object;
 
-            var autoServiceFactoryStub = new Mock<IAutoServiceFactory>();
             autoServiceFactoryStub
                 .Setup(x => x.CreateEmployee(fname, lName, pos, decimal.Parse(sal), decimal.Parse(rpm), DepartmentType.Management, modelValidatorStub.Object))
                 .Returns(new Employee(fname, lName, pos, decimal.Parse(sal), decimal.Parse(rpm), DepartmentType.Management, modelValidatorStub.Object));
 
             employeeStubObj = autoServiceFactoryStub.Object.CreateEmployee(fname, lName, pos, decimal.Parse(sal), decimal.Parse(rpm), DepartmentType.Management, modelValidatorStub.Object);
 
-            var databaseStub = new Mock<IDatabase>();
             databaseStub.Setup(x => x.Employees.Add(It.IsAny<IEmployee>()));
 
-            var writerStub = new Mock<IWriter>();
             var writerStubObj = writerStub.Object;
 
-            ICommand sut = new HireEmployee(autoServiceFactoryStub.Object, databaseStub.Object, coreValidatorStub.Object, writerStubObj, modelValidatorStub.Object);
+            ICommand sut = new HireEmployee(processorLocatorStub.Object);
 
             //Act
             sut.ExecuteThisCommand(commandParams);

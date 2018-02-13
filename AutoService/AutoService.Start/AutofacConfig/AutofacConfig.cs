@@ -22,6 +22,7 @@ namespace AutoService.AutofacConfig
             builder.RegisterType<StockManager>().As<IStockManager>().SingleInstance();
             builder.RegisterType<ValidateCore>().As<IValidateCore>().SingleInstance();
             builder.RegisterType<ValidateModel>().As<IValidateModel>().SingleInstance();
+            builder.RegisterType<ProcessorLocator>().As<IProcessorLocator>().SingleInstance();
 
             builder.RegisterType<Database>().As<IDatabase>().SingleInstance();
             builder.RegisterType<Engine>().As<IEngine>().SingleInstance();

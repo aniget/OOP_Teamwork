@@ -1,7 +1,6 @@
-﻿using System;
+﻿using AutoService.Core.Contracts;
+using System;
 using System.Linq;
-using AutoService.Core.Contracts;
-using AutoService.Core.Validator;
 
 namespace AutoService.Core.Commands
 {
@@ -13,11 +12,12 @@ namespace AutoService.Core.Commands
         private readonly IWriter writer;
 
         //Constructor
-        public ChangeClientName(IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public ChangeClientName(IProcessorLocator processorLocator)
         {
-            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
-            this.database = database ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.coreValidator = processorLocator.GetProcessor<IValidateCore>() ?? throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
         }
         //Methods
         public void ExecuteThisCommand(string[] commandParameters)

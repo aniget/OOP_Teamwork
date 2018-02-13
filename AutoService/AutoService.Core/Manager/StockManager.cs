@@ -20,10 +20,11 @@ namespace AutoService.Core.Manager
 
         //Initialize the singleInstance objects that are used in the methods
         //properties not needed for now
-        public StockManager(IDatabase database, IValidateModel modelValidator)
+        public StockManager(IProcessorLocator processorLocator)
         {
-            this.database = database ?? throw new ArgumentNullException();
-            this.modelValidator = modelValidator ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.modelValidator = processorLocator.GetProcessor<IValidateModel>() ?? throw new ArgumentNullException();
         }
 
         public IValidateModel ModelValidator { get => this.modelValidator; }

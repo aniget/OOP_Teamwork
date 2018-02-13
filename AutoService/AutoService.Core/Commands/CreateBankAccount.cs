@@ -1,10 +1,8 @@
-﻿using System;
-using AutoService.Core.Contracts;
-using AutoService.Core.Validator;
-using AutoService.Models.Assets;
+﻿using AutoService.Core.Contracts;
 using AutoService.Models.Assets.Contracts;
 using AutoService.Models.Common.Contracts;
 using AutoService.Models.Common.Enums;
+using System;
 
 namespace AutoService.Core.Commands
 {
@@ -15,12 +13,13 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
 
-        public CreateBankAccount(IDatabase database, IAutoServiceFactory factory, IValidateCore coreValidator, IWriter writer)
+        public CreateBankAccount(IProcessorLocator processorLocator)
         {
-            this.database = database ?? throw new ArgumentNullException();
-            this.factory = factory ?? throw new ArgumentNullException();
-            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.factory = processorLocator.GetProcessor<IAutoServiceFactory>() ?? throw new ArgumentNullException();
+            this.coreValidator = processorLocator.GetProcessor<IValidateCore>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
@@ -57,8 +56,8 @@ namespace AutoService.Core.Commands
                     this.factory.CreateBankAccount(assetName, employee, uniqueNumber, currentAssetDate);
                 bankAccountToAdd.CriticalLimitReached += CriticalAmountReached;
                 this.database.BankAccounts.Add(bankAccountToAdd);
-               this.writer.Write(
-                    $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
+                this.writer.Write(
+                     $"Asset {assetName} was created successfully by his responsible employee {employee.FirstName} {employee.LastName}");
             }
             else
             {

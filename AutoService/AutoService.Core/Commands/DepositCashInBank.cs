@@ -11,11 +11,12 @@ namespace AutoService.Core.Commands
         private readonly IValidateCore coreValidator;
         private readonly IWriter writer;
 
-        public DepositCashInBank(IDatabase database, IValidateCore coreValidator, IWriter writer)
+        public DepositCashInBank(IProcessorLocator processorLocator)
         {
-            this.database = database ?? throw new ArgumentNullException();
-            this.coreValidator = coreValidator ?? throw new ArgumentNullException();
-            this.writer = writer ?? throw new ArgumentNullException();
+            if (processorLocator == null) throw new ArgumentNullException();
+            this.database = processorLocator.GetProcessor<IDatabase>() ?? throw new ArgumentNullException();
+            this.coreValidator = processorLocator.GetProcessor <IValidateCore>() ?? throw new ArgumentNullException();
+            this.writer = processorLocator.GetProcessor<IWriter>() ?? throw new ArgumentNullException();
         }
         public void ExecuteThisCommand(string[] commandParameters)
         {
